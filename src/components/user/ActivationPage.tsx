@@ -42,6 +42,13 @@ interface ActivationRequest {
   payment_method: { name: string };
 }
 
+// Safe array extraction helper
+function safeArray<T>(data: any, key: string): T[] {
+  if (!data) return [];
+  const arr = data[key] || data;
+  return Array.isArray(arr) ? arr : [];
+}
+
 export default function ActivationPage() {
   const { user, refreshUser } = useAuthStore();
   const { addToast } = useToastStore();
@@ -78,10 +85,14 @@ export default function ActivationPage() {
           api.getPaymentMethods(),
           api.getMyActivationRequests(),
         ]);
-        setPaymentMethods(Array.isArray(pmRes.payment_methods) ? pmRes.payment_methods : []);
-        setExistingRequests(Array.isArray(reqRes.requests) ? reqRes.requests : []);
-      } catch {
+        // Safely extract arrays from API responses
+        setPaymentMethods(safeArray<PaymentMethod>(pmRes, 'payment_methods'));
+        setExistingRequests(safeArray<ActivationRequest>(reqRes, 'requests'));
+      } catch (err: any) {
+        console.error('Load error:', err);
         addToast('Failed to load data', 'error');
+        setPaymentMethods([]);
+        setExistingRequests([]);
       } finally {
         setLoading(false);
       }
@@ -120,7 +131,7 @@ export default function ActivationPage() {
       setProofPreview('');
 
       const reqRes = await api.getMyActivationRequests();
-      setExistingRequests(Array.isArray(reqRes.requests) ? reqRes.requests : []);
+      setExistingRequests(safeArray<ActivationRequest>(reqRes, 'requests'));
     } catch (err: any) {
       addToast(err.message || 'Failed to submit request', 'error');
     } finally {

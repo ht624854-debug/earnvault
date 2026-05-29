@@ -28,12 +28,22 @@ class ApiService {
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
-    const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({ error: 'Request failed' }));
-      throw new Error(data.error || `HTTP ${res.status}`);
+    
+    try {
+      const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || data.message || `HTTP ${res.status}`);
+      }
+
+      return data as T;
+    } catch (err: any) {
+      if (err.message && !err.message.includes('NetworkError') && !err.message.includes('Failed to fetch')) {
+        throw err;
+      }
+      throw new Error('Network error. Please check your connection.');
     }
-    return res.json();
   }
 
   private async uploadRequest<T>(path: string, formData: FormData): Promise<T> {
@@ -56,34 +66,34 @@ class ApiService {
 
   // Auth
   async register(data: { first_name: string; last_name: string; email: string; username: string; mobile: string; password: string; referral_code?: string }) {
-    const res = await this.request<{ user: any; token: string }>('/auth/register', {
+    const res = await this.request<{ user: any; token: string; error?: string }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
     });
-    this.setToken(res.token);
+    if (res.token) this.setToken(res.token);
     return res;
   }
 
   async login(username: string, password: string) {
-    const res = await this.request<{ user: any; token: string }>('/auth/login', {
+    const res = await this.request<{ user: any; token: string; error?: string }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     });
-    this.setToken(res.token);
+    if (res.token) this.setToken(res.token);
     return res;
   }
 
   async adminLogin(username: string, password: string) {
-    const res = await this.request<{ user: any; token: string }>('/admin/login', {
+    const res = await this.request<{ user: any; admin: any; token: string; error?: string }>('/admin/login', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     });
-    this.setToken(res.token);
+    if (res.token) this.setToken(res.token);
     return res;
   }
 
   async getMe() {
-    return this.request<{ user: any }>('/auth/me');
+    return this.request<{ user: any; error?: string }>('/auth/me');
   }
 
   async changePassword(current_password: string, new_password: string) {

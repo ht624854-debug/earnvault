@@ -80,7 +80,7 @@ export default function AdminSupport() {
       setReplyMessage('');
       // Refresh the ticket
       const res = await api.getAdminSupportTickets('');
-      const updated = (res.tickets || []).find((t: SupportTicket) => t.id === selectedTicket.id);
+      const updated = (Array.isArray(res.tickets) ? res.tickets : []).find((t: SupportTicket) => t.id === selectedTicket.id);
       if (updated) setSelectedTicket(updated);
       loadTickets();
     } catch (err: any) {

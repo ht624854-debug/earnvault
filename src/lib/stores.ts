@@ -32,7 +32,7 @@ interface AuthState {
   refreshUser: () => Promise<void>;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isLoading: true,
   isAuthenticated: false,
@@ -40,18 +40,22 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   login: async (username: string, password: string) => {
     const res = await api.login(username, password);
+    if (res.error) throw new Error(res.error);
+    const user = res.user;
+    const isAdmin = user?.role === 'admin';
     set({
-      user: res.user,
+      user,
       isAuthenticated: true,
-      isAdmin: res.user.role === 'admin',
+      isAdmin,
       isLoading: false,
     });
   },
 
   adminLogin: async (username: string, password: string) => {
     const res = await api.adminLogin(username, password);
+    if (res.error) throw new Error(res.error);
     set({
-      user: res.admin,
+      user: res.admin || res.user,
       isAuthenticated: true,
       isAdmin: true,
       isLoading: false,
@@ -60,6 +64,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   register: async (data: any) => {
     const res = await api.register(data);
+    if (res.error) throw new Error(res.error);
     set({
       user: res.user,
       isAuthenticated: true,
@@ -81,11 +86,16 @@ export const useAuthStore = create<AuthState>((set) => ({
   checkAuth: async () => {
     const token = localStorage.getItem('ev_token');
     if (!token) {
-      set({ isLoading: false, isAuthenticated: false, user: null });
+      set({ isLoading: false, isAuthenticated: false, user: null, isAdmin: false });
       return;
     }
     try {
       const res = await api.getMe();
+      if (res.error || !res.user) {
+        localStorage.removeItem('ev_token');
+        set({ isLoading: false, isAuthenticated: false, user: null, isAdmin: false });
+        return;
+      }
       set({
         user: res.user,
         isAuthenticated: true,
@@ -101,7 +111,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   refreshUser: async () => {
     try {
       const res = await api.getMe();
-      set({ user: res.user });
+      if (res.user) {
+        set({ user: res.user });
+      }
     } catch {
       // ignore
     }
@@ -122,9 +134,9 @@ export const useSettingsStore = create<SettingsState>((set) => ({
   loadSettings: async () => {
     try {
       const res = await api.getSettings();
-      set({ settings: res.settings, isLoading: false });
+      set({ settings: res.settings || {}, isLoading: false });
     } catch {
-      set({ isLoading: false });
+      set({ isLoading: false, settings: {} });
     }
   },
 }));

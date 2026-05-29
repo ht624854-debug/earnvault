@@ -84,6 +84,11 @@ export default function AdminUserDetail() {
     try {
       const res = await api.getAdminUser(userId);
       const u = res.user;
+      if (!u) {
+        addToast('User not found', 'error');
+        setLoading(false);
+        return;
+      }
       setUser(u);
       setEditForm({
         first_name: u.first_name || '',
@@ -312,8 +317,8 @@ export default function AdminUserDetail() {
               value={editForm.package_status}
               onChange={(e) => setEditForm({ ...editForm, package_status: e.target.value })}
             >
-              <option value="inactive">Inactive</option>
-              <option value="active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Active">Active</option>
             </select>
           </div>
           <div>

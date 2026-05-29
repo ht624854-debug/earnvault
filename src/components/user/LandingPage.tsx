@@ -34,6 +34,26 @@ const stagger = {
   animate: { transition: { staggerChildren: 0.1 } },
 };
 
+// Parse "Title - Description" format from settings
+function parseSettingField(value: string, defaultTitle: string, defaultDesc: string) {
+  if (!value) return { title: defaultTitle, desc: defaultDesc };
+  const parts = value.split(' - ');
+  if (parts.length >= 2) {
+    return { title: parts[0].trim(), desc: parts.slice(1).join(' - ').trim() };
+  }
+  return { title: value, desc: defaultDesc };
+}
+
+// Parse "Quote - Author" format from testimonial settings
+function parseTestimonial(value: string) {
+  if (!value) return null;
+  const parts = value.split(' - ');
+  if (parts.length >= 2) {
+    return { text: parts[0].trim(), name: parts[parts.length - 1].trim() };
+  }
+  return { text: value, name: 'Member' };
+}
+
 export default function LandingPage() {
   const { settings, loadSettings } = useSettingsStore();
   const { navigate } = useRouterStore();
@@ -61,22 +81,26 @@ export default function LandingPage() {
     { icon: Shield, label: 'Secure Platform', value: settings.stat_security || 'Secure' },
   ];
 
+  const feature1 = parseSettingField(settings.why_choose_1, 'Task Based Earning', 'Complete simple tasks and earn real money instantly.');
+  const feature2 = parseSettingField(settings.why_choose_2, 'Referral Rewards', 'Invite friends and earn commission on their activities.');
+  const feature3 = parseSettingField(settings.why_choose_3, 'Secure Withdrawals', 'Withdraw your earnings safely to your bank account.');
+  const feature4 = parseSettingField(settings.why_choose_4, 'Instant Activation', 'Get started in minutes with quick account activation.');
+
   const features = [
-    { icon: Target, title: settings.why_choose_1_title || 'Task Based Earning', desc: settings.why_choose_1_desc || 'Complete simple tasks and earn real money instantly.' },
-    { icon: Share2, title: settings.why_choose_2_title || 'Referral Rewards', desc: settings.why_choose_2_desc || 'Invite friends and earn commission on their activities.' },
-    { icon: Lock, title: settings.why_choose_3_title || 'Secure Withdrawals', desc: settings.why_choose_3_desc || 'Withdraw your earnings safely to your bank account.' },
-    { icon: Rocket, title: settings.why_choose_4_title || 'Instant Activation', desc: settings.why_choose_4_desc || 'Get started in minutes with quick account activation.' },
+    { icon: Target, ...feature1 },
+    { icon: Share2, ...feature2 },
+    { icon: Lock, ...feature3 },
+    { icon: Rocket, ...feature4 },
   ];
 
   const testimonials = [
-    { name: settings.testimonial_1_name || '', text: settings.testimonial_1_text || '' },
-    { name: settings.testimonial_2_name || '', text: settings.testimonial_2_text || '' },
-    { name: settings.testimonial_3_name || '', text: settings.testimonial_3_text || '' },
-  ].filter((t) => t.name && t.text);
+    parseTestimonial(settings.testimonial_1),
+    parseTestimonial(settings.testimonial_2),
+    parseTestimonial(settings.testimonial_3),
+  ].filter(Boolean) as { text: string; name: string }[];
 
   const socialLinks = [
-    { icon: Phone, label: 'WhatsApp', url: settings.social_whatsapp || '' },
-    { icon: Send, label: 'Telegram', url: settings.social_telegram || '' },
+    { icon: Phone, label: 'WhatsApp', url: settings.support_whatsapp || settings.social_whatsapp || '' },
     { icon: Instagram, label: 'Instagram', url: settings.social_instagram || '' },
     { icon: Youtube, label: 'YouTube', url: settings.social_youtube || '' },
     { icon: MessageCircle, label: 'Facebook', url: settings.social_facebook || '' },

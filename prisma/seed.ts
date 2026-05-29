@@ -25,51 +25,66 @@ async function seed() {
     console.log('Admin user created: admin / admin123');
   }
 
-  // Default settings
+  // Default settings - keys MUST match AdminSettings.tsx and component usage
   const defaultSettings: Record<string, string> = {
+    // Brand
     brand_name: 'EarnVault',
     logo_url: '',
+
+    // Hero Section
     hero_title: 'Earn Real Rewards Daily',
     hero_subtitle: 'Complete simple tasks, refer friends, and withdraw your earnings instantly. The most trusted earning platform.',
     register_button_text: 'Register Now',
     login_button_text: 'Login',
-    stat_active_members: '0',
+
+    // Stats Section
+    stat_active_members: '10,000+',
     stat_support: '24/7',
     stat_withdrawals: 'Fast',
     stat_security: 'Secure',
-    why_choose_1_title: 'Task Based Earning',
-    why_choose_1_desc: 'Complete daily tasks and earn real money. Simple math, surveys, and link visits.',
-    why_choose_2_title: 'Referral Rewards',
-    why_choose_2_desc: 'Share your referral link and earn commission when your referrals activate.',
-    why_choose_3_title: 'Secure Withdrawals',
-    why_choose_3_desc: 'Withdraw your earnings to Easypaisa, JazzCash, or bank account securely.',
-    why_choose_4_title: 'Instant Activation',
-    why_choose_4_desc: 'Activate your account quickly and start earning within minutes.',
-    testimonial_1_name: '',
-    testimonial_1_text: '',
-    testimonial_2_name: '',
-    testimonial_2_text: '',
-    testimonial_3_name: '',
-    testimonial_3_text: '',
+
+    // Why Choose
+    why_choose_1: 'Task Based Earning - Complete daily tasks and earn real money.',
+    why_choose_2: 'Referral Rewards - Share your link and earn commission.',
+    why_choose_3: 'Secure Withdrawals - Withdraw to Easypaisa, JazzCash, or bank.',
+    why_choose_4: 'Instant Activation - Activate and start earning within minutes.',
+
+    // Testimonials
+    testimonial_1: 'I earned Rs. 5000 in my first week! Best platform ever. - Ahmed',
+    testimonial_2: 'Easy tasks, fast withdrawals. Highly recommended! - Sara',
+    testimonial_3: 'The referral system is amazing. Passive income! - Ali',
+
+    // Footer
     footer_text: 'EarnVault - Your Trusted Earning Platform',
-    social_whatsapp: '',
     social_facebook: '',
+    social_twitter: '',
     social_instagram: '',
     social_youtube: '',
-    social_telegram: '',
-    whatsapp_popup_enabled: 'false',
-    whatsapp_popup_title: '',
-    whatsapp_popup_desc: '',
-    whatsapp_popup_link: '',
-    whatsapp_popup_button: '',
+
+    // WhatsApp Popup
+    whatsapp_enabled: 'false',
+    whatsapp_title: 'Need Help?',
+    whatsapp_description: 'Chat with us on WhatsApp for instant support',
+    whatsapp_link: '',
+    whatsapp_button_text: 'Chat Now',
+
+    // Financial
     activation_fee: '1500',
     min_withdrawal: '500',
     referral_reward: '200',
-    referral_reward_on_activation: 'true',
+    referral_reward_on_activation: '100',
+
+    // Activation Offers
+    offer_enabled: 'false',
+    offer_title: '',
+    offer_description: '',
+    offer_discount: '0',
+
+    // Other
     support_whatsapp: '',
+    download_link: '',
     maintenance_mode: 'false',
     developer_credit: 'EarnVault',
-    download_link: '',
     payment_methods_display: 'Easypaisa,JazzCash,SadaPay,NayaPay,Bank Transfer',
   };
 
@@ -84,11 +99,11 @@ async function seed() {
 
   // Create default payment methods
   const methods = [
-    { name: 'Easypaisa', account_title: 'EarnVault', account_number: '03001234567', instructions: 'Send payment to the given Easypaisa account and upload screenshot.', icon: '💸', sort_order: 1 },
-    { name: 'JazzCash', account_title: 'EarnVault', account_number: '03001234567', instructions: 'Send payment to the given JazzCash account and upload screenshot.', icon: '💰', sort_order: 2 },
-    { name: 'SadaPay', account_title: 'EarnVault', account_number: '03001234567', instructions: 'Send payment to the given SadaPay account and upload screenshot.', icon: '💳', sort_order: 3 },
-    { name: 'NayaPay', account_title: 'EarnVault', account_number: '03001234567', instructions: 'Send payment to the given NayaPay account and upload screenshot.', icon: '🏦', sort_order: 4 },
-    { name: 'Bank Transfer', account_title: 'EarnVault', account_number: 'IBAN PK00XXXX0000000000', instructions: 'Transfer to the given bank account and upload screenshot.', icon: '🏧', sort_order: 5 },
+    { name: 'Easypaisa', account_title: 'EarnVault', account_number: '03001234567', instructions: 'Send payment to the given Easypaisa account and upload screenshot.', icon: '💸', sort_order: 1, is_active: true },
+    { name: 'JazzCash', account_title: 'EarnVault', account_number: '03001234567', instructions: 'Send payment to the given JazzCash account and upload screenshot.', icon: '💰', sort_order: 2, is_active: true },
+    { name: 'SadaPay', account_title: 'EarnVault', account_number: '03001234567', instructions: 'Send payment to the given SadaPay account and upload screenshot.', icon: '💳', sort_order: 3, is_active: true },
+    { name: 'NayaPay', account_title: 'EarnVault', account_number: '03001234567', instructions: 'Send payment to the given NayaPay account and upload screenshot.', icon: '🏦', sort_order: 4, is_active: true },
+    { name: 'Bank Transfer', account_title: 'EarnVault', account_number: 'IBAN PK00XXXX0000000000', instructions: 'Transfer to the given bank account and upload screenshot.', icon: '🏧', sort_order: 5, is_active: true },
   ];
 
   for (const method of methods) {

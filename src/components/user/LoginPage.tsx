@@ -117,7 +117,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-5 text-center space-y-3">
+          <div className="mt-5 text-center">
             <p className="text-sm text-[#737373]">
               Don&apos;t have an account?{' '}
               <button
@@ -127,12 +127,6 @@ export default function LoginPage() {
                 Register
               </button>
             </p>
-            <button
-              onClick={() => navigate('admin-login')}
-              className="text-xs text-[#525252] hover:text-[#737373] transition-colors"
-            >
-              Admin Login
-            </button>
           </div>
         </div>
 
