@@ -1,0 +1,99 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Phone, X, MessageCircle } from 'lucide-react';
+import { useSettingsStore, useAuthStore, useRouterStore } from '@/lib/stores';
+
+const DISMISSED_KEY = 'ev_whatsapp_popup_dismissed';
+
+export default function WhatsAppPopup() {
+  const { settings } = useSettingsStore();
+  const { isAuthenticated } = useAuthStore();
+  const { page } = useRouterStore();
+
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const enabled = settings.whatsapp_popup_enabled === 'true' || settings.whatsapp_popup_enabled === '1';
+    if (!enabled) return;
+    if (!isAuthenticated) return;
+
+    const dismissed = localStorage.getItem(DISMISSED_KEY);
+    if (dismissed) return;
+
+    const timer = setTimeout(() => setShow(true), 3000);
+    return () => clearTimeout(timer);
+  }, [settings, isAuthenticated]);
+
+  const handleDismiss = () => {
+    setShow(false);
+    localStorage.setItem(DISMISSED_KEY, '1');
+  };
+
+  const handleAction = () => {
+    const url = settings.whatsapp_popup_link || settings.social_whatsapp || '';
+    if (url) {
+      window.open(url, '_blank');
+    }
+    handleDismiss();
+  };
+
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm px-4 pb-4 sm:pb-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={handleDismiss}
+        >
+          <motion.div
+            className="w-full max-w-sm bg-[#141414] border border-[#1F1F1F] rounded-2xl p-5 relative"
+            initial={{ y: 80, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 80, opacity: 0, scale: 0.95 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={handleDismiss}
+              className="absolute top-3 right-3 w-7 h-7 bg-[#1A1A1A] rounded-full flex items-center justify-center text-[#737373] hover:text-[#F5F5F5] transition-colors"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+
+            <div className="flex flex-col items-center text-center">
+              <div className="w-14 h-14 bg-[#25D366]/10 rounded-2xl flex items-center justify-center mb-4">
+                <MessageCircle className="w-7 h-7 text-[#25D366]" />
+              </div>
+
+              <h3 className="text-lg font-bold text-[#F5F5F5] mb-2">
+                {settings.whatsapp_popup_title || 'Join Our Community'}
+              </h3>
+
+              <p className="text-sm text-[#737373] mb-5">
+                {settings.whatsapp_popup_desc || 'Stay updated with the latest news and exclusive offers!'}
+              </p>
+
+              <button
+                onClick={handleAction}
+                className="ev-btn-primary w-full flex items-center justify-center gap-2 py-3 text-sm mb-3"
+              >
+                <Phone className="w-4 h-4" /> {settings.whatsapp_popup_button || 'Join Now'}
+              </button>
+
+              <button
+                onClick={handleDismiss}
+                className="text-sm text-[#525252] hover:text-[#737373] transition-colors"
+              >
+                Maybe Later
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

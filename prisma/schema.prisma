@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String   @id @default(cuid())
+  first_name       String
+  last_name        String
+  email            String   @unique
+  username         String   @unique
+  mobile           String   @unique
+  password_hash    String
+  avatar           String   @default("")
+  referral_code    String   @unique
+  referred_by_id   String?
+  main_balance     Float    @default(0)
+  deposit_balance  Float    @default(0)
+  package_status   String   @default("Inactive") // Inactive, Active
+  role             String   @default("user") // user, admin
+  status           String   @default("active") // active, blocked
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  referred_by      User?              @relation("UserReferrals", fields: [referred_by_id], references: [id])
+  referrals_made   User[]             @relation("UserReferrals")
+  activation_reqs  ActivationRequest[]
+  withdraw_reqs    WithdrawRequest[]
+  task_subs        TaskSubmission[]
+  referrals_from   Referral[]         @relation("Referrer")
+  referrals_to     Referral[]         @relation("Referred")
+  reward_claims    DailyRewardClaim[]
+  transactions     Transaction[]
+  support_tickets  SupportTicket[]
+  audit_logs       AuditLog[]
+}
+
+model Setting {
+  id            String   @id @default(cuid())
+  setting_key   String   @unique
+  setting_value String   @default("")
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
+
+model PaymentMethod {
+  id             String   @id @default(cuid())
+  name           String
+  account_title  String   @default("")
+  account_number String   @default("")
+  instructions   String   @default("")
+  icon           String   @default("")
+  is_active      Boolean  @default(true)
+  sort_order     Int      @default(0)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  activation_requests ActivationRequest[]
+}
+
+model ActivationRequest {
+  id               String        @id @default(cuid())
+  user_id          String
+  amount           Float
+  payment_method_id String
+  sender_name      String
+  sender_number    String
+  transaction_id   String
+  proof_image      String        @default("")
+  status           String        @default("Pending") // Pending, Approved, Rejected
+  admin_note       String        @default("")
+  approved_by      String?
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @updatedAt
+
+  user             User          @relation(fields: [user_id], references: [id])
+  payment_method   PaymentMethod @relation(fields: [payment_method_id], references: [id])
+}
+
+model WithdrawRequest {
+  id            String   @id @default(cuid())
+  user_id       String
+  amount        Float
+  method        String
+  account_title String
+  account_number String
+  status        String   @default("Pending") // Pending, Approved, Rejected, Paid
+  admin_note    String   @default("")
+  processed_by  String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  user          User     @relation(fields: [user_id], references: [id])
+}
+
+model Task {
+  id             String   @id @default(cuid())
+  title          String
+  description    String
+  type           String   // math, question, link_visit, custom, proof_upload
+  reward_amount  Float
+  question       String   @default("")
+  correct_answer String   @default("")
+  link_url       String   @default("")
+  proof_required Boolean  @default(false)
+  daily_limit    Int      @default(0) // 0 = unlimited
+  is_active      Boolean  @default(true)
+  sort_order     Int      @default(0)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  submissions    TaskSubmission[]
+}
+
+model TaskSubmission {
+  id           String   @id @default(cuid())
+  task_id      String
+  user_id      String
+  answer       String   @default("")
+  proof_image  String   @default("")
+  status       String   @default("Pending") // Pending, Approved, Rejected
+  reward_amount Float   @default(0)
+  admin_note   String   @default("")
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  task         Task     @relation(fields: [task_id], references: [id])
+  user         User     @relation(fields: [user_id], references: [id])
+}
+
+model Referral {
+  id              String   @id @default(cuid())
+  referrer_id     String
+  referred_user_id String
+  status          String   @default("Active")
+  reward_status   String   @default("Unpaid") // Unpaid, Paid
+  reward_amount   Float    @default(0)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  referrer        User     @relation("Referrer", fields: [referrer_id], references: [id])
+  referred_user   User     @relation("Referred", fields: [referred_user_id], references: [id])
+}
+
+model DailyRewardCampaign {
+  id               String   @id @default(cuid())
+  title            String
+  target_referrals Int
+  time_limit_hours Int
+  reward_amount    Float
+  is_active        Boolean  @default(true)
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  claims           DailyRewardClaim[]
+}
+
+model DailyRewardClaim {
+  id          String   @id @default(cuid())
+  user_id     String
+  campaign_id String
+  progress    Int      @default(0)
+  status      String   @default("InProgress") // InProgress, Eligible, Claimed
+  reward_amount Float  @default(0)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  user        User              @relation(fields: [user_id], references: [id])
+  campaign    DailyRewardCampaign @relation(fields: [campaign_id], references: [id])
+}
+
+model Transaction {
+  id             String   @id @default(cuid())
+  user_id        String
+  type           String   // activation, deposit, withdrawal, task_reward, referral_reward, daily_reward, admin_adjustment
+  amount         Float
+  status         String   @default("Completed") // Pending, Completed, Failed
+  balance_before Float    @default(0)
+  balance_after  Float    @default(0)
+  reference_type String?
+  reference_id   String?
+  description    String   @default("")
+  admin_note     String   @default("")
+  created_at     DateTime @default(now())
+
+  user           User     @relation(fields: [user_id], references: [id])
+}
+
+model SupportTicket {
+  id         String   @id @default(cuid())
+  user_id    String
+  subject    String
+  message    String
+  screenshot String   @default("")
+  status     String   @default("Open") // Open, Answered, Closed
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user       User             @relation(fields: [user_id], references: [id])
+  replies    SupportReply[]
+}
+
+model SupportReply {
+  id          String   @id @default(cuid())
+  ticket_id   String
+  sender_type String   // user, admin
+  message     String
+  created_at  DateTime @default(now())
+
+  ticket      SupportTicket @relation(fields: [ticket_id], references: [id])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  admin_id    String
+  action      String
+  target_type String?
+  target_id   String?
+  details     String   @default("")
+  created_at  DateTime @default(now())
+
+  admin       User     @relation(fields: [admin_id], references: [id])
+}
