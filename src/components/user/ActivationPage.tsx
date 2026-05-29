@@ -15,6 +15,8 @@ import {
   Wallet,
   Users,
   Inbox,
+  Tag,
+  Sparkles,
 } from 'lucide-react';
 import { useAuthStore, useToastStore, useSettingsStore } from '@/lib/stores';
 import { api } from '@/lib/api-client';
@@ -60,7 +62,14 @@ export default function ActivationPage() {
   const [proofImage, setProofImage] = useState<File | null>(null);
   const [proofPreview, setProofPreview] = useState('');
 
-  const activationFee = settings.activation_fee || '500';
+  const activationFee = settings.activation_fee || '1500';
+  const offerEnabled = settings.offer_enabled === 'true';
+  const offerDiscount = settings.offer_discount || '0';
+  const offerTitle = settings.offer_title || '';
+  const offerDescription = settings.offer_description || '';
+
+  const finalFee = offerEnabled && offerDiscount ? Math.max(0, parseFloat(activationFee) - parseFloat(offerDiscount)).toString() : activationFee;
+  const hasOffer = offerEnabled && offerDiscount && parseFloat(offerDiscount) > 0;
 
   useEffect(() => {
     const load = async () => {
@@ -69,8 +78,8 @@ export default function ActivationPage() {
           api.getPaymentMethods(),
           api.getMyActivationRequests(),
         ]);
-        setPaymentMethods(pmRes.methods || pmRes || []);
-        setExistingRequests(reqRes.requests || reqRes || []);
+        setPaymentMethods(Array.isArray(pmRes.payment_methods) ? pmRes.payment_methods : []);
+        setExistingRequests(Array.isArray(reqRes.requests) ? reqRes.requests : []);
       } catch {
         addToast('Failed to load data', 'error');
       } finally {
@@ -111,7 +120,7 @@ export default function ActivationPage() {
       setProofPreview('');
 
       const reqRes = await api.getMyActivationRequests();
-      setExistingRequests(reqRes.requests || reqRes || []);
+      setExistingRequests(Array.isArray(reqRes.requests) ? reqRes.requests : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to submit request', 'error');
     } finally {
@@ -190,6 +199,33 @@ export default function ActivationPage() {
           </motion.div>
         )}
 
+        {/* Offer Banner */}
+        {hasOffer && (
+          <motion.div className="relative overflow-hidden rounded-xl border border-[#F59E0B]/30 bg-gradient-to-r from-[#F59E0B]/10 via-[#F59E0B]/5 to-transparent" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="p-4 flex items-start gap-3">
+              <div className="w-10 h-10 bg-[#F59E0B]/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Sparkles className="w-5 h-5 text-[#F59E0B]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <Tag className="w-4 h-4 text-[#F59E0B]" />
+                  <span className="text-sm font-bold text-[#F59E0B]">{offerTitle || 'Special Offer!'}</span>
+                </div>
+                {offerDescription && (
+                  <p className="text-xs text-[#A3A3A3] mb-2">{offerDescription}</p>
+                )}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[#737373] line-through">Rs. {activationFee}</span>
+                  <span className="text-sm font-bold text-[#10B981]">Rs. {finalFee}</span>
+                  <span className="bg-[#10B981]/10 text-[#10B981] text-xs font-medium px-2 py-0.5 rounded-full">
+                    Save Rs. {offerDiscount}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* Fee Card */}
         <motion.div className="ev-card p-5 relative overflow-hidden" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="absolute inset-0 ev-gradient-red opacity-5" />
@@ -200,7 +236,14 @@ export default function ActivationPage() {
               </div>
               <div>
                 <p className="text-sm text-[#737373]">Activation Fee</p>
-                <p className="text-2xl font-bold text-[#F5F5F5]">Rs. {activationFee}</p>
+                {hasOffer ? (
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg text-[#737373] line-through">Rs. {activationFee}</span>
+                    <span className="text-2xl font-bold text-[#10B981]">Rs. {finalFee}</span>
+                  </div>
+                ) : (
+                  <p className="text-2xl font-bold text-[#F5F5F5]">Rs. {activationFee}</p>
+                )}
               </div>
             </div>
 
@@ -288,7 +331,7 @@ export default function ActivationPage() {
                     type="number"
                     value={form.amount}
                     onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                    placeholder={activationFee}
+                    placeholder={finalFee}
                     className="ev-input w-full px-3 py-2.5 text-sm"
                   />
                 </div>

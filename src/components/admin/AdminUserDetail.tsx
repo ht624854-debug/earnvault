@@ -94,10 +94,10 @@ export default function AdminUserDetail() {
         package_status: u.package_status || '',
         status: u.status || '',
       });
-      setTransactions(res.transactions || []);
-      setReferrals(res.referrals || []);
-      setTaskSubmissions(res.taskSubmissions || []);
-      setWithdrawals(res.withdrawals || []);
+      setTransactions(Array.isArray(u.transactions) ? u.transactions : []);
+      setReferrals(Array.isArray(u.referrals_from) ? u.referrals_from : []);
+      setTaskSubmissions(Array.isArray(u.task_subs) ? u.task_subs : []);
+      setWithdrawals(Array.isArray(u.withdraw_reqs) ? u.withdraw_reqs : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to load user', 'error');
     } finally {

@@ -55,7 +55,7 @@ export default function AdminSupport() {
     try {
       const params = filter !== 'all' ? `status=${filter}` : '';
       const res = await api.getAdminSupportTickets(params);
-      setTickets(res.tickets || []);
+      setTickets(Array.isArray(res.tickets) ? res.tickets : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to load tickets', 'error');
     } finally {

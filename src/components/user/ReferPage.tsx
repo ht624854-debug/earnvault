@@ -34,8 +34,8 @@ export default function ReferPage() {
     const load = async () => {
       try {
         const [refRes, linkRes] = await Promise.all([api.getReferrals(), api.getReferralLink()]);
-        setReferrals(refRes.referrals || refRes || []);
-        setReferralLink(linkRes.link || linkRes || '');
+        setReferrals(Array.isArray(refRes.referrals) ? refRes.referrals : []);
+        setReferralLink(linkRes.referral_link || '');
       } catch {
         addToast('Failed to load referral data', 'error');
       } finally {

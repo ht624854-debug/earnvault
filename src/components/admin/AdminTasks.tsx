@@ -70,7 +70,7 @@ export default function AdminTasks() {
     setLoading(true);
     try {
       const res = await api.getAdminTasks();
-      setTasks(res.tasks || []);
+      setTasks(Array.isArray(res.tasks) ? res.tasks : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to load tasks', 'error');
     } finally {

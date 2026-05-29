@@ -196,7 +196,7 @@ export default function DashboardPage() {
             <h2 className="text-base font-semibold text-[#F5F5F5]">Recent Transactions</h2>
           </div>
           <div className="ev-card divide-y divide-[#1F1F1F]">
-            {data?.recent_transactions && data.recent_transactions.length > 0 ? (
+            {Array.isArray(data?.recent_transactions) && data.recent_transactions.length > 0 ? (
               data.recent_transactions.map((tx) => (
                 <div key={tx.id} className="flex items-center gap-3 p-4">
                   <div className="w-9 h-9 bg-[#1A1A1A] rounded-lg flex items-center justify-center">

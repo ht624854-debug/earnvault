@@ -19,6 +19,8 @@ import {
   Youtube,
   Send,
   Phone,
+  Tag,
+  Sparkles,
 } from 'lucide-react';
 import { useSettingsStore, useRouterStore, useAuthStore } from '@/lib/stores';
 
@@ -85,6 +87,14 @@ export default function LandingPage() {
     .map(name => name.trim())
     .filter(Boolean);
 
+  const offerEnabled = settings.offer_enabled === 'true';
+  const offerDiscount = settings.offer_discount || '0';
+  const offerTitle = settings.offer_title || '';
+  const offerDescription = settings.offer_description || '';
+  const activationFee = settings.activation_fee || '1500';
+  const hasOffer = offerEnabled && offerDiscount && parseFloat(offerDiscount) > 0;
+  const finalFee = hasOffer ? Math.max(0, parseFloat(activationFee) - parseFloat(offerDiscount)).toString() : activationFee;
+
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       {/* Header */}
@@ -112,6 +122,22 @@ export default function LandingPage() {
           </div>
         </div>
       </header>
+
+      {/* Offer Banner */}
+      {hasOffer && (
+        <div className="bg-gradient-to-r from-[#F59E0B]/10 via-[#F59E0B]/5 to-transparent border-b border-[#F59E0B]/20">
+          <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-center gap-3">
+            <Sparkles className="w-5 h-5 text-[#F59E0B] flex-shrink-0" />
+            <span className="text-sm font-medium text-[#F59E0B]">
+              {offerTitle || 'Special Offer!'} — Activate for just Rs. {finalFee}
+            </span>
+            <span className="bg-[#10B981]/10 text-[#10B981] text-xs font-medium px-2 py-0.5 rounded-full">
+              Save Rs. {offerDiscount}
+            </span>
+            <Tag className="w-4 h-4 text-[#F59E0B]" />
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
@@ -297,9 +323,21 @@ export default function LandingPage() {
             <div className="absolute inset-0 ev-gradient-red opacity-5" />
             <div className="relative z-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-[#F5F5F5] mb-4">Ready to Start Earning?</h2>
-              <p className="text-[#737373] mb-8 max-w-lg mx-auto">
+              <p className="text-[#737373] mb-4 max-w-lg mx-auto">
                 Join {brandName} today and start earning real money by completing simple tasks. Registration is free!
               </p>
+              <div className="mb-8 flex items-center justify-center gap-2">
+                <span className="text-[#737373] text-sm">Activation Fee:</span>
+                {hasOffer ? (
+                  <>
+                    <span className="text-[#737373] line-through text-sm">Rs. {activationFee}</span>
+                    <span className="text-[#10B981] font-bold text-lg">Rs. {finalFee}</span>
+                    <span className="bg-[#10B981]/10 text-[#10B981] text-xs font-medium px-2 py-0.5 rounded-full">Save Rs. {offerDiscount}</span>
+                  </>
+                ) : (
+                  <span className="text-[#F5F5F5] font-bold text-lg">Rs. {activationFee}</span>
+                )}
+              </div>
               <button
                 onClick={() => navigate('register')}
                 className="ev-btn-primary text-lg px-8 py-3.5 inline-flex items-center gap-2"

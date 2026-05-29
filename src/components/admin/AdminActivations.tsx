@@ -61,7 +61,7 @@ export default function AdminActivations() {
     try {
       const params = filter !== 'all' ? `status=${filter}` : '';
       const res = await api.getAdminActivationRequests(params);
-      setRequests(res.requests || []);
+      setRequests(Array.isArray(res.requests) ? res.requests : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to load activations', 'error');
     } finally {

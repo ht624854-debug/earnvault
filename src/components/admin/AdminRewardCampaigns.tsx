@@ -56,7 +56,7 @@ export default function AdminRewardCampaigns() {
     setLoading(true);
     try {
       const res = await api.getAdminRewardCampaigns();
-      setCampaigns(res.campaigns || []);
+      setCampaigns(Array.isArray(res.campaigns) ? res.campaigns : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to load campaigns', 'error');
     } finally {

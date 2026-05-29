@@ -57,8 +57,8 @@ export default function AdminTransactions() {
       params.set('page', page.toString());
       params.set('limit', '20');
       const res = await api.getAdminTransactions(params.toString());
-      setTransactions(res.transactions || []);
-      setTotalPages(res.totalPages || 1);
+      setTransactions(Array.isArray(res.transactions) ? res.transactions : []);
+      setTotalPages(res.pagination?.totalPages || 1);
     } catch (err: any) {
       addToast(err.message || 'Failed to load transactions', 'error');
     } finally {

@@ -36,8 +36,8 @@ export default function AdminAuditLogs() {
     setLoading(true);
     try {
       const res = await api.getAdminAuditLogs(page);
-      setLogs(res.logs || []);
-      setTotalPages(res.totalPages || 1);
+      setLogs(Array.isArray(res.logs) ? res.logs : []);
+      setTotalPages(res.pagination?.totalPages || 1);
     } catch (err: any) {
       addToast(err.message || 'Failed to load audit logs', 'error');
     } finally {

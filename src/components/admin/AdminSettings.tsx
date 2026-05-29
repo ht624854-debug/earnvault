@@ -16,6 +16,7 @@ import {
   DollarSign,
   Phone,
   Globe,
+  Tag,
 } from 'lucide-react';
 
 interface SettingsSection {
@@ -114,10 +115,21 @@ const sections: SettingsSection[] = [
     label: 'Financial',
     icon: <DollarSign className="w-4 h-4" />,
     fields: [
-      { key: 'activation_fee', label: 'Activation Fee', type: 'number', placeholder: '500' },
-      { key: 'min_withdrawal', label: 'Minimum Withdrawal', type: 'number', placeholder: '200' },
-      { key: 'referral_reward', label: 'Referral Reward', type: 'number', placeholder: '100' },
-      { key: 'referral_reward_on_activation', label: 'Referral Reward on Activation', type: 'number', placeholder: '50' },
+      { key: 'activation_fee', label: 'Activation Fee (Rs)', type: 'number', placeholder: '1500' },
+      { key: 'min_withdrawal', label: 'Minimum Withdrawal (Rs)', type: 'number', placeholder: '200' },
+      { key: 'referral_reward', label: 'Referral Reward (Rs)', type: 'number', placeholder: '100' },
+      { key: 'referral_reward_on_activation', label: 'Referral Reward on Activation (Rs)', type: 'number', placeholder: '50' },
+    ],
+  },
+  {
+    key: 'offers',
+    label: 'Activation Offers',
+    icon: <Tag className="w-4 h-4" />,
+    fields: [
+      { key: 'offer_enabled', label: 'Enable Offer', type: 'boolean' },
+      { key: 'offer_title', label: 'Offer Title', type: 'text', placeholder: 'e.g. 🎉 Eid Special Offer!' },
+      { key: 'offer_description', label: 'Offer Description', type: 'textarea', placeholder: 'e.g. Limited time discount on activation fee!' },
+      { key: 'offer_discount', label: 'Discount Amount (Rs)', type: 'number', placeholder: '500' },
     ],
   },
   {

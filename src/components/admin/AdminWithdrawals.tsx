@@ -58,7 +58,7 @@ export default function AdminWithdrawals() {
     try {
       const params = filter !== 'all' ? `status=${filter}` : '';
       const res = await api.getAdminWithdrawRequests(params);
-      setRequests(res.requests || []);
+      setRequests(Array.isArray(res.requests) ? res.requests : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to load withdrawals', 'error');
     } finally {

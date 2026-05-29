@@ -35,7 +35,7 @@ export default function AdminReferrals() {
     try {
       const params = search ? `search=${encodeURIComponent(search)}` : '';
       const res = await api.getAdminReferrals(params);
-      setReferrals(res.referrals || []);
+      setReferrals(Array.isArray(res.referrals) ? res.referrals : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to load referrals', 'error');
     } finally {

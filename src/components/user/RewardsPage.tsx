@@ -29,7 +29,7 @@ export default function RewardsPage() {
     const load = async () => {
       try {
         const res = await api.getRewardCampaigns();
-        setCampaigns(res.campaigns || res || []);
+        setCampaigns(Array.isArray(res.campaigns) ? res.campaigns : []);
       } catch {
         addToast('Failed to load reward campaigns', 'error');
       } finally {
@@ -46,7 +46,7 @@ export default function RewardsPage() {
       addToast('Reward claimed successfully!', 'success');
 
       const res = await api.getRewardCampaigns();
-      setCampaigns(res.campaigns || res || []);
+      setCampaigns(Array.isArray(res.campaigns) ? res.campaigns : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to claim reward', 'error');
     } finally {

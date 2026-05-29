@@ -65,8 +65,8 @@ export default function TasksPage() {
     const load = async () => {
       try {
         const [tasksRes, subsRes] = await Promise.all([api.getTasks(), api.getTaskSubmissions()]);
-        setTasks(tasksRes.tasks || tasksRes || []);
-        setSubmissions(subsRes.submissions || subsRes || []);
+        setTasks(Array.isArray(tasksRes.tasks) ? tasksRes.tasks : []);
+        setSubmissions(Array.isArray(subsRes.submissions) ? subsRes.submissions : []);
       } catch {
         addToast('Failed to load tasks', 'error');
       } finally {
@@ -157,7 +157,7 @@ export default function TasksPage() {
       setProofPreview('');
 
       const subsRes = await api.getTaskSubmissions();
-      setSubmissions(subsRes.submissions || subsRes || []);
+      setSubmissions(Array.isArray(subsRes.submissions) ? subsRes.submissions : []);
     } catch (err: any) {
       addToast(err.message || 'Submission failed', 'error');
     } finally {

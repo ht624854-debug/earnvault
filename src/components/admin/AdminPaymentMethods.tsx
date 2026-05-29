@@ -59,7 +59,7 @@ export default function AdminPaymentMethods() {
     setLoading(true);
     try {
       const res = await api.getAdminPaymentMethods();
-      setMethods(res.methods || []);
+      setMethods(Array.isArray(res.paymentMethods) ? res.paymentMethods : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to load payment methods', 'error');
     } finally {

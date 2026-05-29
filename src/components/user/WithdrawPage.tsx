@@ -51,7 +51,7 @@ export default function WithdrawPage() {
     const load = async () => {
       try {
         const res = await api.getMyWithdrawRequests();
-        setRequests(res.requests || res || []);
+        setRequests(Array.isArray(res.requests) ? res.requests : []);
       } catch {
         addToast('Failed to load withdraw requests', 'error');
       } finally {
@@ -90,7 +90,7 @@ export default function WithdrawPage() {
       setForm({ amount: '', method: '', account_title: '', account_number: '' });
 
       const res = await api.getMyWithdrawRequests();
-      setRequests(res.requests || res || []);
+      setRequests(Array.isArray(res.requests) ? res.requests : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to submit request', 'error');
     } finally {

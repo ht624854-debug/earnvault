@@ -54,7 +54,7 @@ export default function SupportPage() {
     const load = async () => {
       try {
         const res = await api.getTickets();
-        setTickets(res.tickets || res || []);
+        setTickets(Array.isArray(res.tickets) ? res.tickets : []);
       } catch {
         addToast('Failed to load tickets', 'error');
       } finally {
@@ -89,7 +89,7 @@ export default function SupportPage() {
       setShowCreateForm(false);
 
       const res = await api.getTickets();
-      setTickets(res.tickets || res || []);
+      setTickets(Array.isArray(res.tickets) ? res.tickets : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to create ticket', 'error');
     } finally {

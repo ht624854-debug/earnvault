@@ -58,7 +58,7 @@ export default function AdminTaskSubmissions() {
     try {
       const params = filter !== 'all' ? `status=${filter}` : '';
       const res = await api.getAdminTaskSubmissions(params);
-      setSubmissions(res.submissions || []);
+      setSubmissions(Array.isArray(res.submissions) ? res.submissions : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to load submissions', 'error');
     } finally {

@@ -114,3 +114,47 @@ Stage Summary:
 - All settings key mismatches fixed
 - API responses match frontend expectations
 - Lint passes with zero errors
+
+---
+Task ID: 13
+Agent: Main
+Task: Fix API response key mismatches between backend and frontend
+
+Work Log:
+- Fixed ActivationPage: `pmRes.methods` → `pmRes.payment_methods` (API returns `{ payment_methods }` not `{ methods }`)
+- Fixed ActivationPage: activation fee default from '500' → '1500'
+- Fixed TasksPage: `tasksRes.tasks || tasksRes || []` → `Array.isArray(tasksRes.tasks) ? tasksRes.tasks : []` (safe fallback)
+- Fixed TasksPage: `subsRes.submissions || subsRes || []` → `Array.isArray(subsRes.submissions) ? subsRes.submissions : []`
+- Fixed WithdrawPage: `res.requests || res || []` → `Array.isArray(res.requests) ? res.requests : []`
+- Fixed ReferPage: `linkRes.link || linkRes || ''` → `linkRes.referral_link || ''` (API returns `{ referral_link }` not `{ link }`)
+- Fixed ReferPage: `refRes.referrals || refRes || []` → `Array.isArray(refRes.referrals) ? refRes.referrals : []`
+- Fixed RewardsPage: `res.campaigns || res || []` → `Array.isArray(res.campaigns) ? res.campaigns : []`
+- Fixed SupportPage: `res.tickets || res || []` → `Array.isArray(res.tickets) ? res.tickets : []`
+- Fixed AdminDashboard: `res.stats || res` → `res` (API returns flat stats object, not nested)
+- Fixed AdminUsers: `res.totalPages || 1` → `res.pagination?.totalPages || 1` (API returns `{ pagination: { totalPages } }`)
+- Fixed AdminUserDetail: `res.transactions/referrals/taskSubmissions/withdrawals` → `u.transactions/u.referrals_from/u.task_subs/u.withdraw_reqs` (data is nested inside res.user, and API uses snake_case relation names)
+- Fixed AdminPaymentMethods: `res.methods || []` → `Array.isArray(res.paymentMethods) ? res.paymentMethods : []` (API returns `{ paymentMethods }` not `{ methods }`)
+- Fixed AdminTransactions: `res.totalPages || 1` → `res.pagination?.totalPages || 1`
+- Fixed AdminAuditLogs: `res.totalPages || 1` → `res.pagination?.totalPages || 1`
+- Fixed AdminActivations/Withdrawals/Tasks/TaskSubmissions/RewardCampaigns/Support/Referrals: Added `Array.isArray()` checks replacing unsafe `|| []` patterns
+- Fixed stores.ts: `adminLogin` handler uses `res.admin` instead of `res.user` (admin login API returns `{ admin, token }`)
+- Fixed WhatsAppPopup: Settings key mismatches - `whatsapp_popup_enabled` → `whatsapp_enabled`, `whatsapp_popup_title` → `whatsapp_title`, `whatsapp_popup_desc` → `whatsapp_description`, `whatsapp_popup_link` → `whatsapp_link`, `whatsapp_popup_button` → `whatsapp_button_text`
+- Fixed AdminSettings: Activation fee placeholder from '500' → '1500'
+
+Key Mismatch Summary (API → Frontend fixes):
+- `/api/payment-methods` → `{ payment_methods }` not `{ methods }`
+- `/api/user/referral-link` → `{ referral_link }` not `{ link }`
+- `/api/admin/dashboard` → flat stats object, not `{ stats: {...} }`
+- `/api/admin/users` → `{ pagination: { totalPages } }` not `{ totalPages }`
+- `/api/admin/users/[id]` → related data inside `res.user` with keys `transactions/referrals_from/task_subs/withdraw_reqs`
+- `/api/admin/payment-methods` → `{ paymentMethods }` not `{ methods }`
+- `/api/admin/transactions` → `{ pagination: { totalPages } }` not `{ totalPages }`
+- `/api/admin/audit-logs` → `{ pagination: { totalPages } }` not `{ totalPages }`
+- `/api/admin/login` → `{ admin, token }` not `{ user, token }`
+
+Stage Summary:
+- All API response key mismatches fixed across 16 frontend files
+- All `.map()` calls on API data protected with `Array.isArray()` checks
+- Activation fee default updated from '500' to '1500'
+- Admin login auth store fixed to use `res.admin`
+- Lint passes with zero errors

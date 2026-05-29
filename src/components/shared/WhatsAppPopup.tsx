@@ -15,7 +15,7 @@ export default function WhatsAppPopup() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const enabled = settings.whatsapp_popup_enabled === 'true' || settings.whatsapp_popup_enabled === '1';
+    const enabled = settings.whatsapp_enabled === 'true' || settings.whatsapp_enabled === '1';
     if (!enabled) return;
     if (!isAuthenticated) return;
 
@@ -32,7 +32,7 @@ export default function WhatsAppPopup() {
   };
 
   const handleAction = () => {
-    const url = settings.whatsapp_popup_link || settings.social_whatsapp || '';
+    const url = settings.whatsapp_link || settings.social_whatsapp || '';
     if (url) {
       window.open(url, '_blank');
     }
@@ -70,18 +70,18 @@ export default function WhatsAppPopup() {
               </div>
 
               <h3 className="text-lg font-bold text-[#F5F5F5] mb-2">
-                {settings.whatsapp_popup_title || 'Join Our Community'}
+                {settings.whatsapp_title || 'Join Our Community'}
               </h3>
 
               <p className="text-sm text-[#737373] mb-5">
-                {settings.whatsapp_popup_desc || 'Stay updated with the latest news and exclusive offers!'}
+                {settings.whatsapp_description || 'Stay updated with the latest news and exclusive offers!'}
               </p>
 
               <button
                 onClick={handleAction}
                 className="ev-btn-primary w-full flex items-center justify-center gap-2 py-3 text-sm mb-3"
               >
-                <Phone className="w-4 h-4" /> {settings.whatsapp_popup_button || 'Join Now'}
+                <Phone className="w-4 h-4" /> {settings.whatsapp_button_text || 'Join Now'}
               </button>
 
               <button

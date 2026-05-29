@@ -59,8 +59,8 @@ export default function AdminUsers() {
       params.set('page', page.toString());
       params.set('limit', '20');
       const res = await api.getAdminUsers(params.toString());
-      setUsers(res.users || []);
-      setTotalPages(res.totalPages || 1);
+      setUsers(Array.isArray(res.users) ? res.users : []);
+      setTotalPages(res.pagination?.totalPages || 1);
     } catch (err: any) {
       addToast(err.message || 'Failed to load users', 'error');
     } finally {
