@@ -1,29 +1,30 @@
 ---
 Task ID: 1
 Agent: Main
-Task: Fix all bugs in EarnVault platform
+Task: Fix session independence, admin security, bugs, and .map errors
 
 Work Log:
-- Fixed paymentMethods.map error in ActivationPage.tsx by adding safeArray helper function
-- Removed "Admin Login" button text from LoginPage.tsx (admin functionality preserved)
-- Fixed auth store (stores.ts) for robust error handling with null checks on API responses
-- Fixed api-client.ts to handle network errors better
-- Fixed seed file (prisma/seed.ts) - added missing offer settings (offer_enabled, offer_title, offer_description, offer_discount), fixed WhatsApp settings key mismatches (whatsapp_popup_* → whatsapp_*), fixed why_choose and testimonial key formats
-- Ran seed to populate missing settings in database
-- Fixed LandingPage.tsx to use correct settings keys matching AdminSettings page (why_choose_1, testimonial_1, whatsapp_enabled, etc.)
-- Fixed AdminUserDetail.tsx - added null check on res.user before dereferencing
-- Fixed AdminSupport.tsx - changed res.tickets || [] to Array.isArray(res.tickets) ? res.tickets : []
-- Fixed AdminUserDetail.tsx - fixed package_status casing (Inactive/Active instead of inactive/active)
-- Activation fee default is 1500 RS in seed, admin can change it via Settings > Financial > Activation Fee
-- Admin can add offers via Settings > Activation Offers section (offer_enabled, offer_title, offer_description, offer_discount)
-- Each device maintains independent login session via localStorage JWT token (ev_token)
-- Lint passes with no errors
+- Changed JWT token storage from localStorage to sessionStorage for independent tab sessions
+- Updated api-client.ts to use sessionStorage instead of localStorage
+- Updated stores.ts checkAuth to use sessionStorage instead of localStorage
+- Created admin security API endpoint (POST /api/admin/change-credentials) with current password verification
+- Created AdminSecurity component with username and password change functionality
+- Added Security nav item to AdminLayout sidebar
+- Registered AdminSecurity page in page.tsx router and stores
+- Added rate limiting to both user login and admin login APIs (5-10 attempts, 15-min lockout)
+- Added audit logging for admin login success/failure events
+- Fixed AdminSupport.tsx replies.map() - added Array.isArray() guard
+- Fixed user SupportPage.tsx replies.map() - added Array.isArray() guard
+- Enhanced rewards campaigns API to include user progress for authenticated users
+- Verified all user and admin pages have proper defensive array extraction
+- Added minimum_withdrawal setting key to seed data
+- Ran lint check - all clean
+- Tested admin login, admin credentials change, payment methods API, settings API - all working
 
 Stage Summary:
-- All critical bugs fixed
-- paymentMethods.map error resolved with robust array extraction
-- Admin Login text removed from login page
-- Activation fee is 1500 RS, admin-controllable
-- Offer functionality works (enable/disable, title, description, discount amount)
-- Independent sessions per device confirmed working via localStorage
-- Seed updated with correct settings keys matching admin UI
+- Session independence: Each browser tab now has its own independent login session (sessionStorage)
+- Admin security: Admin can change username and password via Security page in admin panel
+- Rate limiting: Both user and admin logins are rate-limited to prevent brute force attacks
+- Audit logging: Admin login attempts are logged
+- .map errors: All .map() calls across all pages are protected with Array.isArray() checks
+- Activation fee: Set to 1500 RS, admin-controllable via Settings page

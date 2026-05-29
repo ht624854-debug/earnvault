@@ -40,6 +40,7 @@ const sidebarItems: SidebarItem[] = [
   { label: 'Reward Campaigns', page: 'admin-reward-campaigns', icon: <Gift className="w-4 h-4" /> },
   { label: 'Payment Methods', page: 'admin-payment-methods', icon: <CreditCard className="w-4 h-4" /> },
   { label: 'Settings', page: 'admin-settings', icon: <Settings className="w-4 h-4" /> },
+  { label: 'Security', page: 'admin-security', icon: <Shield className="w-4 h-4" /> },
   { label: 'Transactions', page: 'admin-transactions', icon: <ArrowLeftRight className="w-4 h-4" /> },
   { label: 'Audit Logs', page: 'admin-audit-logs', icon: <ScrollText className="w-4 h-4" /> },
   { label: 'Support', page: 'admin-support', icon: <Headphones className="w-4 h-4" /> },

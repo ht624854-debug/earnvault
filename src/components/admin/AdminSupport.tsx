@@ -139,7 +139,7 @@ export default function AdminSupport() {
         </div>
 
         {/* Replies */}
-        {selectedTicket.replies?.length > 0 && (
+        {Array.isArray(selectedTicket.replies) && selectedTicket.replies.length > 0 && (
           <div className="space-y-3">
             {selectedTicket.replies.map((reply) => (
               <div key={reply.id} className="ev-card p-4">

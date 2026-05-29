@@ -213,7 +213,7 @@ export default function SupportPage() {
             </div>
 
             {/* Replies */}
-            {(activeTicket.replies || []).map((reply) => (
+            {Array.isArray(activeTicket.replies) && activeTicket.replies.map((reply) => (
               <div
                 key={reply.id}
                 className={`ev-card p-4 ${

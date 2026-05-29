@@ -84,7 +84,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   checkAuth: async () => {
-    const token = localStorage.getItem('ev_token');
+    const token = sessionStorage.getItem('ev_token');
     if (!token) {
       set({ isLoading: false, isAuthenticated: false, user: null, isAdmin: false });
       return;
@@ -92,7 +92,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const res = await api.getMe();
       if (res.error || !res.user) {
-        localStorage.removeItem('ev_token');
+        sessionStorage.removeItem('ev_token');
         set({ isLoading: false, isAuthenticated: false, user: null, isAdmin: false });
         return;
       }
@@ -103,7 +103,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         isLoading: false,
       });
     } catch {
-      localStorage.removeItem('ev_token');
+      sessionStorage.removeItem('ev_token');
       set({ isLoading: false, isAuthenticated: false, user: null, isAdmin: false });
     }
   },
@@ -170,7 +170,8 @@ type Page =
   | 'admin-transactions'
   | 'admin-audit-logs'
   | 'admin-support'
-  | 'admin-referrals';
+  | 'admin-referrals'
+  | 'admin-security';
 
 interface RouterState {
   page: Page;

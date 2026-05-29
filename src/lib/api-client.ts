@@ -6,15 +6,15 @@ class ApiService {
   setToken(token: string | null) {
     this.token = token;
     if (token) {
-      localStorage.setItem('ev_token', token);
+      sessionStorage.setItem('ev_token', token);
     } else {
-      localStorage.removeItem('ev_token');
+      sessionStorage.removeItem('ev_token');
     }
   }
 
   getToken(): string | null {
     if (!this.token) {
-      this.token = localStorage.getItem('ev_token');
+      this.token = sessionStorage.getItem('ev_token');
     }
     return this.token;
   }
@@ -392,6 +392,13 @@ class ApiService {
 
   async getAdminAuditLogs(page = 1) {
     return this.request<any>(`/admin/audit-logs?page=${page}`);
+  }
+
+  async changeAdminCredentials(data: { current_password: string; new_username?: string; new_password?: string }) {
+    return this.request<any>('/admin/change-credentials', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   }
 
   async getAdminReferrals(params = '') {

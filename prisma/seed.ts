@@ -71,6 +71,7 @@ async function seed() {
     // Financial
     activation_fee: '1500',
     min_withdrawal: '500',
+    minimum_withdrawal: '500',
     referral_reward: '200',
     referral_reward_on_activation: '100',
 

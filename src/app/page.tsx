@@ -35,6 +35,7 @@ import AdminTransactions from '@/components/admin/AdminTransactions';
 import AdminAuditLogs from '@/components/admin/AdminAuditLogs';
 import AdminSupport from '@/components/admin/AdminSupport';
 import AdminReferrals from '@/components/admin/AdminReferrals';
+import AdminSecurity from '@/components/admin/AdminSecurity';
 
 // Shared
 import BottomNav from '@/components/shared/BottomNav';
@@ -62,6 +63,7 @@ function PageRouter() {
       'admin-audit-logs': <AdminAuditLogs />,
       'admin-support': <AdminSupport />,
       'admin-referrals': <AdminReferrals />,
+      'admin-security': <AdminSecurity />,
     };
 
     if (page === 'admin-login') {
