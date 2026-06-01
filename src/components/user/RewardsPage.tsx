@@ -41,21 +41,12 @@ export default function RewardsPage() {
     setLoading(true);
     try {
       const [codesRes, claimsRes] = await Promise.all([
-        fetch('/api/daily-codes', {
-          headers: { 'Authorization': `Bearer ${sessionStorage.getItem('ev_token')}` },
-        }),
-        fetch('/api/user/daily-code-claims', {
-          headers: { 'Authorization': `Bearer ${sessionStorage.getItem('ev_token')}` },
-        }),
+        api.getRewardCampaigns().catch(() => ({ codes: [] })),
+        api.getMyDailyCodeClaims().catch(() => ({ claims: [] })),
       ]);
 
-      const codesData = await codesRes.json();
-      setAvailableCodes(Array.isArray(codesData.codes) ? codesData.codes : []);
-
-      if (claimsRes.ok) {
-        const claimsData = await claimsRes.json();
-        setMyClaims(Array.isArray(claimsData.claims) ? claimsData.claims : []);
-      }
+      setAvailableCodes(Array.isArray(codesRes.codes) ? codesRes.codes : []);
+      setMyClaims(Array.isArray(claimsRes.claims) ? claimsRes.claims : []);
     } catch {
       addToast('Failed to load reward data', 'error');
     } finally {
@@ -71,17 +62,7 @@ export default function RewardsPage() {
     setClaiming(true);
     setClaimResult(null);
     try {
-      const res = await fetch('/api/daily-codes/claim', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('ev_token')}`,
-        },
-        body: JSON.stringify({ code: codeInput.trim() }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Claim failed');
-
+      const data = await api.claimDailyCode(codeInput.trim());
       setClaimResult({ position: data.position, reward_amount: data.reward_amount });
       addToast(`🎉 You got Rs ${data.reward_amount}! Position #${data.position}`, 'success');
       setCodeInput('');
@@ -99,17 +80,7 @@ export default function RewardsPage() {
     setClaiming(true);
     setClaimResult(null);
     try {
-      const res = await fetch('/api/daily-codes/claim', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('ev_token')}`,
-        },
-        body: JSON.stringify({ code }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Claim failed');
-
+      const data = await api.claimDailyCode(code);
       setClaimResult({ position: data.position, reward_amount: data.reward_amount });
       addToast(`🎉 You got Rs ${data.reward_amount}! Position #${data.position}`, 'success');
       setCodeInput('');

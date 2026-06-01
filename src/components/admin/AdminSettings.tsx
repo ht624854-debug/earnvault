@@ -52,6 +52,7 @@ const sections: SettingsSection[] = [
     fields: [
       { key: 'brand_name', label: 'Brand Name', type: 'text', placeholder: 'EarnVault', description: 'This changes the website name everywhere' },
       { key: 'logo_url', label: 'Logo URL', type: 'text', placeholder: '/logo.svg' },
+      { key: 'base_url', label: 'Website Base URL', type: 'text', placeholder: 'https://oryndelux.com', description: 'Used for referral links and sharing. Must include https://' },
     ],
   },
   {

@@ -18,14 +18,32 @@ export async function GET(request: NextRequest) {
     }
 
     // Build full referral link with website URL
-    // Priority: NEXT_PUBLIC_BASE_URL > request headers > host
-    let baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    // Priority: base_url from settings > NEXT_PUBLIC_BASE_URL > request headers
+    let baseUrl = '';
+
+    // First check settings in DB
+    const baseUrlSetting = await db.setting.findUnique({
+      where: { setting_key: 'base_url' },
+    });
+    if (baseUrlSetting?.setting_value) {
+      baseUrl = baseUrlSetting.setting_value;
+    }
+
+    // Fallback to env variable
+    if (!baseUrl) {
+      baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+    }
+
+    // Last fallback: construct from request headers
     if (!baseUrl) {
       const forwardedHost = request.headers.get('x-forwarded-host');
       const forwardedProto = request.headers.get('x-forwarded-proto') || 'https';
       const host = forwardedHost || request.headers.get('host') || request.nextUrl.host;
       baseUrl = `${forwardedProto}://${host}`;
     }
+
+    // Remove trailing slash
+    baseUrl = baseUrl.replace(/\/+$/, '');
     const referralLink = `${baseUrl}/register?ref=${user.referral_code}`;
 
     return NextResponse.json({
