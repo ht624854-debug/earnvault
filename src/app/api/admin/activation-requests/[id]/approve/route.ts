@@ -77,7 +77,9 @@ export async function POST(
 
     // Check referral reward on activation
     const referralRewardEnabled = await getSetting('referral_reward_on_activation');
-    if (referralRewardEnabled === 'true' && activationRequest.user.referred_by_id) {
+    // Setting can be 'true', '1', or a numeric amount like '100' — all are truthy
+    const isReferralRewardEnabled = referralRewardEnabled && referralRewardEnabled !== 'false' && referralRewardEnabled !== '0';
+    if (isReferralRewardEnabled && activationRequest.user.referred_by_id) {
       const referrer = await db.user.findUnique({
         where: { id: activationRequest.user.referred_by_id },
       });

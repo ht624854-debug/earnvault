@@ -118,7 +118,7 @@ const sections: SettingsSection[] = [
       { key: 'activation_fee', label: 'Activation Fee (Rs)', type: 'number', placeholder: '1500' },
       { key: 'min_withdrawal', label: 'Minimum Withdrawal (Rs)', type: 'number', placeholder: '200' },
       { key: 'referral_reward', label: 'Referral Reward (Rs)', type: 'number', placeholder: '100' },
-      { key: 'referral_reward_on_activation', label: 'Referral Reward on Activation (Rs)', type: 'number', placeholder: '50' },
+      { key: 'referral_reward_on_activation', label: 'Enable Referral Reward on Activation', type: 'boolean' },
     ],
   },
   {

@@ -77,3 +77,24 @@ Stage Summary:
 - Admin UI: Full CRUD management of referral reward tiers
 - User UI: Visual reward tier breakdown on Refer page showing earning potential
 - Navigation: "Referral Tiers" added to admin sidebar
+
+---
+Task ID: 3
+Agent: Main
+Task: Fix preview and verify all fixes for GitHub/VPS deployment
+
+Work Log:
+- Verified all existing fixes are in place (status case, payment_method flattening, referral tiers)
+- Fixed referral_reward_on_activation check in approve route: changed from `=== 'true'` to truthy check (works with 'true', '1', or any numeric value)
+- Changed AdminSettings to show referral_reward_on_activation as boolean toggle instead of number
+- Ran prisma db:push to ensure schema is synced
+- Ran prisma seed to ensure default data exists (admin user, settings, payment methods, referral tiers)
+- Verified all APIs work: Settings, Referral Tiers (public), Admin Login, Referral Tiers (admin)
+- Lint passes cleanly
+- Dev server running on port 3000
+
+Stage Summary:
+- All previous fixes confirmed working (status case, payment_method, referral tiers)
+- New fix: referral_reward_on_activation now properly handles boolean toggle
+- API verification: Settings ✅, Referral Tiers ✅, Login ✅, Homepage ✅
+- Code is ready for GitHub push and VPS deployment
