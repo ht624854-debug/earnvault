@@ -29,9 +29,10 @@ export default function RegisterPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const ref = params.get('reference');
+    // Support both ?ref= and ?reference= URL params for referral code
+    const ref = params.get('ref') || params.get('reference');
     if (ref) {
-      setForm((prev) => ({ ...prev, referral_code: ref }));
+      setForm((prev) => ({ ...prev, referral_code: ref.toUpperCase() }));
     }
   }, []);
 

@@ -17,10 +17,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-    const referralLink = baseUrl
-      ? `${baseUrl}/register?ref=${user.referral_code}`
-      : `/register?ref=${user.referral_code}`;
+    // Build full referral link with website URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+    const referralLink = `${baseUrl}/register?ref=${user.referral_code}`;
 
     return NextResponse.json({
       referral_code: user.referral_code,

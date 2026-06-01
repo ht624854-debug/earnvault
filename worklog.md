@@ -118,3 +118,21 @@ Stage Summary:
 - Register page now always shows Referral Code field with helpful hints
 - Referral flow is complete and working: Register → Activate → Referrer gets money
 - Fixed setting key bug that would have caused fallback reward to be 0
+
+---
+Task ID: 5
+Agent: Main
+Task: Fix referral link to include full website URL and auto-fill on register
+
+Work Log:
+- Added NEXT_PUBLIC_BASE_URL=https://oryndelux.com to .env
+- Updated referral-link API route: now always returns full URL (https://oryndelux.com/register?ref=CODE)
+- Falls back to request host if NEXT_PUBLIC_BASE_URL not set
+- Fixed RegisterPage.tsx: now reads both ?ref= and ?reference= URL params
+- Auto-fills and uppercases referral code from URL when user clicks referral link
+- Tested: Referral link now shows https://oryndelux.com/register?ref=ADMIN001
+
+Stage Summary:
+- Referral link is now a full clickable URL: https://oryndelux.com/register?ref=CODE
+- When someone clicks the link, website opens and referral code auto-fills in register form
+- Both ?ref= and ?reference= URL parameters are supported
