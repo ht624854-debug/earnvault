@@ -26,7 +26,7 @@ interface ActivationRequest {
   id: string;
   user: { first_name: string; last_name: string; username: string };
   amount: number;
-  payment_method: { id: string; name: string; account_title: string; account_number: string } | string;
+  payment_method: string;
   sender_name: string;
   sender_number: string;
   transaction_id: string;
@@ -176,9 +176,7 @@ export default function AdminActivations() {
                       <span className="text-[#737373] text-xs block">@{req.user?.username}</span>
                     </td>
                     <td className="py-3 px-4 text-[#F5F5F5] font-medium">Rs. {req.amount}</td>
-                    <td className="py-3 px-4 text-[#A3A3A3]">
-                      {typeof req.payment_method === 'object' ? req.payment_method?.name : req.payment_method}
-                    </td>
+                    <td className="py-3 px-4 text-[#A3A3A3]">{req.payment_method}</td>
                     <td className="py-3 px-4 text-[#A3A3A3]">{req.sender_name}</td>
                     <td className="py-3 px-4 text-[#A3A3A3]">{req.sender_number}</td>
                     <td className="py-3 px-4 text-[#A3A3A3] font-mono text-xs">{req.transaction_id}</td>

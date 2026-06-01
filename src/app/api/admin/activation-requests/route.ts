@@ -41,7 +41,13 @@ export async function GET(request: NextRequest) {
       orderBy: { created_at: 'desc' },
     });
 
-    return NextResponse.json({ requests });
+    // Flatten payment_method object to just the name string so frontend can render it
+    const flatRequests = requests.map((req: any) => ({
+      ...req,
+      payment_method: typeof req.payment_method === 'object' ? req.payment_method?.name || '' : req.payment_method,
+    }));
+
+    return NextResponse.json({ requests: flatRequests });
   } catch (error) {
     console.error('Get activation requests error:', error);
     return NextResponse.json(
