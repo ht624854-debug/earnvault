@@ -210,17 +210,23 @@ export default function RegisterPage() {
               {errors.confirm_password && <p className="text-xs text-[#DC2626] mt-1">{errors.confirm_password}</p>}
             </div>
 
-            {form.referral_code && (
-              <div>
-                <label className="block text-sm font-medium text-[#737373] mb-1">Referral Code</label>
-                <input
-                  value={form.referral_code}
-                  onChange={(e) => updateField('referral_code', e.target.value)}
-                  placeholder="Referral code"
-                  className="ev-input w-full px-4 py-2.5 text-sm"
-                />
-              </div>
-            )}
+            <div>
+              <label className="block text-sm font-medium text-[#737373] mb-1">
+                Referral Code <span className="text-[#525252]">(optional)</span>
+              </label>
+              <input
+                value={form.referral_code}
+                onChange={(e) => updateField('referral_code', e.target.value.toUpperCase())}
+                placeholder="Enter referral code (if any)"
+                className="ev-input w-full px-4 py-2.5 text-sm"
+              />
+              {form.referral_code && (
+                <p className="text-xs text-[#10B981] mt-1 flex items-center gap-1">
+                  <DollarSign className="w-3 h-3" />
+                  You'll earn extra rewards through this referral!
+                </p>
+              )}
+            </div>
 
             <button
               type="submit"

@@ -98,3 +98,23 @@ Stage Summary:
 - New fix: referral_reward_on_activation now properly handles boolean toggle
 - API verification: Settings ✅, Referral Tiers ✅, Login ✅, Homepage ✅
 - Code is ready for GitHub push and VPS deployment
+
+---
+Task ID: 4
+Agent: Main
+Task: Fix Register page referral code field and verify referral flow
+
+Work Log:
+- Changed RegisterPage.tsx: Referral Code field is now always visible (was hidden, only shown when URL had ?reference= param)
+- Added "(optional)" label to make it clear the field is not required
+- Added green hint message when referral code is entered: "You'll earn extra rewards through this referral!"
+- Made referral code uppercase automatically on input
+- Fixed critical bug in approve route: fallback setting key was `referral_reward_amount` but should be `referral_reward`
+- Verified end-to-end flow: Register with referral code → Referral record created → Admin approves activation → Referrer gets tier-based reward
+- Tested: Registered user `testref2` with `ADMIN001` referral code, verified referral record exists in admin referrals API
+- Lint passes cleanly
+
+Stage Summary:
+- Register page now always shows Referral Code field with helpful hints
+- Referral flow is complete and working: Register → Activate → Referrer gets money
+- Fixed setting key bug that would have caused fallback reward to be 0

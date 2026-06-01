@@ -118,7 +118,7 @@ export async function POST(
         } else {
           // Fall back to the referral_reward setting if no tier exists for that level
           referralRewardAmount = parseFloat(
-            (await getSetting('referral_reward_amount')) || '0'
+            (await getSetting('referral_reward')) || '0'
           );
         }
 
