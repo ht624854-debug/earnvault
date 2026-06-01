@@ -12,7 +12,8 @@ export async function GET(request: NextRequest) {
 
     const where: Record<string, unknown> = {};
     if (status) {
-      where.status = status;
+      // Capitalize first letter to match database format
+      where.status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
     }
 
     const submissions = await db.taskSubmission.findMany({

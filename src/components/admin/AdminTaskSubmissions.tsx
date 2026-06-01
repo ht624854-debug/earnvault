@@ -99,7 +99,8 @@ export default function AdminTaskSubmissions() {
   };
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
+    const s = status?.toLowerCase();
+    switch (s) {
       case 'approved':
         return <Badge className="bg-green-500/10 text-green-400 border-green-500/20">Approved</Badge>;
       case 'rejected':
@@ -190,7 +191,7 @@ export default function AdminTaskSubmissions() {
                     <td className="py-3 px-4">{getStatusBadge(sub.status)}</td>
                     <td className="py-3 px-4 text-[#F5F5F5] font-medium">Rs. {sub.reward_amount}</td>
                     <td className="py-3 px-4">
-                      {sub.status === 'pending' && (
+                      {sub.status?.toLowerCase() === 'pending' && (
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleApprove(sub.id)}

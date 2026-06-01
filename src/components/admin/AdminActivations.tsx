@@ -102,7 +102,8 @@ export default function AdminActivations() {
   };
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
+    const s = status?.toLowerCase();
+    switch (s) {
       case 'approved':
         return <Badge className="bg-green-500/10 text-green-400 border-green-500/20">Approved</Badge>;
       case 'rejected':
@@ -198,7 +199,7 @@ export default function AdminActivations() {
                       {new Date(req.created_at).toLocaleDateString()}
                     </td>
                     <td className="py-3 px-4">
-                      {req.status === 'pending' && (
+                      {req.status?.toLowerCase() === 'pending' && (
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleApprove(req.id)}

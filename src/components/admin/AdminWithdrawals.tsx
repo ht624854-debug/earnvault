@@ -112,7 +112,8 @@ export default function AdminWithdrawals() {
   };
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
+    const s = status?.toLowerCase();
+    switch (s) {
       case 'approved':
         return <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20">Approved</Badge>;
       case 'rejected':
@@ -195,7 +196,7 @@ export default function AdminWithdrawals() {
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
-                        {req.status === 'pending' && (
+                        {req.status?.toLowerCase() === 'pending' && (
                           <button
                             onClick={() => handleApprove(req.id)}
                             disabled={actionLoading === req.id}
@@ -209,7 +210,7 @@ export default function AdminWithdrawals() {
                             )}
                           </button>
                         )}
-                        {(req.status === 'pending' || req.status === 'approved') && (
+                        {(req.status?.toLowerCase() === 'pending' || req.status?.toLowerCase() === 'approved') && (
                           <button
                             onClick={() => setRejectDialog(req.id)}
                             className="p-1.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
@@ -218,7 +219,7 @@ export default function AdminWithdrawals() {
                             <X className="w-4 h-4" />
                           </button>
                         )}
-                        {req.status === 'approved' && (
+                        {req.status?.toLowerCase() === 'approved' && (
                           <button
                             onClick={() => handleMarkPaid(req.id)}
                             disabled={actionLoading === req.id}

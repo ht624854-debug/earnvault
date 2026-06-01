@@ -91,7 +91,8 @@ export default function AdminSupport() {
   };
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
+    const s = status?.toLowerCase();
+    switch (s) {
       case 'open':
         return <Badge className="bg-yellow-500/10 text-yellow-400 border-yellow-500/20">Open</Badge>;
       case 'answered':
