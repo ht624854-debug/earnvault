@@ -463,6 +463,22 @@ class ApiService {
     return this.request(`/admin/referral-reward-tiers/${level}`, { method: 'DELETE' });
   }
 
+  // Referral Commission Levels (admin)
+  async getAdminCommissionLevels() {
+    return this.request<any>('/admin/referral-commission-levels');
+  }
+
+  async createCommissionLevel(data: { level: number; commission_amount: number }) {
+    return this.request<any>('/admin/referral-commission-levels', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteCommissionLevel(level: number) {
+    return this.request(`/admin/referral-commission-levels/${level}`, { method: 'DELETE' });
+  }
+
   logout() {
     this.setToken(null);
   }

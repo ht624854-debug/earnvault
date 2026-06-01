@@ -75,56 +75,45 @@ export async function POST(
       },
     });
 
-    // Check referral reward on activation
+    // Check referral reward on activation - Multi-Level Commission System
     const referralRewardEnabled = await getSetting('referral_reward_on_activation');
-    // Setting can be 'true', '1', or a numeric amount like '100' — all are truthy
     const isReferralRewardEnabled = referralRewardEnabled && referralRewardEnabled !== 'false' && referralRewardEnabled !== '0';
+
     if (isReferralRewardEnabled && activationRequest.user.referred_by_id) {
-      const referrer = await db.user.findUnique({
-        where: { id: activationRequest.user.referred_by_id },
+      // Get all commission levels defined by admin (sorted by level asc)
+      const commissionLevels = await db.referralCommissionLevel.findMany({
+        orderBy: { level: 'asc' },
       });
 
-      if (referrer) {
-        // Count how many referrals the referrer has that are now activated (to determine the level)
-        const activatedReferrals = await db.referral.findMany({
-          where: {
-            referrer_id: referrer.id,
-            status: 'Active',
-          },
-          include: {
-            referred_user: {
-              select: { package_status: true },
-            },
-          },
-          orderBy: { created_at: 'asc' },
+      // Trace the referral chain upwards from the activated user
+      // Level 1 = direct referrer, Level 2 = referrer's referrer, etc.
+      let currentUserId: string | null = activationRequest.user.referred_by_id;
+      let level = 1;
+
+      while (currentUserId && level <= 10) { // Safety limit of 10 levels
+        const referrer = await db.user.findUnique({
+          where: { id: currentUserId },
         });
 
-        // Determine the level of this referral (1st, 2nd, 3rd, etc.)
-        const activatedCount = activatedReferrals.filter(
-          (r) => r.referred_user?.package_status?.toLowerCase() === 'active'
-        ).length;
+        if (!referrer) break;
 
-        // The current referral being approved counts as the latest activated one
-        const referralLevel = activatedCount;
+        // Find commission for this level
+        let commissionAmount = 0;
+        const levelConfig = commissionLevels.find((cl) => cl.level === level);
 
-        // Look up the reward for that level from ReferralRewardTier table
-        let referralRewardAmount = 0;
-        const tier = await db.referralRewardTier.findUnique({
-          where: { level: referralLevel },
-        });
-
-        if (tier) {
-          referralRewardAmount = tier.reward_amount;
-        } else {
-          // Fall back to the referral_reward setting if no tier exists for that level
-          referralRewardAmount = parseFloat(
+        if (levelConfig) {
+          commissionAmount = levelConfig.commission_amount;
+        } else if (level === 1) {
+          // Level 1 fallback: use referral_reward setting
+          commissionAmount = parseFloat(
             (await getSetting('referral_reward')) || '0'
           );
         }
+        // If no config for this level and level > 1, commission = 0 (stop distributing)
 
-        if (referralRewardAmount > 0) {
+        if (commissionAmount > 0) {
           const referrerBalanceBefore = referrer.main_balance;
-          const referrerBalanceAfter = referrerBalanceBefore + referralRewardAmount;
+          const referrerBalanceAfter = referrerBalanceBefore + commissionAmount;
 
           await db.user.update({
             where: { id: referrer.id },
@@ -135,27 +124,37 @@ export async function POST(
             data: {
               user_id: referrer.id,
               type: 'referral_reward',
-              amount: referralRewardAmount,
+              amount: commissionAmount,
               status: 'Completed',
               balance_before: referrerBalanceBefore,
               balance_after: referrerBalanceAfter,
               reference_type: 'User',
               reference_id: activationRequest.user_id,
-              description: `Referral reward (Level ${referralLevel}) for referring ${activationRequest.user.username}`,
+              description: `Referral commission (Level ${level}) - ${activationRequest.user.username} activated`,
             },
           });
 
-          // Update referral record
-          await db.referral.updateMany({
-            where: {
-              referrer_id: referrer.id,
-              referred_user_id: activationRequest.user_id,
-            },
-            data: {
-              reward_status: 'Paid',
-              reward_amount: referralRewardAmount,
-            },
-          });
+          // Update referral record for direct referrer (level 1)
+          if (level === 1) {
+            await db.referral.updateMany({
+              where: {
+                referrer_id: referrer.id,
+                referred_user_id: activationRequest.user_id,
+              },
+              data: {
+                reward_status: 'Paid',
+                reward_amount: commissionAmount,
+              },
+            });
+          }
+        }
+
+        // Move up the chain - find this referrer's referrer
+        if (referrer.referred_by_id) {
+          currentUserId = referrer.referred_by_id;
+          level++;
+        } else {
+          break; // No more referrers in the chain
         }
       }
     }

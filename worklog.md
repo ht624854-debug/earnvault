@@ -227,3 +227,48 @@ Stage Summary:
 - ALL 805 hardcoded hex colors replaced with CSS variable-based classes
 - Admin theme customization now works for REAL - changing any color in admin settings will update the ENTIRE site
 - Current default theme preserved: blue (#2563EB) + white + dark text
+
+---
+Task ID: 9
+Agent: Main
+Task: Implement Multi-Level Referral Commission System + Daily Codes + Fix all errors
+
+Work Log:
+- Added ReferralCommissionLevel model to Prisma schema (level 1=direct, 2=referrer's referrer, 3=level 3 upline, etc.)
+- Seeded default commission levels: Level 1=Rs 300, Level 2=Rs 200, Level 3=Rs 100
+- Completely rewrote activation approval API for multi-level commissions:
+  - When user activates, system traces referral chain UP (direct referrer → their referrer → their referrer...)
+  - Each level in the chain gets the commission amount defined in ReferralCommissionLevel table
+  - Level 1 (direct referrer) gets their commission, Level 2 (referrer's referrer) gets theirs, etc.
+  - Safety limit of 10 levels deep
+  - Falls back to referral_reward setting for Level 1 if no commission level defined
+  - Each commission creates a separate transaction with "Referral commission (Level X)" description
+  - Direct referrer's referral record also updated with reward_status and amount
+- Created admin API for commission levels: GET/POST /api/admin/referral-commission-levels, DELETE /api/admin/referral-commission-levels/[level]
+- Updated AdminReferralTiers.tsx with tab-based UI:
+  - Tab 1: "Multi-Level Commissions" - manage commission amounts for each depth level
+  - Tab 2: "Referral Reward Tiers" - existing count-based tiers
+  - Info cards explain how each system works (in Urdu for admin understanding)
+  - Inline editing, add/delete functionality for both tabs
+- Added DailyCode and DailyCodeClaim models to replace DailyRewardCampaign
+- Created admin Daily Codes system with position-based rewards:
+  - Admin creates codes (like "Vn7asM"), sets max claims, sets different reward per position
+  - Example: 1st claimant gets Rs 100, 2nd gets Rs 80, 3rd gets Rs 50
+  - Codes can be auto-generated or manually set
+  - Claim history with position tracking
+- Created user Rewards page with daily code entry:
+  - Input field to enter code
+  - Available codes list with "Claim" button
+  - Claim result showing position and reward
+  - My Claimed Codes history
+- Created all necessary API routes for daily codes
+- Updated api-client.ts with new methods
+- Updated admin sidebar label from "Reward Campaigns" to "Daily Codes"
+- All lint checks pass cleanly
+
+Stage Summary:
+- Multi-Level Commission: A→B→C→D chain, D activates → C gets Rs 300 (L1), B gets Rs 200 (L2), A gets Rs 100 (L3)
+- Admin can set unlimited commission levels from admin panel
+- Daily Codes system replaces old Reward Campaigns
+- Default commission levels seeded: L1=300, L2=200, L3=100
+- All errors checked, lint passes, APIs verified

@@ -233,3 +233,11 @@ model ReferralRewardTier {
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 }
+
+model ReferralCommissionLevel {
+  id            String   @id @default(cuid())
+  level         Int      @unique // 1 = direct referrer, 2 = referrer's referrer, 3 = level 3, etc.
+  commission_amount Float // commission amount for this level
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
