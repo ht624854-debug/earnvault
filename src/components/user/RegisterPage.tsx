@@ -21,19 +21,26 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
 
   const { register } = useAuthStore();
-  const { navigate } = useRouterStore();
+  const { navigate, params } = useRouterStore();
   const { addToast } = useToastStore();
   const { settings } = useSettingsStore();
 
   const brandName = settings.brand_name || 'EarnVault';
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get('ref') || params.get('reference');
+    // First check router params (from referral link navigation)
+    const routerRef = params?.referral_code;
+    if (routerRef) {
+      setForm((prev) => ({ ...prev, referral_code: routerRef }));
+      return;
+    }
+    // Then check URL search params (direct URL with ?ref=CODE)
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref') || urlParams.get('reference');
     if (ref) {
       setForm((prev) => ({ ...prev, referral_code: ref.toUpperCase() }));
     }
-  }, []);
+  }, [params]);
 
   const validate = (): boolean => {
     const e: Record<string, string> = {};

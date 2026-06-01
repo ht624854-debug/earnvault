@@ -161,7 +161,7 @@ export default function ProfilePage() {
 
   const handleShareLink = async () => {
     const baseUrl = settings.base_url || window.location.origin;
-    const link = `${baseUrl}/register?ref=${user?.referral_code}`;
+    const link = `${baseUrl}/?ref=${user?.referral_code}`;
     if (navigator.share) {
       try {
         await navigator.share({
@@ -292,11 +292,11 @@ export default function ProfilePage() {
             <h3 className="text-sm font-semibold text-ev-text mb-3">Your Referral Link</h3>
             <div className="flex items-center gap-2">
               <div className="flex-1 bg-ev-bg border border-ev-card-border rounded-lg px-3 py-2.5 text-sm text-ev-muted truncate">
-                {settings.base_url || window.location.origin}/register?ref={user?.referral_code || '...'}
+                {settings.base_url || window.location.origin}/?ref={user?.referral_code || '...'}
               </div>
               <button
                 onClick={async () => {
-                  const link = `${settings.base_url || window.location.origin}/register?ref=${user?.referral_code}`;
+                  const link = `${settings.base_url || window.location.origin}/?ref=${user?.referral_code}`;
                   try {
                     await navigator.clipboard.writeText(link);
                     addToast('Link copied!', 'success');

@@ -44,7 +44,8 @@ export async function GET(request: NextRequest) {
 
     // Remove trailing slash
     baseUrl = baseUrl.replace(/\/+$/, '');
-    const referralLink = `${baseUrl}/register?ref=${user.referral_code}`;
+    // Use root path with query param since it's a SPA (no /register route)
+    const referralLink = `${baseUrl}/?ref=${user.referral_code}`;
 
     return NextResponse.json({
       referral_code: user.referral_code,

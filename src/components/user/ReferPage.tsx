@@ -55,7 +55,7 @@ export default function ReferPage() {
       // Fallback: build from user data using the configured base URL
       if (user?.referral_code) {
         const baseUrl = settings.base_url || window.location.origin;
-        setReferralLink(`${baseUrl}/register?ref=${user.referral_code}`);
+        setReferralLink(`${baseUrl}/?ref=${user.referral_code}`);
       }
     };
 
@@ -74,13 +74,15 @@ export default function ReferPage() {
         setReferrals(Array.isArray(refRes.referrals) ? refRes.referrals : []);
         setRewardTiers(Array.isArray(tiersRes.tiers) ? tiersRes.tiers : []);
       } catch {
-        // ignore
+        // silently fail - show empty states
+        setReferrals([]);
+        setRewardTiers([]);
       } finally {
         setLoading(false);
       }
     };
     load();
-  }, [addToast, user]);
+  }, [user]);
 
   const handleCopy = async () => {
     if (!referralLink) {
@@ -111,11 +113,15 @@ export default function ReferPage() {
       addToast('Referral link not available', 'error');
       return;
     }
+    const shareText = user?.referral_code
+      ? `Join me on ${brandName} and start earning! Use my referral code: ${user.referral_code}\n\nRegister here:`
+      : `Join me on ${brandName} and start earning! Use my referral link:`;
+
     if (navigator.share) {
       try {
         await navigator.share({
           title: `Join ${brandName}`,
-          text: `Join me on ${brandName} and start earning! Use my referral link:`,
+          text: shareText,
           url: referralLink,
         });
       } catch {
@@ -245,11 +251,12 @@ export default function ReferPage() {
         <motion.div className="ev-card p-5 relative overflow-hidden" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div className="absolute inset-0 ev-gradient-red opacity-5" />
           <div className="relative z-10">
-            <h2 className="text-base font-semibold text-ev-text mb-3">Your Referral Link</h2>
+            <h2 className="text-base font-semibold text-ev-text mb-1">Your Referral Link</h2>
+            <p className="text-[10px] text-ev-muted mb-3">Share this link with friends. When they register, your referral code will auto-fill!</p>
             {referralLink ? (
               <>
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 bg-ev-bg border border-ev-card-border rounded-lg px-3 py-2.5 text-sm text-ev-muted truncate">
+                  <div className="flex-1 bg-ev-bg border border-ev-card-border rounded-lg px-3 py-2.5 text-sm text-ev-blue font-medium truncate">
                     {referralLink}
                   </div>
                   <button
@@ -281,24 +288,27 @@ export default function ReferPage() {
 
         {/* Referral Code */}
         {user?.referral_code && (
-          <motion.div className="ev-card p-4 flex items-center justify-between" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div>
-              <p className="text-xs text-ev-muted">Referral Code</p>
-              <p className="text-lg font-bold text-ev-blue">{user.referral_code}</p>
+          <motion.div className="ev-card p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-ev-muted mb-1">Your Referral Code</p>
+                <p className="text-2xl font-bold text-ev-blue tracking-wider">{user.referral_code}</p>
+                <p className="text-[10px] text-ev-muted mt-1">Share this code - friends can enter it during registration</p>
+              </div>
+              <button
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(user.referral_code);
+                    addToast('Referral code copied!', 'success');
+                  } catch {
+                    addToast('Failed to copy', 'error');
+                  }
+                }}
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/30 hover:bg-[#10B981]/20 transition-colors"
+              >
+                <Copy className="w-4 h-4" /> Copy Code
+              </button>
             </div>
-            <button
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(user.referral_code);
-                  addToast('Code copied!', 'success');
-                } catch {
-                  addToast('Failed to copy', 'error');
-                }
-              }}
-              className="text-sm text-ev-muted hover:text-ev-text flex items-center gap-1"
-            >
-              <Copy className="w-4 h-4" /> Copy
-            </button>
           </motion.div>
         )}
 

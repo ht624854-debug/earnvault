@@ -52,14 +52,16 @@ export default function WithdrawPage() {
       try {
         const res = await api.getMyWithdrawRequests();
         setRequests(Array.isArray(res.requests) ? res.requests : []);
-      } catch {
-        addToast('Failed to load withdraw requests', 'error');
+      } catch (err: any) {
+        console.error('Withdraw requests error:', err);
+        // Don't show error toast for empty/first load - just show empty state
+        setRequests([]);
       } finally {
         setLoading(false);
       }
     };
     load();
-  }, [addToast]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,6 +95,12 @@ export default function WithdrawPage() {
       setRequests(Array.isArray(res.requests) ? res.requests : []);
     } catch (err: any) {
       addToast(err.message || 'Failed to submit request', 'error');
+      try {
+        const res2 = await api.getMyWithdrawRequests();
+        setRequests(Array.isArray(res2.requests) ? res2.requests : []);
+      } catch {
+        // ignore refresh error
+      }
     } finally {
       setSubmitting(false);
     }

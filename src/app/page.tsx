@@ -140,6 +140,21 @@ export default function Home() {
     loadSettings();
   }, [checkAuth, loadSettings]);
 
+  // Handle referral link from URL params on initial load
+  // When someone visits ?ref=CODE, navigate to register with code pre-filled
+  useEffect(() => {
+    if (isLoading) return;
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get('ref') || params.get('reference');
+    if (refCode) {
+      // Clean URL without reloading
+      window.history.replaceState({}, '', '/');
+      // Navigate to register with referral code
+      const { navigate } = useRouterStore.getState();
+      navigate('register', { referral_code: refCode.toUpperCase() });
+    }
+  }, [isLoading]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F0F7FF]">
