@@ -7,7 +7,7 @@ async function seed() {
   // Create admin user
   const existingAdmin = await db.user.findUnique({ where: { username: 'admin' } });
   if (!existingAdmin) {
-    const passwordHash = await hashPassword('admin123');
+    const passwordHash = await hashPassword('HeroAbdulrehman7411');
     await db.user.create({
       data: {
         first_name: 'Admin',
@@ -22,7 +22,7 @@ async function seed() {
         status: 'active',
       },
     });
-    console.log('Admin user created: admin / admin123');
+    console.log('Admin user created: admin / HeroAbdulrehman7411');
   }
 
   // Default settings - keys MUST match AdminSettings.tsx and component usage
