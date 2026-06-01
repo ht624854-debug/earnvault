@@ -11,10 +11,14 @@ import {
   Camera,
   Lock,
   X,
-  Upload,
   Users,
   Wallet,
-  ImageIcon,
+  Calendar,
+  Shield,
+  Gift,
+  TrendingUp,
+  CheckCircle,
+  XCircle,
 } from 'lucide-react';
 import { useAuthStore, useToastStore } from '@/lib/stores';
 import { api } from '@/lib/api-client';
@@ -26,6 +30,8 @@ export default function ProfilePage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [referralCount, setReferralCount] = useState(0);
+  const [activeReferralCount, setActiveReferralCount] = useState(0);
 
   const [editForm, setEditForm] = useState({
     first_name: '',
@@ -50,6 +56,20 @@ export default function ProfilePage() {
       });
     }
   }, [user]);
+
+  useEffect(() => {
+    const loadReferrals = async () => {
+      try {
+        const res = await api.getReferrals();
+        const refs = Array.isArray(res.referrals) ? res.referrals : [];
+        setReferralCount(refs.length);
+        setActiveReferralCount(refs.filter((r: any) => r.referred_user?.package_status?.toLowerCase() === 'active').length);
+      } catch {
+        // ignore
+      }
+    };
+    loadReferrals();
+  }, []);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -132,6 +152,8 @@ export default function ProfilePage() {
     ? `${user.first_name?.charAt(0) || ''}${user.last_name?.charAt(0) || ''}`.toUpperCase()
     : 'U';
 
+  const joinDate = user?.created_at ? new Date(user.created_at).toLocaleDateString('en-PK', { year: 'numeric', month: 'long', day: 'numeric' }) : '--';
+
   return (
     <div className="min-h-screen bg-ev-bg pb-24">
       {/* Header */}
@@ -142,90 +164,129 @@ export default function ProfilePage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-4 space-y-4">
-        {/* Profile Card */}
+        {/* Profile Card with Balance */}
         <motion.div className="ev-card p-5 relative overflow-hidden" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="absolute inset-0 ev-gradient-red opacity-5" />
-          <div className="relative z-10 flex items-center gap-4">
-            <div className="relative">
-              {user?.avatar ? (
-                <img
-                  src={user.avatar}
-                  alt="Avatar"
-                  className="w-16 h-16 rounded-full object-cover border-2 border-ev-blue"
-                />
-              ) : (
-                <div className="w-16 h-16 ev-gradient-red rounded-full flex items-center justify-center text-white text-xl font-bold">
-                  {initials}
+          <div className="relative z-10">
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt="Avatar"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-ev-blue"
+                  />
+                ) : (
+                  <div className="w-16 h-16 ev-gradient-red rounded-full flex items-center justify-center text-white text-xl font-bold">
+                    {initials}
+                  </div>
+                )}
+                <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${
+                  user?.package_status === 'Active' ? 'bg-[#10B981]' : 'bg-[#F59E0B]'
+                }`}>
+                  {user?.package_status === 'Active' ? (
+                    <CheckCircle className="w-3 h-3 text-white" />
+                  ) : (
+                    <XCircle className="w-3 h-3 text-white" />
+                  )}
                 </div>
-              )}
+              </div>
+              <div className="flex-1">
+                <h2 className="text-lg font-bold text-ev-text">
+                  {user?.first_name} {user?.last_name}
+                </h2>
+                <p className="text-sm text-ev-muted">@{user?.username}</p>
+                <span
+                  className={`inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full mt-1 ${
+                    user?.package_status === 'Active'
+                      ? 'bg-[#10B981]/10 text-[#10B981]'
+                      : 'bg-[#F59E0B]/10 text-[#F59E0B]'
+                  }`}
+                >
+                  {user?.package_status === 'Active' ? '✓ Active Account' : '⏳ Not Activated'}
+                </span>
+              </div>
             </div>
-            <div className="flex-1">
-              <h2 className="text-lg font-bold text-ev-text">
-                {user?.first_name} {user?.last_name}
-              </h2>
-              <p className="text-sm text-ev-muted">@{user?.username}</p>
-              <span
-                className={`inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full mt-1 ${
-                  user?.package_status === 'Active'
-                    ? 'bg-[#10B981]/10 text-[#10B981]'
-                    : 'bg-[#F59E0B]/10 text-[#F59E0B]'
-                }`}
-              >
-                {user?.package_status || 'Inactive'}
-              </span>
+
+            {/* Balance Cards */}
+            <div className="grid grid-cols-2 gap-3 mt-4">
+              <div className="bg-ev-blue/5 border border-ev-blue/10 rounded-xl p-3 text-center">
+                <Wallet className="w-5 h-5 text-ev-blue mx-auto mb-1" />
+                <p className="text-[10px] text-ev-muted">Main Balance</p>
+                <p className="text-lg font-bold text-ev-blue">Rs {(user?.main_balance || 0).toLocaleString()}</p>
+              </div>
+              <div className="bg-[#10B981]/5 border border-[#10B981]/10 rounded-xl p-3 text-center">
+                <TrendingUp className="w-5 h-5 text-[#10B981] mx-auto mb-1" />
+                <p className="text-[10px] text-ev-muted">Deposit Balance</p>
+                <p className="text-lg font-bold text-[#10B981]">Rs {(user?.deposit_balance || 0).toLocaleString()}</p>
+              </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Info Cards */}
+        {/* Quick Stats */}
+        <div className="grid grid-cols-3 gap-3">
+          <motion.div className="ev-card p-3 text-center" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
+            <Users className="w-5 h-5 text-ev-blue mx-auto mb-1" />
+            <p className="text-base font-bold text-ev-text">{referralCount}</p>
+            <p className="text-[10px] text-ev-muted">Total Referrals</p>
+          </motion.div>
+          <motion.div className="ev-card p-3 text-center" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <CheckCircle2 className="w-5 h-5 text-[#10B981] mx-auto mb-1" />
+            <p className="text-base font-bold text-ev-text">{activeReferralCount}</p>
+            <p className="text-[10px] text-ev-muted">Active Referrals</p>
+          </motion.div>
+          <motion.div className="ev-card p-3 text-center" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+            <Gift className="w-5 h-5 text-[#F59E0B] mx-auto mb-1" />
+            <p className="text-base font-bold text-ev-blue">{user?.referral_code || '--'}</p>
+            <p className="text-[10px] text-ev-muted">Referral Code</p>
+          </motion.div>
+        </div>
+
+        {/* Details Card */}
         <motion.div className="ev-card divide-y divide-ev-card-border" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div className="flex items-center gap-3 p-4">
-            <Mail className="w-4 h-4 text-ev-muted" />
+            <Mail className="w-4 h-4 text-ev-blue" />
             <div className="flex-1">
               <p className="text-xs text-ev-muted">Email</p>
-              <p className="text-sm text-ev-text">{user?.email}</p>
+              <p className="text-sm text-ev-text font-medium">{user?.email}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
-            <Phone className="w-4 h-4 text-ev-muted" />
+            <Phone className="w-4 h-4 text-ev-blue" />
             <div className="flex-1">
               <p className="text-xs text-ev-muted">Mobile</p>
-              <p className="text-sm text-ev-text">{user?.mobile}</p>
+              <p className="text-sm text-ev-text font-medium">{user?.mobile}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
-            <Wallet className="w-4 h-4 text-ev-muted" />
+            <Calendar className="w-4 h-4 text-ev-blue" />
             <div className="flex-1">
-              <p className="text-xs text-ev-muted">Main Balance</p>
-              <p className="text-sm text-ev-text font-semibold">Rs. {(user?.main_balance || 0).toLocaleString()}</p>
+              <p className="text-xs text-ev-muted">Joined</p>
+              <p className="text-sm text-ev-text font-medium">{joinDate}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
-            <Wallet className="w-4 h-4 text-ev-muted" />
+            <Shield className="w-4 h-4 text-ev-blue" />
             <div className="flex-1">
-              <p className="text-xs text-ev-muted">Deposit Balance</p>
-              <p className="text-sm text-ev-text font-semibold">Rs. {(user?.deposit_balance || 0).toLocaleString()}</p>
+              <p className="text-xs text-ev-muted">Account Status</p>
+              <p className={`text-sm font-medium ${user?.status === 'active' ? 'text-[#10B981]' : 'text-red-500'}`}>
+                {user?.status === 'active' ? '✓ Active' : '✗ Blocked'}
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
-            <Copy className="w-4 h-4 text-ev-muted" />
+            <Copy className="w-4 h-4 text-ev-blue" />
             <div className="flex-1">
               <p className="text-xs text-ev-muted">Referral Code</p>
-              <p className="text-sm text-ev-blue font-semibold">{user?.referral_code}</p>
+              <p className="text-sm text-ev-blue font-bold">{user?.referral_code}</p>
             </div>
             <button
               onClick={handleCopyCode}
-              className="text-xs text-ev-muted hover:text-ev-text flex items-center gap-1"
+              className="text-xs text-ev-muted hover:text-ev-blue flex items-center gap-1 transition-colors"
             >
               <Copy className="w-3 h-3" /> Copy
             </button>
-          </div>
-          <div className="flex items-center gap-3 p-4">
-            <Users className="w-4 h-4 text-ev-muted" />
-            <div className="flex-1">
-              <p className="text-xs text-ev-muted">Total Referrals</p>
-              <p className="text-sm text-ev-text font-semibold">--</p>
-            </div>
           </div>
         </motion.div>
 
@@ -233,7 +294,7 @@ export default function ProfilePage() {
         <div className="grid grid-cols-2 gap-3">
           <motion.button
             onClick={() => setShowEditModal(true)}
-            className="ev-btn-secondary py-3 flex items-center justify-center gap-2 text-sm"
+            className="ev-btn-primary py-3 flex items-center justify-center gap-2 text-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}

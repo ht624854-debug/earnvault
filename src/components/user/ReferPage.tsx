@@ -42,21 +42,32 @@ export default function ReferPage() {
     const load = async () => {
       try {
         const [refRes, linkRes, tiersRes] = await Promise.all([
-          api.getReferrals(),
-          api.getReferralLink(),
-          api.getReferralRewardTiers(),
+          api.getReferrals().catch(() => ({ referrals: [] })),
+          api.getReferralLink().catch(() => ({ referral_link: '' })),
+          api.getReferralRewardTiers().catch(() => ({ tiers: [] })),
         ]);
         setReferrals(Array.isArray(refRes.referrals) ? refRes.referrals : []);
-        setReferralLink(linkRes.referral_link || '');
         setRewardTiers(Array.isArray(tiersRes.tiers) ? tiersRes.tiers : []);
+
+        // Build referral link with fallback
+        let link = linkRes.referral_link || '';
+        if (!link && user?.referral_code) {
+          const baseUrl = window.location.origin;
+          link = `${baseUrl}/register?ref=${user.referral_code}`;
+        }
+        setReferralLink(link);
       } catch {
-        addToast('Failed to load referral data', 'error');
+        // Fallback: build link from user data
+        if (user?.referral_code) {
+          const baseUrl = window.location.origin;
+          setReferralLink(`${baseUrl}/register?ref=${user.referral_code}`);
+        }
       } finally {
         setLoading(false);
       }
     };
     load();
-  }, [addToast]);
+  }, [addToast, user]);
 
   const handleCopy = async () => {
     try {
