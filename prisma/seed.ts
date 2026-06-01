@@ -87,6 +87,13 @@ async function seed() {
     maintenance_mode: 'false',
     developer_credit: 'EarnVault',
     payment_methods_display: 'Easypaisa,JazzCash,SadaPay,NayaPay,Bank Transfer',
+
+    // Theme Colors
+    theme_primary_color: '#2563EB',
+    theme_bg_color: '#F0F7FF',
+    theme_card_color: '#FFFFFF',
+    theme_text_color: '#1E293B',
+    theme_border_color: '#DBEAFE',
   };
 
   for (const [key, value] of Object.entries(defaultSettings)) {

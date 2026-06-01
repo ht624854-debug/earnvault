@@ -41,14 +41,14 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-ev-blue: #2563EB;
-  --color-ev-blue-dark: #1D4ED8;
-  --color-ev-blue-light: #3B82F6;
-  --color-ev-bg: #F0F7FF;
-  --color-ev-card: #FFFFFF;
-  --color-ev-card-border: #DBEAFE;
-  --color-ev-text: #1E293B;
-  --color-ev-muted: #64748B;
+  --color-ev-blue: var(--primary);
+  --color-ev-blue-dark: var(--primary);
+  --color-ev-blue-light: var(--primary);
+  --color-ev-bg: var(--background);
+  --color-ev-card: var(--card);
+  --color-ev-card-border: var(--border);
+  --color-ev-text: var(--foreground);
+  --color-ev-muted: var(--muted-foreground);
 }
 
 :root {
@@ -91,52 +91,80 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-[#F0F7FF] text-[#1E293B];
+    background: var(--background);
+    color: var(--foreground);
     font-family: var(--font-sans), system-ui, sans-serif;
   }
 }
 
 @layer utilities {
   .ev-gradient-red {
-    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    background: linear-gradient(135deg, var(--primary), var(--primary));
   }
   .ev-gradient-red-hover {
-    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    background: linear-gradient(135deg, var(--primary), var(--primary));
   }
   .ev-glow-red {
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.3), 0 0 40px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--primary) 30%, transparent), 0 0 40px color-mix(in srgb, var(--primary) 10%, transparent);
   }
   .ev-glow-red-sm {
-    box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 20%, transparent);
   }
   .ev-card {
-    @apply bg-white border border-[#DBEAFE] rounded-xl shadow-sm;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
   .ev-input {
-    @apply bg-[#F0F7FF] border border-[#DBEAFE] rounded-lg text-[#1E293B] placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] outline-none;
+    background: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    color: var(--foreground);
+    outline: none;
+  }
+  .ev-input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .ev-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
   }
   .ev-btn-primary {
-    background: linear-gradient(135deg, #2563EB, #1D4ED8);
-    @apply text-white font-semibold rounded-lg px-4 py-2.5 transition-all duration-200;
-    box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+    background: linear-gradient(135deg, var(--primary), var(--primary));
+    color: var(--primary-foreground);
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1rem;
+    transition: all 0.2s;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 20%, transparent);
   }
   .ev-btn-primary:hover {
-    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    opacity: 0.9;
   }
   .ev-btn-secondary {
-    @apply bg-[#EFF6FF] border border-[#DBEAFE] text-[#1E293B] font-semibold rounded-lg px-4 py-2.5 transition-all duration-200 hover:bg-[#DBEAFE];
+    background: var(--secondary);
+    border: 1px solid var(--border);
+    color: var(--secondary-foreground);
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1rem;
+    transition: all 0.2s;
+  }
+  .ev-btn-secondary:hover {
+    background: var(--accent);
   }
   .scrollbar-thin::-webkit-scrollbar {
     width: 4px;
   }
   .scrollbar-thin::-webkit-scrollbar-track {
-    background: #F0F7FF;
+    background: var(--background);
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: #DBEAFE;
+    background: var(--border);
     border-radius: 2px;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: #93C5FD;
+    background: var(--muted-foreground);
   }
 }

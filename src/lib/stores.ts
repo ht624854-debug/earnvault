@@ -1,6 +1,37 @@
 import { create } from 'zustand';
 import { api } from './api-client';
 
+// Apply theme colors from settings to CSS custom properties
+function applyThemeFromSettings(s: Record<string, string>) {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+
+  if (s.theme_primary_color) {
+    root.style.setProperty('--primary', s.theme_primary_color);
+    root.style.setProperty('--ring', s.theme_primary_color);
+    root.style.setProperty('--sidebar-primary', s.theme_primary_color);
+    root.style.setProperty('--sidebar-ring', s.theme_primary_color);
+    root.style.setProperty('--chart-1', s.theme_primary_color);
+  }
+  if (s.theme_bg_color) {
+    root.style.setProperty('--background', s.theme_bg_color);
+  }
+  if (s.theme_card_color) {
+    root.style.setProperty('--card', s.theme_card_color);
+    root.style.setProperty('--popover', s.theme_card_color);
+  }
+  if (s.theme_text_color) {
+    root.style.setProperty('--foreground', s.theme_text_color);
+    root.style.setProperty('--card-foreground', s.theme_text_color);
+    root.style.setProperty('--popover-foreground', s.theme_text_color);
+  }
+  if (s.theme_border_color) {
+    root.style.setProperty('--border', s.theme_border_color);
+    root.style.setProperty('--sidebar-border', s.theme_border_color);
+    root.style.setProperty('--input', s.theme_border_color);
+  }
+}
+
 interface User {
   id: string;
   first_name: string;
@@ -134,7 +165,10 @@ export const useSettingsStore = create<SettingsState>((set) => ({
   loadSettings: async () => {
     try {
       const res = await api.getSettings();
-      set({ settings: res.settings || {}, isLoading: false });
+      const settings = res.settings || {};
+      set({ settings, isLoading: false });
+      // Apply theme colors from settings to CSS variables
+      applyThemeFromSettings(settings);
     } catch {
       set({ isLoading: false, settings: {} });
     }

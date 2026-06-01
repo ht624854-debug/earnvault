@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api-client';
-import { useToastStore } from '@/lib/stores';
+import { useToastStore, useSettingsStore } from '@/lib/stores';
 import {
   Save,
   Loader2,
@@ -17,6 +17,8 @@ import {
   Phone,
   Globe,
   Tag,
+  Paintbrush,
+  RotateCcw,
 } from 'lucide-react';
 
 interface SettingsSection {
@@ -29,9 +31,18 @@ interface SettingsSection {
 interface SettingsField {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'number' | 'boolean';
+  type: 'text' | 'textarea' | 'number' | 'boolean' | 'color';
   placeholder?: string;
+  description?: string;
 }
+
+const defaultThemeColors: Record<string, string> = {
+  theme_primary_color: '#2563EB',
+  theme_bg_color: '#F0F7FF',
+  theme_card_color: '#FFFFFF',
+  theme_text_color: '#1E293B',
+  theme_border_color: '#DBEAFE',
+};
 
 const sections: SettingsSection[] = [
   {
@@ -39,8 +50,20 @@ const sections: SettingsSection[] = [
     label: 'Brand',
     icon: <Palette className="w-4 h-4" />,
     fields: [
-      { key: 'brand_name', label: 'Brand Name', type: 'text', placeholder: 'EarnVault' },
+      { key: 'brand_name', label: 'Brand Name', type: 'text', placeholder: 'EarnVault', description: 'This changes the website name everywhere' },
       { key: 'logo_url', label: 'Logo URL', type: 'text', placeholder: '/logo.svg' },
+    ],
+  },
+  {
+    key: 'theme',
+    label: 'Theme Colors',
+    icon: <Paintbrush className="w-4 h-4" />,
+    fields: [
+      { key: 'theme_primary_color', label: 'Primary Color (Buttons, Links, Accents)', type: 'color', description: 'Main accent color used for buttons, links, and highlights' },
+      { key: 'theme_bg_color', label: 'Background Color', type: 'color', description: 'Page background color' },
+      { key: 'theme_card_color', label: 'Card Color', type: 'color', description: 'Card and dialog background color' },
+      { key: 'theme_text_color', label: 'Text Color', type: 'color', description: 'Primary text color' },
+      { key: 'theme_border_color', label: 'Border Color', type: 'color', description: 'Border and divider color' },
     ],
   },
   {
@@ -151,6 +174,7 @@ export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const { addToast } = useToastStore();
+  const { loadSettings: reloadGlobalSettings } = useSettingsStore();
 
   useEffect(() => {
     loadSettings();
@@ -173,11 +197,51 @@ export default function AdminSettings() {
     try {
       await api.updateAdminSettings(settings);
       addToast('Settings saved successfully', 'success');
+      // Reload global settings so theme changes take effect immediately
+      await reloadGlobalSettings();
+      // Apply theme colors to CSS variables
+      applyThemeColors(settings);
     } catch (err: any) {
       addToast(err.message || 'Save failed', 'error');
     } finally {
       setSaving(false);
     }
+  };
+
+  const applyThemeColors = (s: Record<string, string>) => {
+    const root = document.documentElement;
+    if (s.theme_primary_color) {
+      root.style.setProperty('--ev-primary', s.theme_primary_color);
+      root.style.setProperty('--primary', s.theme_primary_color);
+      root.style.setProperty('--ring', s.theme_primary_color);
+      root.style.setProperty('--sidebar-primary', s.theme_primary_color);
+      root.style.setProperty('--sidebar-ring', s.theme_primary_color);
+    }
+    if (s.theme_bg_color) {
+      root.style.setProperty('--ev-bg', s.theme_bg_color);
+      root.style.setProperty('--background', s.theme_bg_color);
+    }
+    if (s.theme_card_color) {
+      root.style.setProperty('--ev-card', s.theme_card_color);
+      root.style.setProperty('--card', s.theme_card_color);
+      root.style.setProperty('--popover', s.theme_card_color);
+    }
+    if (s.theme_text_color) {
+      root.style.setProperty('--ev-text', s.theme_text_color);
+      root.style.setProperty('--foreground', s.theme_text_color);
+      root.style.setProperty('--card-foreground', s.theme_text_color);
+      root.style.setProperty('--popover-foreground', s.theme_text_color);
+    }
+    if (s.theme_border_color) {
+      root.style.setProperty('--ev-card-border', s.theme_border_color);
+      root.style.setProperty('--border', s.theme_border_color);
+      root.style.setProperty('--sidebar-border', s.theme_border_color);
+    }
+  };
+
+  const resetThemeColors = () => {
+    setSettings((prev) => ({ ...prev, ...defaultThemeColors }));
+    addToast('Theme colors reset to defaults. Click Save to apply.', 'success');
   };
 
   const handleChange = (key: string, value: string) => {
@@ -208,15 +272,57 @@ export default function AdminSettings() {
       <div className="space-y-6">
         {sections.map((section) => (
           <div key={section.key} className="ev-card p-6">
-            <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
-              <span className="text-[#2563EB]">{section.icon}</span>
-              {section.label}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-[#1E293B] flex items-center gap-2">
+                <span className="text-[#2563EB]">{section.icon}</span>
+                {section.label}
+              </h2>
+              {section.key === 'theme' && (
+                <button
+                  onClick={resetThemeColors}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#64748B] bg-[#EFF6FF] border border-[#DBEAFE] rounded-lg hover:bg-[#DBEAFE] transition-colors"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Reset to Default
+                </button>
+              )}
+            </div>
+            <div className={`grid gap-4 ${section.key === 'theme' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
               {section.fields.map((field) => (
-                <div key={field.key} className={field.type === 'textarea' ? 'md:col-span-2' : ''}>
-                  <label className="block text-sm text-[#64748B] mb-1">{field.label}</label>
-                  {field.type === 'textarea' ? (
+                <div key={field.key}>
+                  <label className="block text-sm font-medium text-[#64748B] mb-1.5">{field.label}</label>
+                  {field.description && (
+                    <p className="text-xs text-[#94A3B8] mb-2">{field.description}</p>
+                  )}
+                  {field.type === 'color' ? (
+                    <div className="flex items-center gap-3">
+                      <div className="relative">
+                        <input
+                          type="color"
+                          value={settings[field.key] || '#2563EB'}
+                          onChange={(e) => handleChange(field.key, e.target.value)}
+                          className="w-12 h-10 rounded-lg border border-[#DBEAFE] cursor-pointer appearance-none bg-transparent p-0.5"
+                          style={{ WebkitAppearance: 'none' }}
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        value={settings[field.key] || ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          handleChange(field.key, val);
+                        }}
+                        placeholder="#2563EB"
+                        className="ev-input flex-1 px-4 py-2.5 font-mono text-sm"
+                      />
+                      {settings[field.key] && (
+                        <div
+                          className="w-10 h-10 rounded-lg border border-[#DBEAFE] shrink-0"
+                          style={{ backgroundColor: settings[field.key] }}
+                        />
+                      )}
+                    </div>
+                  ) : field.type === 'textarea' ? (
                     <textarea
                       className="ev-input w-full px-4 py-2.5 min-h-[60px]"
                       value={settings[field.key] || ''}
@@ -253,6 +359,52 @@ export default function AdminSettings() {
                 </div>
               ))}
             </div>
+
+            {/* Theme Preview */}
+            {section.key === 'theme' && (
+              <div className="mt-6 pt-4 border-t border-[#DBEAFE]">
+                <p className="text-xs font-medium text-[#64748B] mb-3">Preview</p>
+                <div
+                  className="rounded-xl p-4 border"
+                  style={{
+                    backgroundColor: settings.theme_bg_color || '#F0F7FF',
+                    borderColor: settings.theme_border_color || '#DBEAFE',
+                  }}
+                >
+                  <div
+                    className="rounded-lg p-4 mb-3 shadow-sm"
+                    style={{ backgroundColor: settings.theme_card_color || '#FFFFFF' }}
+                  >
+                    <p className="text-sm font-semibold" style={{ color: settings.theme_text_color || '#1E293B' }}>
+                      Card Title Text
+                    </p>
+                    <p className="text-xs mt-1" style={{ color: settings.theme_text_color ? settings.theme_text_color + '99' : '#1E293B99' }}>
+                      This is how card text will look
+                    </p>
+                    <button
+                      className="mt-3 text-white text-xs font-semibold rounded-lg px-4 py-2"
+                      style={{ backgroundColor: settings.theme_primary_color || '#2563EB' }}
+                    >
+                      Primary Button
+                    </button>
+                  </div>
+                  <div className="flex gap-2">
+                    <div
+                      className="h-2 flex-1 rounded-full"
+                      style={{ backgroundColor: settings.theme_primary_color || '#2563EB' }}
+                    />
+                    <div
+                      className="h-2 flex-1 rounded-full opacity-50"
+                      style={{ backgroundColor: settings.theme_primary_color || '#2563EB' }}
+                    />
+                    <div
+                      className="h-2 flex-1 rounded-full opacity-25"
+                      style={{ backgroundColor: settings.theme_primary_color || '#2563EB' }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
