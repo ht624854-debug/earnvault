@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LogOut,
   Target,
@@ -52,26 +52,43 @@ const FAKE_TRANSACTIONS = [
   { name: 'Omar F.', action: 'withdrew', amount: 9500, method: 'SadaPay', type: 'withdraw' },
   { name: 'Iqra J.', action: 'earned', amount: 100, method: 'Daily Code', type: 'earn' },
   { name: 'Hassan N.', action: 'withdrew', amount: 4200, method: 'JazzCash', type: 'withdraw' },
+  { name: 'Nida L.', action: 'earned', amount: 750, method: 'Task Reward', type: 'earn' },
+  { name: 'Danish P.', action: 'withdrew', amount: 2800, method: 'Easypaisa', type: 'withdraw' },
+  { name: 'Hira W.', action: 'earned', amount: 200, method: 'Referral Bonus', type: 'earn' },
+  { name: 'Kamran V.', action: 'withdrew', amount: 11000, method: 'Bank Transfer', type: 'withdraw' },
+  { name: 'Sana E.', action: 'earned', amount: 450, method: 'Task Reward', type: 'earn' },
+  { name: 'Rizwan Q.', action: 'withdrew', amount: 5600, method: 'JazzCash', type: 'withdraw' },
+  { name: 'Amna C.', action: 'earned', amount: 180, method: 'Daily Code', type: 'earn' },
+  { name: 'Tahir G.', action: 'withdrew', amount: 7300, method: 'Easypaisa', type: 'withdraw' },
 ];
 
+interface LiveItem {
+  id: number;
+  name: string;
+  action: string;
+  amount: number;
+  method: string;
+  type: 'earn' | 'withdraw';
+}
+
 function LiveTransactionsFeed() {
-  const [visibleItems, setVisibleItems] = useState(() =>
-    Array.from({ length: 4 }, (_, i) => ({
+  const [items, setItems] = useState<LiveItem[]>(() =>
+    Array.from({ length: 5 }, (_, i) => ({
       ...FAKE_TRANSACTIONS[i % FAKE_TRANSACTIONS.length],
       id: i,
     }))
   );
+  const counterRef = useRef(5);
 
   useEffect(() => {
-    let counter = 4;
     const interval = setInterval(() => {
-      counter++;
-      const nextIdx = (counter - 1) % FAKE_TRANSACTIONS.length;
-      setVisibleItems((old) => [
-        ...old.slice(1),
-        { ...FAKE_TRANSACTIONS[nextIdx], id: counter },
-      ]);
-    }, 2000);
+      counterRef.current++;
+      const nextIdx = (counterRef.current - 1) % FAKE_TRANSACTIONS.length;
+      setItems((old) => {
+        const newItem = { ...FAKE_TRANSACTIONS[nextIdx], id: counterRef.current };
+        return [...old.slice(1), newItem];
+      });
+    }, 1200);
     return () => clearInterval(interval);
   }, []);
 
@@ -85,36 +102,42 @@ function LiveTransactionsFeed() {
           <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
         </span>
       </div>
-      <div className="space-y-2 overflow-hidden" style={{ height: '160px' }}>
-        {visibleItems.map((item) => (
-          <motion.div
-            key={item.id}
-            className="flex items-center gap-3 bg-ev-card/80 backdrop-blur-sm border border-ev-card-border rounded-xl px-3 py-2.5"
-            initial={{ opacity: 0, y: 30, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${item.type === 'earn' ? 'bg-[#10B981]/10' : 'bg-ev-blue/10'}`}>
-              {item.type === 'earn' ? (
-                <ArrowDownLeft className="w-4 h-4 text-[#10B981]" />
-              ) : (
-                <ArrowUpRight className="w-4 h-4 text-ev-blue" />
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-ev-text truncate">
-                <span className="font-semibold">{item.name}</span>{' '}
-                <span className="text-ev-muted">{item.action}</span>
-              </p>
-              <p className="text-[10px] text-ev-muted">{item.method}</p>
-            </div>
-            <div className="text-right shrink-0">
-              <p className={`text-xs font-bold ${item.type === 'earn' ? 'text-[#10B981]' : 'text-ev-blue'}`}>
-                {item.type === 'earn' ? '+' : '-'}Rs {item.amount.toLocaleString()}
-              </p>
-            </div>
-          </motion.div>
-        ))}
+      <div className="overflow-hidden" style={{ height: '190px' }}>
+        <AnimatePresence initial={false}>
+          {items.map((item) => (
+            <motion.div
+              key={item.id}
+              className="flex items-center gap-3 bg-ev-card/80 backdrop-blur-sm border border-ev-card-border rounded-xl px-3 py-2.5 mb-2"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -40 }}
+              transition={{
+                duration: 0.35,
+                ease: [0.33, 1, 0.68, 1],
+              }}
+            >
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${item.type === 'earn' ? 'bg-[#10B981]/10' : 'bg-ev-blue/10'}`}>
+                {item.type === 'earn' ? (
+                  <ArrowDownLeft className="w-4 h-4 text-[#10B981]" />
+                ) : (
+                  <ArrowUpRight className="w-4 h-4 text-ev-blue" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-ev-text truncate">
+                  <span className="font-semibold">{item.name}</span>{' '}
+                  <span className="text-ev-muted">{item.action}</span>
+                </p>
+                <p className="text-[10px] text-ev-muted">{item.method}</p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className={`text-xs font-bold ${item.type === 'earn' ? 'text-[#10B981]' : 'text-ev-blue'}`}>
+                  {item.type === 'earn' ? '+' : '-'}Rs {item.amount.toLocaleString()}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );
