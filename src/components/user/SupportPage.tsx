@@ -141,26 +141,26 @@ export default function SupportPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-[#DC2626]/30 border-t-[#DC2626] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center">
+        <div className="w-10 h-10 border-3 border-[#2563EB]/30 border-t-[#2563EB] rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pb-24">
+    <div className="min-h-screen bg-[#F0F7FF] pb-24">
       {/* Header */}
-      <div className="bg-[#0A0A0A] border-b border-[#1F1F1F] sticky top-0 z-40">
+      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {activeTicket && (
-              <button onClick={() => setActiveTicket(null)} className="text-[#737373] hover:text-[#F5F5F5]">
+              <button onClick={() => setActiveTicket(null)} className="text-[#64748B] hover:text-[#1E293B]">
                 <ArrowLeft className="w-5 h-5" />
               </button>
             )}
             <div>
-              <h1 className="text-lg font-bold text-[#F5F5F5]">Support</h1>
-              <p className="text-xs text-[#737373] mt-0.5">
+              <h1 className="text-lg font-bold text-[#1E293B]">Support</h1>
+              <p className="text-xs text-[#64748B] mt-0.5">
                 {activeTicket ? activeTicket.subject : 'Get help with your account'}
               </p>
             </div>
@@ -184,8 +184,8 @@ export default function SupportPage() {
               <Phone className="w-5 h-5 text-[#25D366]" />
             </div>
             <div className="flex-1">
-              <p className="text-sm text-[#F5F5F5] font-medium">WhatsApp Support</p>
-              <p className="text-xs text-[#737373]">Get instant help via WhatsApp</p>
+              <p className="text-sm text-[#1E293B] font-medium">WhatsApp Support</p>
+              <p className="text-xs text-[#64748B]">Get instant help via WhatsApp</p>
             </div>
             <a
               href={settings.support_whatsapp}
@@ -203,11 +203,11 @@ export default function SupportPage() {
           <div className="space-y-3">
             <div className="ev-card p-4">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-[#F5F5F5]">{activeTicket.subject}</h3>
+                <h3 className="text-sm font-semibold text-[#1E293B]">{activeTicket.subject}</h3>
                 {statusBadge(activeTicket.status)}
               </div>
-              <p className="text-sm text-[#737373]">{activeTicket.message}</p>
-              <p className="text-xs text-[#525252] mt-2">
+              <p className="text-sm text-[#64748B]">{activeTicket.message}</p>
+              <p className="text-xs text-[#94A3B8] mt-2">
                 {new Date(activeTicket.created_at).toLocaleString()}
               </p>
             </div>
@@ -217,27 +217,27 @@ export default function SupportPage() {
               <div
                 key={reply.id}
                 className={`ev-card p-4 ${
-                  reply.sender_type === 'admin' ? 'border-l-2 border-l-[#DC2626]' : ''
+                  reply.sender_type === 'admin' ? 'border-l-2 border-l-[#2563EB]' : ''
                 }`}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <span
                     className={`text-xs font-medium ${
-                      reply.sender_type === 'admin' ? 'text-[#DC2626]' : 'text-[#737373]'
+                      reply.sender_type === 'admin' ? 'text-[#2563EB]' : 'text-[#64748B]'
                     }`}
                   >
                     {reply.sender_type === 'admin' ? 'Admin' : 'You'}
                   </span>
-                  <span className="text-xs text-[#525252]">
+                  <span className="text-xs text-[#94A3B8]">
                     {new Date(reply.created_at).toLocaleString()}
                   </span>
                 </div>
-                <p className="text-sm text-[#F5F5F5]">{reply.message}</p>
+                <p className="text-sm text-[#1E293B]">{reply.message}</p>
               </div>
             ))}
 
             {(!activeTicket.replies || activeTicket.replies.length === 0) && (
-              <div className="ev-card p-6 text-center text-[#737373] text-sm">
+              <div className="ev-card p-6 text-center text-[#64748B] text-sm">
                 No replies yet. We&apos;ll get back to you soon.
               </div>
             )}
@@ -250,23 +250,23 @@ export default function SupportPage() {
                 <motion.button
                   key={ticket.id}
                   onClick={() => openTicket(ticket.id)}
-                  className="ev-card p-4 w-full text-left hover:border-[#DC2626]/30 transition-colors"
+                  className="ev-card p-4 w-full text-left hover:border-[#2563EB]/30 transition-colors"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-medium text-[#F5F5F5] truncate">{ticket.subject}</h3>
+                    <h3 className="text-sm font-medium text-[#1E293B] truncate">{ticket.subject}</h3>
                     {statusBadge(ticket.status)}
                   </div>
-                  <p className="text-xs text-[#737373] line-clamp-1">{ticket.message}</p>
-                  <p className="text-[10px] text-[#525252] mt-2">
+                  <p className="text-xs text-[#64748B] line-clamp-1">{ticket.message}</p>
+                  <p className="text-[10px] text-[#94A3B8] mt-2">
                     {new Date(ticket.created_at).toLocaleDateString()}
                   </p>
                 </motion.button>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-[#737373]">
+              <div className="flex flex-col items-center justify-center py-16 text-[#64748B]">
                 <Inbox className="w-12 h-12 mb-3" />
                 <p className="text-sm">No support tickets</p>
                 <p className="text-xs mt-1">Create a ticket if you need help</p>
@@ -287,22 +287,22 @@ export default function SupportPage() {
             onClick={() => setShowCreateForm(false)}
           >
             <motion.div
-              className="w-full max-w-md bg-[#141414] border border-[#1F1F1F] rounded-t-2xl sm:rounded-2xl p-5"
+              className="w-full max-w-md bg-[#FFFFFF] border border-[#EFF6FF] rounded-t-2xl sm:rounded-2xl p-5"
               initial={{ y: 100 }}
               animate={{ y: 0 }}
               exit={{ y: 100 }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-bold text-[#F5F5F5]">Create Ticket</h3>
-                <button onClick={() => setShowCreateForm(false)} className="text-[#737373] hover:text-[#F5F5F5]">
+                <h3 className="text-base font-bold text-[#1E293B]">Create Ticket</h3>
+                <button onClick={() => setShowCreateForm(false)} className="text-[#64748B] hover:text-[#1E293B]">
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               <form onSubmit={handleCreate} className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-[#737373] mb-1">Subject</label>
+                  <label className="block text-sm font-medium text-[#64748B] mb-1">Subject</label>
                   <input
                     value={form.subject}
                     onChange={(e) => setForm({ ...form, subject: e.target.value })}
@@ -312,7 +312,7 @@ export default function SupportPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#737373] mb-1">Message</label>
+                  <label className="block text-sm font-medium text-[#64748B] mb-1">Message</label>
                   <textarea
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -323,10 +323,10 @@ export default function SupportPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#737373] mb-1">Screenshot (Optional)</label>
+                  <label className="block text-sm font-medium text-[#64748B] mb-1">Screenshot (Optional)</label>
                   {screenshotPreview && (
                     <div className="relative mb-2">
-                      <img src={screenshotPreview} alt="Screenshot" className="w-full h-32 object-cover rounded-lg border border-[#1F1F1F]" />
+                      <img src={screenshotPreview} alt="Screenshot" className="w-full h-32 object-cover rounded-lg border border-[#EFF6FF]" />
                       <button
                         onClick={() => { setScreenshot(null); setScreenshotPreview(''); }}
                         className="absolute top-1 right-1 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center text-white"

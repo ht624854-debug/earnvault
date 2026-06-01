@@ -130,8 +130,8 @@ export default function AdminRewardCampaigns() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#F5F5F5]">Reward Campaigns</h1>
-          <p className="text-[#737373] text-sm mt-1">Manage referral reward campaigns</p>
+          <h1 className="text-2xl font-bold text-[#1E293B]">Reward Campaigns</h1>
+          <p className="text-[#64748B] text-sm mt-1">Manage referral reward campaigns</p>
         </div>
         <button onClick={openCreateDialog} className="ev-btn-primary flex items-center gap-2">
           <Plus className="w-4 h-4" />
@@ -143,10 +143,10 @@ export default function AdminRewardCampaigns() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#DC2626]" />
+            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
           </div>
         ) : campaigns.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#737373]">
+          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
             <Gift className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No campaigns found</p>
           </div>
@@ -154,28 +154,28 @@ export default function AdminRewardCampaigns() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1F1F1F]">
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Title</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Target Referrals</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Time Limit</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Reward</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Status</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Actions</th>
+                <tr className="border-b border-[#EFF6FF]">
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Title</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Target Referrals</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Time Limit</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Reward</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Status</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {campaigns.map((campaign) => (
-                  <tr key={campaign.id} className="border-b border-[#1F1F1F] hover:bg-[#1A1A1A] transition-colors">
-                    <td className="py-3 px-4 text-[#F5F5F5] font-medium">{campaign.title}</td>
-                    <td className="py-3 px-4 text-[#A3A3A3]">{campaign.target_referrals}</td>
-                    <td className="py-3 px-4 text-[#A3A3A3]">{campaign.time_limit_hours}h</td>
-                    <td className="py-3 px-4 text-[#F5F5F5] font-medium">Rs. {campaign.reward_amount}</td>
+                  <tr key={campaign.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
+                    <td className="py-3 px-4 text-[#1E293B] font-medium">{campaign.title}</td>
+                    <td className="py-3 px-4 text-[#64748B]">{campaign.target_referrals}</td>
+                    <td className="py-3 px-4 text-[#64748B]">{campaign.time_limit_hours}h</td>
+                    <td className="py-3 px-4 text-[#1E293B] font-medium">Rs. {campaign.reward_amount}</td>
                     <td className="py-3 px-4">
                       <Badge
                         className={
                           campaign.is_active
-                            ? 'bg-green-500/10 text-green-400 border-green-500/20'
-                            : 'bg-red-500/10 text-red-400 border-red-500/20'
+                            ? 'bg-green-500/10 text-green-600 border-green-500/20'
+                            : 'bg-red-500/10 text-red-600 border-red-500/20'
                         }
                       >
                         {campaign.is_active ? 'Active' : 'Inactive'}
@@ -185,14 +185,14 @@ export default function AdminRewardCampaigns() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => openEditDialog(campaign)}
-                          className="p-1.5 rounded-lg hover:bg-[#1F1F1F] text-[#A3A3A3] hover:text-[#DC2626] transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-[#2563EB] transition-colors"
                           title="Edit"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setDeleteId(campaign.id)}
-                          className="p-1.5 rounded-lg hover:bg-[#1F1F1F] text-[#A3A3A3] hover:text-red-400 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-red-500 transition-colors"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -209,13 +209,13 @@ export default function AdminRewardCampaigns() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-[#141414] border-[#1F1F1F]">
+        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
           <DialogHeader>
-            <DialogTitle className="text-[#F5F5F5]">{editId ? 'Edit Campaign' : 'Create Campaign'}</DialogTitle>
+            <DialogTitle className="text-[#1E293B]">{editId ? 'Edit Campaign' : 'Create Campaign'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm text-[#A3A3A3] mb-1">Title *</label>
+              <label className="block text-sm text-[#64748B] mb-1">Title *</label>
               <input
                 className="ev-input w-full px-4 py-2.5"
                 value={form.title}
@@ -225,7 +225,7 @@ export default function AdminRewardCampaigns() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1">Target Referrals *</label>
+                <label className="block text-sm text-[#64748B] mb-1">Target Referrals *</label>
                 <input
                   type="number"
                   className="ev-input w-full px-4 py-2.5"
@@ -235,7 +235,7 @@ export default function AdminRewardCampaigns() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1">Time Limit (hours)</label>
+                <label className="block text-sm text-[#64748B] mb-1">Time Limit (hours)</label>
                 <input
                   type="number"
                   className="ev-input w-full px-4 py-2.5"
@@ -247,7 +247,7 @@ export default function AdminRewardCampaigns() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1">Reward Amount *</label>
+                <label className="block text-sm text-[#64748B] mb-1">Reward Amount *</label>
                 <input
                   type="number"
                   className="ev-input w-full px-4 py-2.5"
@@ -257,12 +257,12 @@ export default function AdminRewardCampaigns() {
                 />
               </div>
               <div className="flex items-end pb-1">
-                <label className="flex items-center gap-2 text-sm text-[#A3A3A3]">
+                <label className="flex items-center gap-2 text-sm text-[#64748B]">
                   <input
                     type="checkbox"
                     checked={form.is_active}
                     onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
-                    className="w-4 h-4 rounded accent-[#DC2626]"
+                    className="w-4 h-4 rounded accent-[#2563EB]"
                   />
                   Active
                 </label>
@@ -283,11 +283,11 @@ export default function AdminRewardCampaigns() {
 
       {/* Delete Confirm Dialog */}
       <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
-        <DialogContent className="bg-[#141414] border-[#1F1F1F]">
+        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
           <DialogHeader>
-            <DialogTitle className="text-[#F5F5F5]">Delete Campaign</DialogTitle>
+            <DialogTitle className="text-[#1E293B]">Delete Campaign</DialogTitle>
           </DialogHeader>
-          <p className="text-[#A3A3A3] text-sm">Are you sure you want to delete this campaign?</p>
+          <p className="text-[#64748B] text-sm">Are you sure you want to delete this campaign?</p>
           <DialogFooter>
             <button onClick={() => setDeleteId(null)} className="ev-btn-secondary">
               Cancel

@@ -9,12 +9,12 @@ export default function DownloadPage() {
   const downloadLink = settings.download_link;
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pb-24">
+    <div className="min-h-screen bg-[#F0F7FF] pb-24">
       {/* Header */}
-      <div className="bg-[#0A0A0A] border-b border-[#1F1F1F] sticky top-0 z-40">
+      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-lg font-bold text-[#F5F5F5]">Download App</h1>
-          <p className="text-xs text-[#737373] mt-0.5">Get the EarnVault app</p>
+          <h1 className="text-lg font-bold text-[#1E293B]">Download App</h1>
+          <p className="text-xs text-[#64748B] mt-0.5">Get the EarnVault app</p>
         </div>
       </div>
 
@@ -30,8 +30,8 @@ export default function DownloadPage() {
               <div className="w-16 h-16 ev-gradient-red rounded-2xl flex items-center justify-center mx-auto mb-6 ev-glow-red">
                 <Smartphone className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-xl font-bold text-[#F5F5F5] mb-2">EarnVault App</h2>
-              <p className="text-sm text-[#737373] mb-6">
+              <h2 className="text-xl font-bold text-[#1E293B] mb-2">EarnVault App</h2>
+              <p className="text-sm text-[#64748B] mb-6">
                 Download our app for the best experience
               </p>
               <a
@@ -51,11 +51,11 @@ export default function DownloadPage() {
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="relative z-10">
-              <div className="w-16 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Rocket className="w-8 h-8 text-[#737373]" />
+              <div className="w-16 h-16 bg-[#F0F7FF] rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Rocket className="w-8 h-8 text-[#64748B]" />
               </div>
-              <h2 className="text-xl font-bold text-[#F5F5F5] mb-2">Coming Soon</h2>
-              <p className="text-sm text-[#737373] mb-6">
+              <h2 className="text-xl font-bold text-[#1E293B] mb-2">Coming Soon</h2>
+              <p className="text-sm text-[#64748B] mb-6">
                 Our mobile app is under development. Stay tuned!
               </p>
 
@@ -64,7 +64,7 @@ export default function DownloadPage() {
                 {[0, 1, 2].map((i) => (
                   <motion.div
                     key={i}
-                    className="w-2 h-2 bg-[#DC2626] rounded-full"
+                    className="w-2 h-2 bg-[#2563EB] rounded-full"
                     animate={{
                       scale: [1, 1.4, 1],
                       opacity: [0.3, 1, 0.3],

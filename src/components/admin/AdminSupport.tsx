@@ -94,11 +94,11 @@ export default function AdminSupport() {
     const s = status?.toLowerCase();
     switch (s) {
       case 'open':
-        return <Badge className="bg-yellow-500/10 text-yellow-400 border-yellow-500/20">Open</Badge>;
+        return <Badge className="bg-yellow-500/10 text-yellow-600 border-yellow-500/20">Open</Badge>;
       case 'answered':
-        return <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20">Answered</Badge>;
+        return <Badge className="bg-blue-500/10 text-blue-700 border-blue-500/20">Answered</Badge>;
       case 'closed':
-        return <Badge className="bg-green-500/10 text-green-400 border-green-500/20">Closed</Badge>;
+        return <Badge className="bg-green-500/10 text-green-600 border-green-500/20">Closed</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -111,13 +111,13 @@ export default function AdminSupport() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setSelectedTicket(null)}
-            className="p-2 rounded-lg hover:bg-[#1F1F1F] text-[#A3A3A3] transition-colors"
+            className="p-2 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-[#F5F5F5]">{selectedTicket.subject}</h1>
-            <p className="text-[#737373] text-sm">
+            <h1 className="text-xl font-bold text-[#1E293B]">{selectedTicket.subject}</h1>
+            <p className="text-[#64748B] text-sm">
               By {selectedTicket.user?.first_name} {selectedTicket.user?.last_name} (@{selectedTicket.user?.username}) — {new Date(selectedTicket.created_at).toLocaleString()}
             </p>
           </div>
@@ -127,14 +127,14 @@ export default function AdminSupport() {
         {/* Ticket message */}
         <div className="ev-card p-4">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#1F1F1F] flex items-center justify-center text-sm font-bold text-[#A3A3A3] shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#EFF6FF] flex items-center justify-center text-sm font-bold text-[#64748B] shrink-0">
               {selectedTicket.user?.first_name?.[0] || 'U'}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-[#F5F5F5]">
+              <p className="text-sm font-medium text-[#1E293B]">
                 {selectedTicket.user?.first_name} {selectedTicket.user?.last_name}
               </p>
-              <p className="text-sm text-[#A3A3A3] mt-1">{selectedTicket.message}</p>
+              <p className="text-sm text-[#64748B] mt-1">{selectedTicket.message}</p>
             </div>
           </div>
         </div>
@@ -148,20 +148,20 @@ export default function AdminSupport() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
                       reply.sender_type === 'admin'
-                        ? 'bg-[#DC2626]/20 text-[#DC2626]'
-                        : 'bg-[#1F1F1F] text-[#A3A3A3]'
+                        ? 'bg-[#2563EB]/20 text-[#2563EB]'
+                        : 'bg-[#EFF6FF] text-[#64748B]'
                     }`}
                   >
                     {reply.sender_type === 'admin' ? 'A' : (selectedTicket.user?.first_name?.[0] || 'U')}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-[#F5F5F5]">
+                      <p className="text-sm font-medium text-[#1E293B]">
                         {reply.sender_type === 'admin' ? 'Admin' : `${selectedTicket.user?.first_name} ${selectedTicket.user?.last_name}`}
                       </p>
-                      <span className="text-xs text-[#737373]">{new Date(reply.created_at).toLocaleString()}</span>
+                      <span className="text-xs text-[#64748B]">{new Date(reply.created_at).toLocaleString()}</span>
                     </div>
-                    <p className="text-sm text-[#A3A3A3] mt-1">{reply.message}</p>
+                    <p className="text-sm text-[#64748B] mt-1">{reply.message}</p>
                   </div>
                 </div>
               </div>
@@ -171,7 +171,7 @@ export default function AdminSupport() {
 
         {/* Reply form */}
         <div className="ev-card p-4">
-          <label className="block text-sm text-[#A3A3A3] mb-2">Reply</label>
+          <label className="block text-sm text-[#64748B] mb-2">Reply</label>
           <textarea
             className="ev-input w-full px-4 py-2.5 min-h-[100px]"
             placeholder="Type your reply..."
@@ -197,8 +197,8 @@ export default function AdminSupport() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#F5F5F5]">Support Tickets</h1>
-        <p className="text-[#737373] text-sm mt-1">Manage user support requests</p>
+        <h1 className="text-2xl font-bold text-[#1E293B]">Support Tickets</h1>
+        <p className="text-[#64748B] text-sm mt-1">Manage user support requests</p>
       </div>
 
       {/* Filters */}
@@ -210,8 +210,8 @@ export default function AdminSupport() {
               onClick={() => setFilter(f.value)}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 filter === f.value
-                  ? 'bg-[#DC2626]/10 text-[#DC2626] border border-[#DC2626]/30'
-                  : 'bg-[#1A1A1A] text-[#A3A3A3] border border-[#262626] hover:bg-[#1F1F1F]'
+                  ? 'bg-[#2563EB]/10 text-[#2563EB] border border-[#2563EB]/30'
+                  : 'bg-[#F0F7FF] text-[#64748B] border border-[#DBEAFE] hover:bg-[#EFF6FF]'
               }`}
             >
               {f.label}
@@ -224,10 +224,10 @@ export default function AdminSupport() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#DC2626]" />
+            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
           </div>
         ) : tickets.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#737373]">
+          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
             <Headphones className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No support tickets found</p>
           </div>
@@ -235,24 +235,24 @@ export default function AdminSupport() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1F1F1F]">
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">User</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Subject</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Status</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Date</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Actions</th>
+                <tr className="border-b border-[#EFF6FF]">
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">User</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Subject</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Status</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Date</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {tickets.map((ticket) => (
-                  <tr key={ticket.id} className="border-b border-[#1F1F1F] hover:bg-[#1A1A1A] transition-colors">
-                    <td className="py-3 px-4 text-[#F5F5F5]">
+                  <tr key={ticket.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
+                    <td className="py-3 px-4 text-[#1E293B]">
                       {ticket.user?.first_name} {ticket.user?.last_name}
-                      <span className="text-[#737373] text-xs block">@{ticket.user?.username}</span>
+                      <span className="text-[#64748B] text-xs block">@{ticket.user?.username}</span>
                     </td>
-                    <td className="py-3 px-4 text-[#F5F5F5] max-w-[250px] truncate">{ticket.subject}</td>
+                    <td className="py-3 px-4 text-[#1E293B] max-w-[250px] truncate">{ticket.subject}</td>
                     <td className="py-3 px-4">{getStatusBadge(ticket.status)}</td>
-                    <td className="py-3 px-4 text-[#737373] text-xs">
+                    <td className="py-3 px-4 text-[#64748B] text-xs">
                       {new Date(ticket.created_at).toLocaleDateString()}
                     </td>
                     <td className="py-3 px-4">

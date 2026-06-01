@@ -150,8 +150,8 @@ export default function AdminTasks() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#F5F5F5]">Tasks</h1>
-          <p className="text-[#737373] text-sm mt-1">Manage platform tasks and rewards</p>
+          <h1 className="text-2xl font-bold text-[#1E293B]">Tasks</h1>
+          <p className="text-[#64748B] text-sm mt-1">Manage platform tasks and rewards</p>
         </div>
         <button onClick={openCreateDialog} className="ev-btn-primary flex items-center gap-2">
           <Plus className="w-4 h-4" />
@@ -163,10 +163,10 @@ export default function AdminTasks() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#DC2626]" />
+            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
           </div>
         ) : tasks.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#737373]">
+          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
             <ListChecks className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No tasks found</p>
           </div>
@@ -174,52 +174,52 @@ export default function AdminTasks() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1F1F1F]">
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Title</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Type</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Reward</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Active</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Sort</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Actions</th>
+                <tr className="border-b border-[#EFF6FF]">
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Title</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Type</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Reward</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Active</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Sort</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {tasks.map((task) => (
-                  <tr key={task.id} className="border-b border-[#1F1F1F] hover:bg-[#1A1A1A] transition-colors">
+                  <tr key={task.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
                     <td className="py-3 px-4">
-                      <p className="text-[#F5F5F5] font-medium">{task.title}</p>
-                      <p className="text-[#737373] text-xs truncate max-w-[200px]">{task.description}</p>
+                      <p className="text-[#1E293B] font-medium">{task.title}</p>
+                      <p className="text-[#64748B] text-xs truncate max-w-[200px]">{task.description}</p>
                     </td>
                     <td className="py-3 px-4">
                       <Badge variant="outline" className="capitalize">
                         {task.type?.replace('_', ' ')}
                       </Badge>
                     </td>
-                    <td className="py-3 px-4 text-[#F5F5F5] font-medium">Rs. {task.reward_amount}</td>
+                    <td className="py-3 px-4 text-[#1E293B] font-medium">Rs. {task.reward_amount}</td>
                     <td className="py-3 px-4">
                       <Badge
                         className={
                           task.is_active
-                            ? 'bg-green-500/10 text-green-400 border-green-500/20'
-                            : 'bg-red-500/10 text-red-400 border-red-500/20'
+                            ? 'bg-green-500/10 text-green-600 border-green-500/20'
+                            : 'bg-red-500/10 text-red-600 border-red-500/20'
                         }
                       >
                         {task.is_active ? 'Active' : 'Inactive'}
                       </Badge>
                     </td>
-                    <td className="py-3 px-4 text-[#A3A3A3]">{task.sort_order}</td>
+                    <td className="py-3 px-4 text-[#64748B]">{task.sort_order}</td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => openEditDialog(task)}
-                          className="p-1.5 rounded-lg hover:bg-[#1F1F1F] text-[#A3A3A3] hover:text-[#DC2626] transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-[#2563EB] transition-colors"
                           title="Edit"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setDeleteId(task.id)}
-                          className="p-1.5 rounded-lg hover:bg-[#1F1F1F] text-[#A3A3A3] hover:text-red-400 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-red-500 transition-colors"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -236,14 +236,14 @@ export default function AdminTasks() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-[#141414] border-[#1F1F1F] max-w-2xl max-h-[85vh] overflow-y-auto">
+        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF] max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-[#F5F5F5]">{editId ? 'Edit Task' : 'Create Task'}</DialogTitle>
+            <DialogTitle className="text-[#1E293B]">{editId ? 'Edit Task' : 'Create Task'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1">Title *</label>
+                <label className="block text-sm text-[#64748B] mb-1">Title *</label>
                 <input
                   className="ev-input w-full px-4 py-2.5"
                   value={form.title}
@@ -252,7 +252,7 @@ export default function AdminTasks() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1">Type *</label>
+                <label className="block text-sm text-[#64748B] mb-1">Type *</label>
                 <select
                   className="ev-input w-full px-4 py-2.5"
                   value={form.type}
@@ -266,7 +266,7 @@ export default function AdminTasks() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1">Reward Amount *</label>
+                <label className="block text-sm text-[#64748B] mb-1">Reward Amount *</label>
                 <input
                   type="number"
                   className="ev-input w-full px-4 py-2.5"
@@ -276,7 +276,7 @@ export default function AdminTasks() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1">Daily Limit</label>
+                <label className="block text-sm text-[#64748B] mb-1">Daily Limit</label>
                 <input
                   type="number"
                   className="ev-input w-full px-4 py-2.5"
@@ -285,7 +285,7 @@ export default function AdminTasks() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1">Sort Order</label>
+                <label className="block text-sm text-[#64748B] mb-1">Sort Order</label>
                 <input
                   type="number"
                   className="ev-input w-full px-4 py-2.5"
@@ -294,28 +294,28 @@ export default function AdminTasks() {
                 />
               </div>
               <div className="flex items-center gap-4 pt-5">
-                <label className="flex items-center gap-2 text-sm text-[#A3A3A3]">
+                <label className="flex items-center gap-2 text-sm text-[#64748B]">
                   <input
                     type="checkbox"
                     checked={form.is_active}
                     onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
-                    className="w-4 h-4 rounded accent-[#DC2626]"
+                    className="w-4 h-4 rounded accent-[#2563EB]"
                   />
                   Active
                 </label>
-                <label className="flex items-center gap-2 text-sm text-[#A3A3A3]">
+                <label className="flex items-center gap-2 text-sm text-[#64748B]">
                   <input
                     type="checkbox"
                     checked={form.proof_required}
                     onChange={(e) => setForm({ ...form, proof_required: e.target.checked })}
-                    className="w-4 h-4 rounded accent-[#DC2626]"
+                    className="w-4 h-4 rounded accent-[#2563EB]"
                   />
                   Proof Required
                 </label>
               </div>
             </div>
             <div>
-              <label className="block text-sm text-[#A3A3A3] mb-1">Description</label>
+              <label className="block text-sm text-[#64748B] mb-1">Description</label>
               <textarea
                 className="ev-input w-full px-4 py-2.5 min-h-[60px]"
                 value={form.description}
@@ -326,7 +326,7 @@ export default function AdminTasks() {
             {(form.type === 'question' || form.type === 'math') && (
               <>
                 <div>
-                  <label className="block text-sm text-[#A3A3A3] mb-1">Question</label>
+                  <label className="block text-sm text-[#64748B] mb-1">Question</label>
                   <input
                     className="ev-input w-full px-4 py-2.5"
                     value={form.question}
@@ -335,7 +335,7 @@ export default function AdminTasks() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-[#A3A3A3] mb-1">Correct Answer</label>
+                  <label className="block text-sm text-[#64748B] mb-1">Correct Answer</label>
                   <input
                     className="ev-input w-full px-4 py-2.5"
                     value={form.correct_answer}
@@ -347,7 +347,7 @@ export default function AdminTasks() {
             )}
             {form.type === 'link_visit' && (
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1">Link URL</label>
+                <label className="block text-sm text-[#64748B] mb-1">Link URL</label>
                 <input
                   className="ev-input w-full px-4 py-2.5"
                   value={form.link_url}
@@ -371,11 +371,11 @@ export default function AdminTasks() {
 
       {/* Delete Confirm Dialog */}
       <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
-        <DialogContent className="bg-[#141414] border-[#1F1F1F]">
+        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
           <DialogHeader>
-            <DialogTitle className="text-[#F5F5F5]">Delete Task</DialogTitle>
+            <DialogTitle className="text-[#1E293B]">Delete Task</DialogTitle>
           </DialogHeader>
-          <p className="text-[#A3A3A3] text-sm">Are you sure you want to delete this task? This action cannot be undone.</p>
+          <p className="text-[#64748B] text-sm">Are you sure you want to delete this task? This action cannot be undone.</p>
           <DialogFooter>
             <button onClick={() => setDeleteId(null)} className="ev-btn-secondary">
               Cancel

@@ -93,19 +93,19 @@ export default function ReferPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-[#DC2626]/30 border-t-[#DC2626] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center">
+        <div className="w-10 h-10 border-3 border-[#2563EB]/30 border-t-[#2563EB] rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pb-24">
+    <div className="min-h-screen bg-[#F0F7FF] pb-24">
       {/* Header */}
-      <div className="bg-[#0A0A0A] border-b border-[#1F1F1F] sticky top-0 z-40">
+      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-lg font-bold text-[#F5F5F5]">Referral Network</h1>
-          <p className="text-xs text-[#737373] mt-0.5">Invite friends and earn rewards</p>
+          <h1 className="text-lg font-bold text-[#1E293B]">Referral Network</h1>
+          <p className="text-xs text-[#64748B] mt-0.5">Invite friends and earn rewards</p>
         </div>
       </div>
 
@@ -113,16 +113,16 @@ export default function ReferPage() {
         {/* Stats */}
         <motion.div className="grid grid-cols-2 gap-3" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="ev-card p-4 text-center">
-            <Users className="w-7 h-7 text-[#DC2626] mx-auto mb-2" />
-            <p className="text-2xl font-bold text-[#F5F5F5]">{referrals.length}</p>
-            <p className="text-xs text-[#737373]">Total Referrals</p>
+            <Users className="w-7 h-7 text-[#2563EB] mx-auto mb-2" />
+            <p className="text-2xl font-bold text-[#1E293B]">{referrals.length}</p>
+            <p className="text-xs text-[#64748B]">Total Referrals</p>
           </div>
           <div className="ev-card p-4 text-center">
             <UserPlus className="w-7 h-7 text-[#10B981] mx-auto mb-2" />
-            <p className="text-2xl font-bold text-[#F5F5F5]">
+            <p className="text-2xl font-bold text-[#1E293B]">
               {referrals.filter((r) => r.referred_user?.package_status === 'Active').length}
             </p>
-            <p className="text-xs text-[#737373]">Active Referrals</p>
+            <p className="text-xs text-[#64748B]">Active Referrals</p>
           </div>
         </motion.div>
 
@@ -137,10 +137,10 @@ export default function ReferPage() {
             <div className="absolute inset-0 ev-gradient-red opacity-5" />
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-4">
-                <Award className="w-5 h-5 text-[#DC2626]" />
-                <h2 className="text-base font-semibold text-[#F5F5F5]">Referral Rewards</h2>
+                <Award className="w-5 h-5 text-[#2563EB]" />
+                <h2 className="text-base font-semibold text-[#1E293B]">Referral Rewards</h2>
               </div>
-              <p className="text-xs text-[#737373] mb-4">
+              <p className="text-xs text-[#64748B] mb-4">
                 Earn different rewards based on how many referrals you have activated. Each level gives you a different reward!
               </p>
               <div className="space-y-2">
@@ -154,7 +154,7 @@ export default function ReferPage() {
                       className={`flex items-center justify-between px-4 py-3 rounded-lg border transition-all ${
                         isActive
                           ? 'bg-[#10B981]/5 border-[#10B981]/20'
-                          : 'bg-[#1A1A1A] border-[#262626]'
+                          : 'bg-[#F0F7FF] border-[#DBEAFE]'
                       }`}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -165,13 +165,13 @@ export default function ReferPage() {
                           className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
                             isActive
                               ? 'bg-[#10B981]/10 text-[#10B981]'
-                              : 'bg-[#262626] text-[#737373]'
+                              : 'bg-[#DBEAFE] text-[#64748B]'
                           }`}
                         >
                           {tier.level}
                         </div>
                         <div>
-                          <p className={`text-sm font-medium ${isActive ? 'text-[#10B981]' : 'text-[#F5F5F5]'}`}>
+                          <p className={`text-sm font-medium ${isActive ? 'text-[#10B981]' : 'text-[#1E293B]'}`}>
                             {getLevelLabel(tier.level)} Referral
                           </p>
                           {isActive && (
@@ -180,8 +180,8 @@ export default function ReferPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <TrendingUp className={`w-3.5 h-3.5 ${isActive ? 'text-[#10B981]' : 'text-[#737373]'}`} />
-                        <span className={`text-sm font-bold ${isActive ? 'text-[#10B981]' : 'text-[#DC2626]'}`}>
+                        <TrendingUp className={`w-3.5 h-3.5 ${isActive ? 'text-[#10B981]' : 'text-[#64748B]'}`} />
+                        <span className={`text-sm font-bold ${isActive ? 'text-[#10B981]' : 'text-[#2563EB]'}`}>
                           Rs {tier.reward_amount}
                         </span>
                       </div>
@@ -189,9 +189,9 @@ export default function ReferPage() {
                   );
                 })}
               </div>
-              <div className="mt-3 pt-3 border-t border-[#262626]">
-                <p className="text-[10px] text-[#737373]">
-                  Total potential: <span className="text-[#DC2626] font-bold">Rs {rewardTiers.reduce((sum, t) => sum + t.reward_amount, 0)}</span> across {rewardTiers.length} levels
+              <div className="mt-3 pt-3 border-t border-[#DBEAFE]">
+                <p className="text-[10px] text-[#64748B]">
+                  Total potential: <span className="text-[#2563EB] font-bold">Rs {rewardTiers.reduce((sum, t) => sum + t.reward_amount, 0)}</span> across {rewardTiers.length} levels
                 </p>
               </div>
             </div>
@@ -202,9 +202,9 @@ export default function ReferPage() {
         <motion.div className="ev-card p-5 relative overflow-hidden" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div className="absolute inset-0 ev-gradient-red opacity-5" />
           <div className="relative z-10">
-            <h2 className="text-base font-semibold text-[#F5F5F5] mb-3">Your Referral Link</h2>
+            <h2 className="text-base font-semibold text-[#1E293B] mb-3">Your Referral Link</h2>
             <div className="flex items-center gap-2">
-              <div className="flex-1 bg-[#1A1A1A] border border-[#262626] rounded-lg px-3 py-2.5 text-sm text-[#737373] truncate">
+              <div className="flex-1 bg-[#F0F7FF] border border-[#DBEAFE] rounded-lg px-3 py-2.5 text-sm text-[#64748B] truncate">
                 {referralLink}
               </div>
               <button
@@ -232,8 +232,8 @@ export default function ReferPage() {
         {user?.referral_code && (
           <motion.div className="ev-card p-4 flex items-center justify-between" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div>
-              <p className="text-xs text-[#737373]">Referral Code</p>
-              <p className="text-lg font-bold text-[#DC2626]">{user.referral_code}</p>
+              <p className="text-xs text-[#64748B]">Referral Code</p>
+              <p className="text-lg font-bold text-[#2563EB]">{user.referral_code}</p>
             </div>
             <button
               onClick={async () => {
@@ -244,7 +244,7 @@ export default function ReferPage() {
                   addToast('Failed to copy', 'error');
                 }
               }}
-              className="text-sm text-[#737373] hover:text-[#F5F5F5] flex items-center gap-1"
+              className="text-sm text-[#64748B] hover:text-[#1E293B] flex items-center gap-1"
             >
               <Copy className="w-4 h-4" /> Copy
             </button>
@@ -253,7 +253,7 @@ export default function ReferPage() {
 
         {/* Referral List */}
         <div>
-          <h2 className="text-base font-semibold text-[#F5F5F5] mb-3">Your Referrals</h2>
+          <h2 className="text-base font-semibold text-[#1E293B] mb-3">Your Referrals</h2>
           {referrals.length > 0 ? (
             <div className="space-y-3">
               {referrals.map((ref, i) => (
@@ -265,14 +265,14 @@ export default function ReferPage() {
                   transition={{ delay: i * 0.03 }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#1A1A1A] rounded-full flex items-center justify-center text-sm font-bold text-[#DC2626]">
+                    <div className="w-10 h-10 bg-[#F0F7FF] rounded-full flex items-center justify-center text-sm font-bold text-[#2563EB]">
                       {ref.referred_user?.username?.charAt(0).toUpperCase() || '?'}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-[#F5F5F5] truncate">
+                      <p className="text-sm font-medium text-[#1E293B] truncate">
                         {ref.referred_user?.first_name} {ref.referred_user?.last_name}
                       </p>
-                      <p className="text-xs text-[#737373]">@{ref.referred_user?.username}</p>
+                      <p className="text-xs text-[#64748B]">@{ref.referred_user?.username}</p>
                     </div>
                     <div className="text-right">
                       <span
@@ -284,7 +284,7 @@ export default function ReferPage() {
                       >
                         {ref.referred_user?.package_status || 'Inactive'}
                       </span>
-                      <p className="text-[10px] text-[#737373] mt-0.5">
+                      <p className="text-[10px] text-[#64748B] mt-0.5">
                         Reward: {ref.reward_status === 'Paid' ? 'Paid' : 'Pending'}
                       </p>
                     </div>
@@ -293,7 +293,7 @@ export default function ReferPage() {
               ))}
             </div>
           ) : (
-            <div className="ev-card p-8 flex flex-col items-center text-[#737373]">
+            <div className="ev-card p-8 flex flex-col items-center text-[#64748B]">
               <Inbox className="w-10 h-10 mb-2" />
               <p className="text-sm">No referrals yet</p>
               <p className="text-xs mt-1">Share your link to start building your network</p>

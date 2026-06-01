@@ -187,7 +187,7 @@ export default function AdminSettings() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#DC2626]" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#2563EB]" />
       </div>
     );
   }
@@ -196,8 +196,8 @@ export default function AdminSettings() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#F5F5F5]">Settings</h1>
-          <p className="text-[#737373] text-sm mt-1">Manage platform settings</p>
+          <h1 className="text-2xl font-bold text-[#1E293B]">Settings</h1>
+          <p className="text-[#64748B] text-sm mt-1">Manage platform settings</p>
         </div>
         <button onClick={handleSave} disabled={saving} className="ev-btn-primary flex items-center gap-2">
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
@@ -208,14 +208,14 @@ export default function AdminSettings() {
       <div className="space-y-6">
         {sections.map((section) => (
           <div key={section.key} className="ev-card p-6">
-            <h2 className="text-lg font-semibold text-[#F5F5F5] mb-4 flex items-center gap-2">
-              <span className="text-[#DC2626]">{section.icon}</span>
+            <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
+              <span className="text-[#2563EB]">{section.icon}</span>
               {section.label}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {section.fields.map((field) => (
                 <div key={field.key} className={field.type === 'textarea' ? 'md:col-span-2' : ''}>
-                  <label className="block text-sm text-[#A3A3A3] mb-1">{field.label}</label>
+                  <label className="block text-sm text-[#64748B] mb-1">{field.label}</label>
                   {field.type === 'textarea' ? (
                     <textarea
                       className="ev-input w-full px-4 py-2.5 min-h-[60px]"
@@ -227,7 +227,7 @@ export default function AdminSettings() {
                     <label className="flex items-center gap-3 py-2.5">
                       <div
                         className={`relative w-10 h-6 rounded-full transition-colors cursor-pointer ${
-                          settings[field.key] === 'true' ? 'bg-[#DC2626]' : 'bg-[#262626]'
+                          settings[field.key] === 'true' ? 'bg-[#2563EB]' : 'bg-[#DBEAFE]'
                         }`}
                         onClick={() => handleChange(field.key, settings[field.key] === 'true' ? 'false' : 'true')}
                       >
@@ -237,7 +237,7 @@ export default function AdminSettings() {
                           }`}
                         />
                       </div>
-                      <span className="text-sm text-[#A3A3A3]">
+                      <span className="text-sm text-[#64748B]">
                         {settings[field.key] === 'true' ? 'Enabled' : 'Disabled'}
                       </span>
                     </label>
@@ -258,7 +258,7 @@ export default function AdminSettings() {
       </div>
 
       {/* Sticky save button on mobile */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-[#0A0A0A] border-t border-[#1F1F1F] z-20">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-[#F0F7FF] border-t border-[#EFF6FF] z-20">
         <button onClick={handleSave} disabled={saving} className="ev-btn-primary w-full flex items-center justify-center gap-2">
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
           Save Settings

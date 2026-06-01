@@ -114,7 +114,7 @@ export default function WithdrawPage() {
         );
       case 'Rejected':
         return (
-          <span className="inline-flex items-center gap-1 bg-[#DC2626]/10 text-[#DC2626] border border-[#DC2626]/30 rounded-full px-2.5 py-0.5 text-xs font-medium">
+          <span className="inline-flex items-center gap-1 bg-[#2563EB]/10 text-[#2563EB] border border-[#2563EB]/30 rounded-full px-2.5 py-0.5 text-xs font-medium">
             <XCircle className="w-3 h-3" /> Rejected
           </span>
         );
@@ -129,24 +129,24 @@ export default function WithdrawPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-[#DC2626]/30 border-t-[#DC2626] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center">
+        <div className="w-10 h-10 border-3 border-[#2563EB]/30 border-t-[#2563EB] rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!isActive) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] pb-24">
-        <div className="bg-[#0A0A0A] border-b border-[#1F1F1F] sticky top-0 z-40">
+      <div className="min-h-screen bg-[#F0F7FF] pb-24">
+        <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
           <div className="max-w-4xl mx-auto px-4 py-4">
-            <h1 className="text-lg font-bold text-[#F5F5F5]">Withdraw</h1>
+            <h1 className="text-lg font-bold text-[#1E293B]">Withdraw</h1>
           </div>
         </div>
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <AlertTriangle className="w-14 h-14 text-[#F59E0B] mx-auto mb-4" />
-          <h2 className="text-lg font-semibold text-[#F5F5F5] mb-2">Account Not Active</h2>
-          <p className="text-sm text-[#737373] mb-6">Activate your account to withdraw earnings</p>
+          <h2 className="text-lg font-semibold text-[#1E293B] mb-2">Account Not Active</h2>
+          <p className="text-sm text-[#64748B] mb-6">Activate your account to withdraw earnings</p>
           <button onClick={() => navigate('activation')} className="ev-btn-primary px-6 py-2.5 text-sm">
             Activate Now
           </button>
@@ -156,12 +156,12 @@ export default function WithdrawPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pb-24">
+    <div className="min-h-screen bg-[#F0F7FF] pb-24">
       {/* Header */}
-      <div className="bg-[#0A0A0A] border-b border-[#1F1F1F] sticky top-0 z-40">
+      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-lg font-bold text-[#F5F5F5]">Withdraw</h1>
-          <p className="text-xs text-[#737373] mt-0.5">Withdraw your earnings</p>
+          <h1 className="text-lg font-bold text-[#1E293B]">Withdraw</h1>
+          <p className="text-xs text-[#64748B] mt-0.5">Withdraw your earnings</p>
         </div>
       </div>
 
@@ -174,21 +174,21 @@ export default function WithdrawPage() {
               <Wallet className="w-6 h-6 text-white" />
             </div>
             <div>
-              <p className="text-sm text-[#737373]">Available Balance</p>
-              <p className="text-2xl font-bold text-[#F5F5F5]">Rs. {balance.toLocaleString()}</p>
+              <p className="text-sm text-[#64748B]">Available Balance</p>
+              <p className="text-2xl font-bold text-[#1E293B]">Rs. {balance.toLocaleString()}</p>
             </div>
           </div>
         </motion.div>
 
         {/* Withdraw Form */}
         <motion.div className="ev-card p-5" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <h2 className="text-base font-semibold text-[#F5F5F5] mb-4">Request Withdrawal</h2>
-          <p className="text-xs text-[#737373] mb-4">
-            Minimum withdrawal: <span className="text-[#DC2626] font-semibold">Rs. {minWithdraw}</span>
+          <h2 className="text-base font-semibold text-[#1E293B] mb-4">Request Withdrawal</h2>
+          <p className="text-xs text-[#64748B] mb-4">
+            Minimum withdrawal: <span className="text-[#2563EB] font-semibold">Rs. {minWithdraw}</span>
           </p>
           <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1.5">Amount (Rs.)</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1.5">Amount (Rs.)</label>
               <input
                 type="number"
                 value={form.amount}
@@ -201,7 +201,7 @@ export default function WithdrawPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1.5">Payment Method</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1.5">Payment Method</label>
               <select
                 value={form.method}
                 onChange={(e) => setForm({ ...form, method: e.target.value })}
@@ -216,7 +216,7 @@ export default function WithdrawPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1.5">Account Holder Name</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1.5">Account Holder Name</label>
               <input
                 value={form.account_title}
                 onChange={(e) => setForm({ ...form, account_title: e.target.value })}
@@ -226,7 +226,7 @@ export default function WithdrawPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1.5">Account Number</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1.5">Account Number</label>
               <input
                 value={form.account_number}
                 onChange={(e) => setForm({ ...form, account_number: e.target.value })}
@@ -253,25 +253,25 @@ export default function WithdrawPage() {
 
         {/* Existing Requests */}
         <div>
-          <h2 className="text-base font-semibold text-[#F5F5F5] mb-3">Withdrawal History</h2>
+          <h2 className="text-base font-semibold text-[#1E293B] mb-3">Withdrawal History</h2>
           {requests.length > 0 ? (
             <div className="space-y-3">
               {requests.map((req) => (
                 <div key={req.id} className="ev-card p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-[#F5F5F5]">Rs. {req.amount.toLocaleString()}</span>
+                    <span className="text-sm font-semibold text-[#1E293B]">Rs. {req.amount.toLocaleString()}</span>
                     {statusBadge(req.status)}
                   </div>
-                  <div className="grid grid-cols-2 gap-y-1 text-xs text-[#737373]">
+                  <div className="grid grid-cols-2 gap-y-1 text-xs text-[#64748B]">
                     <span>Method:</span>
-                    <span className="text-[#F5F5F5]">{req.method}</span>
+                    <span className="text-[#1E293B]">{req.method}</span>
                     <span>Account:</span>
-                    <span className="text-[#F5F5F5]">{req.account_title}</span>
+                    <span className="text-[#1E293B]">{req.account_title}</span>
                     <span>Date:</span>
-                    <span className="text-[#F5F5F5]">{new Date(req.created_at).toLocaleDateString()}</span>
+                    <span className="text-[#1E293B]">{new Date(req.created_at).toLocaleDateString()}</span>
                   </div>
                   {req.admin_note && (
-                    <p className="text-xs text-[#DC2626] mt-2 border-t border-[#1F1F1F] pt-2">
+                    <p className="text-xs text-[#2563EB] mt-2 border-t border-[#EFF6FF] pt-2">
                       Note: {req.admin_note}
                     </p>
                   )}
@@ -279,7 +279,7 @@ export default function WithdrawPage() {
               ))}
             </div>
           ) : (
-            <div className="ev-card p-8 flex flex-col items-center text-[#737373]">
+            <div className="ev-card p-8 flex flex-col items-center text-[#64748B]">
               <Inbox className="w-10 h-10 mb-2" />
               <p className="text-sm">No withdrawal requests yet</p>
             </div>

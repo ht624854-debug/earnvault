@@ -92,7 +92,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-[#F0F7FF] flex flex-col items-center justify-center px-4 py-8">
       <motion.div
         className="w-full max-w-md"
         initial={{ opacity: 0, y: 20 }}
@@ -104,8 +104,8 @@ export default function RegisterPage() {
           <div className="w-14 h-14 ev-gradient-red rounded-2xl flex items-center justify-center mx-auto mb-4 ev-glow-red">
             <DollarSign className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-[#F5F5F5]">Create Account</h1>
-          <p className="text-[#737373] text-sm mt-1">Join {brandName} and start earning</p>
+          <h1 className="text-2xl font-bold text-[#1E293B]">Create Account</h1>
+          <p className="text-[#64748B] text-sm mt-1">Join {brandName} and start earning</p>
         </div>
 
         {/* Form */}
@@ -113,29 +113,29 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-3.5">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-[#737373] mb-1">First Name</label>
+                <label className="block text-sm font-medium text-[#64748B] mb-1">First Name</label>
                 <input
                   value={form.first_name}
                   onChange={(e) => updateField('first_name', e.target.value)}
                   placeholder="First name"
                   className="ev-input w-full px-3 py-2.5 text-sm"
                 />
-                {errors.first_name && <p className="text-xs text-[#DC2626] mt-1">{errors.first_name}</p>}
+                {errors.first_name && <p className="text-xs text-[#2563EB] mt-1">{errors.first_name}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#737373] mb-1">Last Name</label>
+                <label className="block text-sm font-medium text-[#64748B] mb-1">Last Name</label>
                 <input
                   value={form.last_name}
                   onChange={(e) => updateField('last_name', e.target.value)}
                   placeholder="Last name"
                   className="ev-input w-full px-3 py-2.5 text-sm"
                 />
-                {errors.last_name && <p className="text-xs text-[#DC2626] mt-1">{errors.last_name}</p>}
+                {errors.last_name && <p className="text-xs text-[#2563EB] mt-1">{errors.last_name}</p>}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1">Email</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1">Email</label>
               <input
                 type="email"
                 value={form.email}
@@ -144,11 +144,11 @@ export default function RegisterPage() {
                 className="ev-input w-full px-4 py-2.5 text-sm"
                 autoComplete="email"
               />
-              {errors.email && <p className="text-xs text-[#DC2626] mt-1">{errors.email}</p>}
+              {errors.email && <p className="text-xs text-[#2563EB] mt-1">{errors.email}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1">Username</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1">Username</label>
               <input
                 value={form.username}
                 onChange={(e) => updateField('username', e.target.value)}
@@ -156,13 +156,13 @@ export default function RegisterPage() {
                 className="ev-input w-full px-4 py-2.5 text-sm"
                 autoComplete="username"
               />
-              {errors.username && <p className="text-xs text-[#DC2626] mt-1">{errors.username}</p>}
+              {errors.username && <p className="text-xs text-[#2563EB] mt-1">{errors.username}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1">Mobile Number</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1">Mobile Number</label>
               <div className="flex">
-                <span className="bg-[#1A1A1A] border border-r-0 border-[#262626] rounded-l-lg px-3 py-2.5 text-sm text-[#737373] flex items-center">
+                <span className="bg-[#F0F7FF] border border-r-0 border-[#DBEAFE] rounded-l-lg px-3 py-2.5 text-sm text-[#64748B] flex items-center">
                   +92
                 </span>
                 <input
@@ -173,11 +173,11 @@ export default function RegisterPage() {
                   autoComplete="tel"
                 />
               </div>
-              {errors.mobile && <p className="text-xs text-[#DC2626] mt-1">{errors.mobile}</p>}
+              {errors.mobile && <p className="text-xs text-[#2563EB] mt-1">{errors.mobile}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1">Password</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -190,16 +190,16 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737373] hover:text-[#F5F5F5]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-[#1E293B]"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              {errors.password && <p className="text-xs text-[#DC2626] mt-1">{errors.password}</p>}
+              {errors.password && <p className="text-xs text-[#2563EB] mt-1">{errors.password}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1">Confirm Password</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1">Confirm Password</label>
               <input
                 type="password"
                 value={form.confirm_password}
@@ -208,12 +208,12 @@ export default function RegisterPage() {
                 className="ev-input w-full px-4 py-2.5 text-sm"
                 autoComplete="new-password"
               />
-              {errors.confirm_password && <p className="text-xs text-[#DC2626] mt-1">{errors.confirm_password}</p>}
+              {errors.confirm_password && <p className="text-xs text-[#2563EB] mt-1">{errors.confirm_password}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#737373] mb-1">
-                Referral Code <span className="text-[#525252]">(optional)</span>
+              <label className="block text-sm font-medium text-[#64748B] mb-1">
+                Referral Code <span className="text-[#94A3B8]">(optional)</span>
               </label>
               <input
                 value={form.referral_code}
@@ -245,9 +245,9 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="mt-4 text-center text-sm text-[#737373]">
+          <p className="mt-4 text-center text-sm text-[#64748B]">
             Already have an account?{' '}
-            <button onClick={() => navigate('login')} className="text-[#DC2626] hover:underline font-medium">
+            <button onClick={() => navigate('login')} className="text-[#2563EB] hover:underline font-medium">
               Sign In
             </button>
           </p>
@@ -255,7 +255,7 @@ export default function RegisterPage() {
 
         <button
           onClick={() => navigate('landing')}
-          className="block mx-auto mt-6 text-sm text-[#737373] hover:text-[#F5F5F5] transition-colors"
+          className="block mx-auto mt-6 text-sm text-[#64748B] hover:text-[#1E293B] transition-colors"
         >
           &larr; Back to Home
         </button>

@@ -32,10 +32,10 @@ interface DashboardStats {
 }
 
 const statCards: { key: keyof DashboardStats; label: string; icon: React.ReactNode; color: string }[] = [
-  { key: 'totalUsers', label: 'Total Users', icon: <Users className="w-5 h-5" />, color: 'text-blue-400' },
-  { key: 'activeUsers', label: 'Active Users', icon: <UserCheck className="w-5 h-5" />, color: 'text-green-400' },
-  { key: 'inactiveUsers', label: 'Inactive Users', icon: <UserX className="w-5 h-5" />, color: 'text-yellow-400' },
-  { key: 'blockedUsers', label: 'Blocked Users', icon: <Ban className="w-5 h-5" />, color: 'text-red-400' },
+  { key: 'totalUsers', label: 'Total Users', icon: <Users className="w-5 h-5" />, color: 'text-blue-700' },
+  { key: 'activeUsers', label: 'Active Users', icon: <UserCheck className="w-5 h-5" />, color: 'text-green-600' },
+  { key: 'inactiveUsers', label: 'Inactive Users', icon: <UserX className="w-5 h-5" />, color: 'text-yellow-600' },
+  { key: 'blockedUsers', label: 'Blocked Users', icon: <Ban className="w-5 h-5" />, color: 'text-red-600' },
   { key: 'pendingActivations', label: 'Pending Activations', icon: <Zap className="w-5 h-5" />, color: 'text-orange-400' },
   { key: 'pendingWithdrawals', label: 'Pending Withdrawals', icon: <Wallet className="w-5 h-5" />, color: 'text-purple-400' },
   { key: 'totalApprovedWithdrawals', label: 'Approved Withdrawals', icon: <CheckCircle className="w-5 h-5" />, color: 'text-emerald-400' },
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#DC2626]" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#2563EB]" />
       </div>
     );
   }
@@ -78,8 +78,8 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#F5F5F5]">Dashboard</h1>
-          <p className="text-[#737373] text-sm mt-1">Overview of your platform</p>
+          <h1 className="text-2xl font-bold text-[#1E293B]">Dashboard</h1>
+          <p className="text-[#64748B] text-sm mt-1">Overview of your platform</p>
         </div>
         <button onClick={loadDashboard} className="ev-btn-secondary text-sm flex items-center gap-2">
           <TrendingUp className="w-4 h-4" />
@@ -89,18 +89,18 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {statCards.map((card) => (
-          <div key={card.key} className="ev-card p-4 hover:border-[#DC2626]/30 transition-colors">
+          <div key={card.key} className="ev-card p-4 hover:border-[#2563EB]/30 transition-colors">
             <div className="flex items-center justify-between mb-3">
               <span className={`${card.color}`}>{card.icon}</span>
             </div>
-            <p className="text-2xl font-bold text-[#F5F5F5]">{stats?.[card.key]?.toLocaleString() ?? '0'}</p>
-            <p className="text-xs text-[#737373] mt-1">{card.label}</p>
+            <p className="text-2xl font-bold text-[#1E293B]">{stats?.[card.key]?.toLocaleString() ?? '0'}</p>
+            <p className="text-xs text-[#64748B] mt-1">{card.label}</p>
           </div>
         ))}
       </div>
 
       <div className="ev-card p-6">
-        <h2 className="text-lg font-semibold text-[#F5F5F5] mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-[#1E293B] mb-4">Quick Actions</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <button
             onClick={() => navigate('admin-users')}

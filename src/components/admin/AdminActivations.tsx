@@ -105,11 +105,11 @@ export default function AdminActivations() {
     const s = status?.toLowerCase();
     switch (s) {
       case 'approved':
-        return <Badge className="bg-green-500/10 text-green-400 border-green-500/20">Approved</Badge>;
+        return <Badge className="bg-green-500/10 text-green-600 border-green-500/20">Approved</Badge>;
       case 'rejected':
-        return <Badge className="bg-red-500/10 text-red-400 border-red-500/20">Rejected</Badge>;
+        return <Badge className="bg-red-500/10 text-red-600 border-red-500/20">Rejected</Badge>;
       case 'pending':
-        return <Badge className="bg-yellow-500/10 text-yellow-400 border-yellow-500/20">Pending</Badge>;
+        return <Badge className="bg-yellow-500/10 text-yellow-600 border-yellow-500/20">Pending</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -118,8 +118,8 @@ export default function AdminActivations() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#F5F5F5]">Activation Requests</h1>
-        <p className="text-[#737373] text-sm mt-1">Review and manage user activation requests</p>
+        <h1 className="text-2xl font-bold text-[#1E293B]">Activation Requests</h1>
+        <p className="text-[#64748B] text-sm mt-1">Review and manage user activation requests</p>
       </div>
 
       {/* Filters */}
@@ -131,8 +131,8 @@ export default function AdminActivations() {
               onClick={() => setFilter(f.value)}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 filter === f.value
-                  ? 'bg-[#DC2626]/10 text-[#DC2626] border border-[#DC2626]/30'
-                  : 'bg-[#1A1A1A] text-[#A3A3A3] border border-[#262626] hover:bg-[#1F1F1F]'
+                  ? 'bg-[#2563EB]/10 text-[#2563EB] border border-[#2563EB]/30'
+                  : 'bg-[#F0F7FF] text-[#64748B] border border-[#DBEAFE] hover:bg-[#EFF6FF]'
               }`}
             >
               {f.label}
@@ -145,10 +145,10 @@ export default function AdminActivations() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#DC2626]" />
+            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
           </div>
         ) : requests.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#737373]">
+          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
             <Zap className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No activation requests found</p>
           </div>
@@ -156,46 +156,46 @@ export default function AdminActivations() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1F1F1F]">
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">User</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Amount</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Payment Method</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Sender Name</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Sender Number</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Transaction ID</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Proof</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Status</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Date</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Actions</th>
+                <tr className="border-b border-[#EFF6FF]">
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">User</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Amount</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Payment Method</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Sender Name</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Sender Number</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Transaction ID</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Proof</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Status</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Date</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {requests.map((req) => (
-                  <tr key={req.id} className="border-b border-[#1F1F1F] hover:bg-[#1A1A1A] transition-colors">
-                    <td className="py-3 px-4 text-[#F5F5F5]">
+                  <tr key={req.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
+                    <td className="py-3 px-4 text-[#1E293B]">
                       {req.user?.first_name} {req.user?.last_name}
-                      <span className="text-[#737373] text-xs block">@{req.user?.username}</span>
+                      <span className="text-[#64748B] text-xs block">@{req.user?.username}</span>
                     </td>
-                    <td className="py-3 px-4 text-[#F5F5F5] font-medium">Rs. {req.amount}</td>
-                    <td className="py-3 px-4 text-[#A3A3A3]">{req.payment_method}</td>
-                    <td className="py-3 px-4 text-[#A3A3A3]">{req.sender_name}</td>
-                    <td className="py-3 px-4 text-[#A3A3A3]">{req.sender_number}</td>
-                    <td className="py-3 px-4 text-[#A3A3A3] font-mono text-xs">{req.transaction_id}</td>
+                    <td className="py-3 px-4 text-[#1E293B] font-medium">Rs. {req.amount}</td>
+                    <td className="py-3 px-4 text-[#64748B]">{req.payment_method}</td>
+                    <td className="py-3 px-4 text-[#64748B]">{req.sender_name}</td>
+                    <td className="py-3 px-4 text-[#64748B]">{req.sender_number}</td>
+                    <td className="py-3 px-4 text-[#64748B] font-mono text-xs">{req.transaction_id}</td>
                     <td className="py-3 px-4">
                       {req.proof_image ? (
                         <button
                           onClick={() => setProofImage(req.proof_image)}
-                          className="p-1.5 rounded-lg hover:bg-[#1F1F1F] text-[#DC2626] transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#2563EB] transition-colors"
                           title="View proof"
                         >
                           <ImageIcon className="w-4 h-4" />
                         </button>
                       ) : (
-                        <span className="text-[#525252]">—</span>
+                        <span className="text-[#94A3B8]">—</span>
                       )}
                     </td>
                     <td className="py-3 px-4">{getStatusBadge(req.status)}</td>
-                    <td className="py-3 px-4 text-[#737373] text-xs">
+                    <td className="py-3 px-4 text-[#64748B] text-xs">
                       {new Date(req.created_at).toLocaleDateString()}
                     </td>
                     <td className="py-3 px-4">
@@ -204,7 +204,7 @@ export default function AdminActivations() {
                           <button
                             onClick={() => handleApprove(req.id)}
                             disabled={actionLoading === req.id}
-                            className="p-1.5 rounded-lg bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-colors disabled:opacity-50"
+                            className="p-1.5 rounded-lg bg-green-500/10 text-green-600 hover:bg-green-500/20 transition-colors disabled:opacity-50"
                             title="Approve"
                           >
                             {actionLoading === req.id ? (
@@ -215,7 +215,7 @@ export default function AdminActivations() {
                           </button>
                           <button
                             onClick={() => setRejectDialog(req.id)}
-                            className="p-1.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
+                            className="p-1.5 rounded-lg bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors"
                             title="Reject"
                           >
                             <X className="w-4 h-4" />
@@ -233,12 +233,12 @@ export default function AdminActivations() {
 
       {/* Reject Dialog */}
       <Dialog open={!!rejectDialog} onOpenChange={() => setRejectDialog(null)}>
-        <DialogContent className="bg-[#141414] border-[#1F1F1F]">
+        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
           <DialogHeader>
-            <DialogTitle className="text-[#F5F5F5]">Reject Activation</DialogTitle>
+            <DialogTitle className="text-[#1E293B]">Reject Activation</DialogTitle>
           </DialogHeader>
           <div>
-            <label className="block text-sm text-[#A3A3A3] mb-1">Rejection Reason</label>
+            <label className="block text-sm text-[#64748B] mb-1">Rejection Reason</label>
             <textarea
               className="ev-input w-full px-4 py-2.5 min-h-[80px]"
               placeholder="Enter reason for rejection"
@@ -259,9 +259,9 @@ export default function AdminActivations() {
 
       {/* Proof Image Dialog */}
       <Dialog open={!!proofImage} onOpenChange={() => setProofImage(null)}>
-        <DialogContent className="bg-[#141414] border-[#1F1F1F] max-w-2xl">
+        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF] max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="text-[#F5F5F5]">Payment Proof</DialogTitle>
+            <DialogTitle className="text-[#1E293B]">Payment Proof</DialogTitle>
           </DialogHeader>
           {proofImage && (
             <div className="relative">

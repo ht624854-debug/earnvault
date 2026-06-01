@@ -31,20 +31,20 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0A0A0A] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#F0F7FF] px-4">
       <div className="w-full max-w-md">
         <div className="ev-card p-8">
           <div className="flex flex-col items-center mb-8">
             <div className="w-16 h-16 rounded-full ev-gradient-red flex items-center justify-center mb-4 ev-glow-red">
               <Shield className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-[#F5F5F5]">Admin Panel</h1>
-            <p className="text-[#737373] mt-1 text-sm">Sign in to manage EarnVault</p>
+            <h1 className="text-2xl font-bold text-[#1E293B]">Admin Panel</h1>
+            <p className="text-[#64748B] mt-1 text-sm">Sign in to manage EarnVault</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#A3A3A3] mb-1.5">Username</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1.5">Username</label>
               <input
                 type="text"
                 className="ev-input w-full px-4 py-2.5"
@@ -55,7 +55,7 @@ export default function AdminLoginPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#A3A3A3] mb-1.5">Password</label>
+              <label className="block text-sm font-medium text-[#64748B] mb-1.5">Password</label>
               <input
                 type="password"
                 className="ev-input w-full px-4 py-2.5"
@@ -84,7 +84,7 @@ export default function AdminLoginPage() {
           <div className="mt-6 text-center">
             <button
               onClick={() => navigate('landing')}
-              className="text-[#737373] hover:text-[#DC2626] transition-colors text-sm inline-flex items-center gap-1"
+              className="text-[#64748B] hover:text-[#2563EB] transition-colors text-sm inline-flex items-center gap-1"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Back to main site

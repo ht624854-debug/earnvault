@@ -136,3 +136,29 @@ Stage Summary:
 - Referral link is now a full clickable URL: https://oryndelux.com/register?ref=CODE
 - When someone clicks the link, website opens and referral code auto-fills in register form
 - Both ?ref= and ?reference= URL parameters are supported
+
+---
+Task ID: 6
+Agent: Main
+Task: Change entire theme from dark red to light blue/white
+
+Work Log:
+- Updated globals.css: All CSS variables changed from dark to light blue/white
+  - Background: #0A0A0A → #F0F7FF (light blue)
+  - Cards: #141414 → #FFFFFF (white)
+  - Borders: #1F1F1F/#262626 → #EFF6FF/#DBEAFE (blue borders)
+  - Text: #F5F5F5 → #1E293B (dark slate)
+  - Accent: #DC2626 → #2563EB (blue)
+  - Updated all utility classes: ev-card, ev-input, ev-btn-primary, ev-btn-secondary, scrollbar
+- Updated all 12 user components (LandingPage, LoginPage, RegisterPage, DashboardPage, TasksPage, ActivationPage, WithdrawPage, ReferPage, RewardsPage, ProfilePage, SupportPage, DownloadPage)
+- Updated all 3 shared components (BottomNav, Toast, WhatsAppPopup)
+- Updated all 18 admin components (AdminLoginPage, AdminLayout, AdminDashboard, AdminUsers, AdminUserDetail, AdminActivations, AdminWithdrawals, AdminTasks, AdminTaskSubmissions, AdminSettings, AdminPaymentMethods, AdminRewardCampaigns, AdminTransactions, AdminAuditLogs, AdminSupport, AdminReferrals, AdminReferralTiers, AdminSecurity)
+- Updated page.tsx loading screen and main background
+- Verified zero remaining old dark colors in any .tsx file
+- Lint passes cleanly
+
+Stage Summary:
+- Complete theme overhaul: Dark Red → Light Blue/White
+- All 33+ component files updated
+- Color scheme: Light blue backgrounds (#F0F7FF), white cards, blue accent (#2563EB), dark text (#1E293B)
+- Zero old dark colors remaining

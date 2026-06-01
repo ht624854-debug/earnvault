@@ -50,7 +50,7 @@ export default function WhatsAppPopup() {
           onClick={handleDismiss}
         >
           <motion.div
-            className="w-full max-w-sm bg-[#141414] border border-[#1F1F1F] rounded-2xl p-5 relative"
+            className="w-full max-w-sm bg-[#FFFFFF] border border-[#EFF6FF] rounded-2xl p-5 relative"
             initial={{ y: 80, opacity: 0, scale: 0.95 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 80, opacity: 0, scale: 0.95 }}
@@ -59,7 +59,7 @@ export default function WhatsAppPopup() {
           >
             <button
               onClick={handleDismiss}
-              className="absolute top-3 right-3 w-7 h-7 bg-[#1A1A1A] rounded-full flex items-center justify-center text-[#737373] hover:text-[#F5F5F5] transition-colors"
+              className="absolute top-3 right-3 w-7 h-7 bg-[#F0F7FF] rounded-full flex items-center justify-center text-[#64748B] hover:text-[#1E293B] transition-colors"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -69,11 +69,11 @@ export default function WhatsAppPopup() {
                 <MessageCircle className="w-7 h-7 text-[#25D366]" />
               </div>
 
-              <h3 className="text-lg font-bold text-[#F5F5F5] mb-2">
+              <h3 className="text-lg font-bold text-[#1E293B] mb-2">
                 {settings.whatsapp_title || 'Join Our Community'}
               </h3>
 
-              <p className="text-sm text-[#737373] mb-5">
+              <p className="text-sm text-[#64748B] mb-5">
                 {settings.whatsapp_description || 'Stay updated with the latest news and exclusive offers!'}
               </p>
 
@@ -86,7 +86,7 @@ export default function WhatsAppPopup() {
 
               <button
                 onClick={handleDismiss}
-                className="text-sm text-[#525252] hover:text-[#737373] transition-colors"
+                className="text-sm text-[#94A3B8] hover:text-[#64748B] transition-colors"
               >
                 Maybe Later
               </button>

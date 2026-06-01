@@ -41,49 +41,49 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-ev-red: #DC2626;
-  --color-ev-red-dark: #991B1B;
-  --color-ev-red-light: #EF4444;
-  --color-ev-bg: #0A0A0A;
-  --color-ev-card: #141414;
-  --color-ev-card-border: #1F1F1F;
-  --color-ev-text: #F5F5F5;
-  --color-ev-muted: #737373;
+  --color-ev-blue: #2563EB;
+  --color-ev-blue-dark: #1D4ED8;
+  --color-ev-blue-light: #3B82F6;
+  --color-ev-bg: #F0F7FF;
+  --color-ev-card: #FFFFFF;
+  --color-ev-card-border: #DBEAFE;
+  --color-ev-text: #1E293B;
+  --color-ev-muted: #64748B;
 }
 
 :root {
   --radius: 0.75rem;
-  --background: #0A0A0A;
-  --foreground: #F5F5F5;
-  --card: #141414;
-  --card-foreground: #F5F5F5;
-  --popover: #141414;
-  --popover-foreground: #F5F5F5;
-  --primary: #DC2626;
+  --background: #F0F7FF;
+  --foreground: #1E293B;
+  --card: #FFFFFF;
+  --card-foreground: #1E293B;
+  --popover: #FFFFFF;
+  --popover-foreground: #1E293B;
+  --primary: #2563EB;
   --primary-foreground: #FFFFFF;
-  --secondary: #1F1F1F;
-  --secondary-foreground: #F5F5F5;
-  --muted: #1A1A1A;
-  --muted-foreground: #737373;
-  --accent: #1F1F1F;
-  --accent-foreground: #F5F5F5;
-  --destructive: #991B1B;
-  --border: #262626;
-  --input: #1F1F1F;
-  --ring: #DC2626;
-  --chart-1: #DC2626;
-  --chart-2: #EF4444;
-  --chart-3: #F87171;
-  --chart-4: #FCA5A5;
-  --chart-5: #FECACA;
-  --sidebar: #0A0A0A;
-  --sidebar-foreground: #F5F5F5;
-  --sidebar-primary: #DC2626;
+  --secondary: #EFF6FF;
+  --secondary-foreground: #1E293B;
+  --muted: #F0F7FF;
+  --muted-foreground: #64748B;
+  --accent: #EFF6FF;
+  --accent-foreground: #1E293B;
+  --destructive: #DC2626;
+  --border: #DBEAFE;
+  --input: #E2E8F0;
+  --ring: #2563EB;
+  --chart-1: #2563EB;
+  --chart-2: #3B82F6;
+  --chart-3: #60A5FA;
+  --chart-4: #93C5FD;
+  --chart-5: #BFDBFE;
+  --sidebar: #F0F7FF;
+  --sidebar-foreground: #1E293B;
+  --sidebar-primary: #2563EB;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #1F1F1F;
-  --sidebar-accent-foreground: #F5F5F5;
-  --sidebar-border: #262626;
-  --sidebar-ring: #DC2626;
+  --sidebar-accent: #EFF6FF;
+  --sidebar-accent-foreground: #1E293B;
+  --sidebar-border: #DBEAFE;
+  --sidebar-ring: #2563EB;
 }
 
 @layer base {
@@ -91,52 +91,52 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-[#0A0A0A] text-[#F5F5F5];
+    @apply bg-[#F0F7FF] text-[#1E293B];
     font-family: var(--font-sans), system-ui, sans-serif;
   }
 }
 
 @layer utilities {
   .ev-gradient-red {
-    background: linear-gradient(135deg, #DC2626, #991B1B);
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
   }
   .ev-gradient-red-hover {
-    background: linear-gradient(135deg, #EF4444, #DC2626);
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
   }
   .ev-glow-red {
-    box-shadow: 0 0 20px rgba(220, 38, 38, 0.3), 0 0 40px rgba(220, 38, 38, 0.1);
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.3), 0 0 40px rgba(37, 99, 235, 0.1);
   }
   .ev-glow-red-sm {
-    box-shadow: 0 0 10px rgba(220, 38, 38, 0.2);
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
   }
   .ev-card {
-    @apply bg-[#141414] border border-[#1F1F1F] rounded-xl;
+    @apply bg-white border border-[#DBEAFE] rounded-xl shadow-sm;
   }
   .ev-input {
-    @apply bg-[#1A1A1A] border border-[#262626] rounded-lg text-[#F5F5F5] placeholder:text-[#525252] focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626] outline-none;
+    @apply bg-[#F0F7FF] border border-[#DBEAFE] rounded-lg text-[#1E293B] placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] outline-none;
   }
   .ev-btn-primary {
-    background: linear-gradient(135deg, #DC2626, #991B1B);
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
     @apply text-white font-semibold rounded-lg px-4 py-2.5 transition-all duration-200;
-    box-shadow: 0 0 10px rgba(220, 38, 38, 0.2);
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
   }
   .ev-btn-primary:hover {
-    background: linear-gradient(135deg, #EF4444, #DC2626);
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
   }
   .ev-btn-secondary {
-    @apply bg-[#1F1F1F] border border-[#262626] text-[#F5F5F5] font-semibold rounded-lg px-4 py-2.5 transition-all duration-200 hover:bg-[#262626];
+    @apply bg-[#EFF6FF] border border-[#DBEAFE] text-[#1E293B] font-semibold rounded-lg px-4 py-2.5 transition-all duration-200 hover:bg-[#DBEAFE];
   }
   .scrollbar-thin::-webkit-scrollbar {
     width: 4px;
   }
   .scrollbar-thin::-webkit-scrollbar-track {
-    background: #141414;
+    background: #F0F7FF;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: #262626;
+    background: #DBEAFE;
     border-radius: 2px;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: #404040;
+    background: #93C5FD;
   }
 }

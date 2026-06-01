@@ -92,11 +92,11 @@ export default function AdminUsers() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <Badge className="bg-green-500/10 text-green-400 border-green-500/20">Active</Badge>;
+        return <Badge className="bg-green-500/10 text-green-600 border-green-500/20">Active</Badge>;
       case 'inactive':
-        return <Badge className="bg-yellow-500/10 text-yellow-400 border-yellow-500/20">Inactive</Badge>;
+        return <Badge className="bg-yellow-500/10 text-yellow-600 border-yellow-500/20">Inactive</Badge>;
       case 'blocked':
-        return <Badge className="bg-red-500/10 text-red-400 border-red-500/20">Blocked</Badge>;
+        return <Badge className="bg-red-500/10 text-red-600 border-red-500/20">Blocked</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -105,15 +105,15 @@ export default function AdminUsers() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#F5F5F5]">Users</h1>
-        <p className="text-[#737373] text-sm mt-1">Manage platform users</p>
+        <h1 className="text-2xl font-bold text-[#1E293B]">Users</h1>
+        <p className="text-[#64748B] text-sm mt-1">Manage platform users</p>
       </div>
 
       {/* Search & Filters */}
       <div className="ev-card p-4">
         <form onSubmit={handleSearch} className="flex gap-3 mb-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#737373]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
             <input
               type="text"
               className="ev-input w-full pl-10 pr-4 py-2.5"
@@ -134,8 +134,8 @@ export default function AdminUsers() {
               onClick={() => { setFilter(f.value); setPage(1); }}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 filter === f.value
-                  ? 'bg-[#DC2626]/10 text-[#DC2626] border border-[#DC2626]/30'
-                  : 'bg-[#1A1A1A] text-[#A3A3A3] border border-[#262626] hover:bg-[#1F1F1F]'
+                  ? 'bg-[#2563EB]/10 text-[#2563EB] border border-[#2563EB]/30'
+                  : 'bg-[#F0F7FF] text-[#64748B] border border-[#DBEAFE] hover:bg-[#EFF6FF]'
               }`}
             >
               {f.label}
@@ -148,10 +148,10 @@ export default function AdminUsers() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#DC2626]" />
+            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
           </div>
         ) : users.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#737373]">
+          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
             <Users className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No users found</p>
           </div>
@@ -159,24 +159,24 @@ export default function AdminUsers() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1F1F1F]">
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Name</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Username</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Email</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Balance</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Status</th>
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Actions</th>
+                <tr className="border-b border-[#EFF6FF]">
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Name</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Username</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Email</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Balance</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Status</th>
+                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user.id} className="border-b border-[#1F1F1F] hover:bg-[#1A1A1A] transition-colors">
-                    <td className="py-3 px-4 text-[#F5F5F5]">
+                  <tr key={user.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
+                    <td className="py-3 px-4 text-[#1E293B]">
                       {user.first_name} {user.last_name}
                     </td>
-                    <td className="py-3 px-4 text-[#A3A3A3]">{user.username}</td>
-                    <td className="py-3 px-4 text-[#A3A3A3]">{user.email}</td>
-                    <td className="py-3 px-4 text-[#F5F5F5] font-medium">
+                    <td className="py-3 px-4 text-[#64748B]">{user.username}</td>
+                    <td className="py-3 px-4 text-[#64748B]">{user.email}</td>
+                    <td className="py-3 px-4 text-[#1E293B] font-medium">
                       Rs. {user.main_balance?.toLocaleString() ?? '0'}
                     </td>
                     <td className="py-3 px-4">{getStatusBadge(user.status)}</td>
@@ -184,17 +184,17 @@ export default function AdminUsers() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => navigate('admin-user-detail', { id: user.id })}
-                          className="p-1.5 rounded-lg hover:bg-[#1F1F1F] text-[#A3A3A3] hover:text-[#DC2626] transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-[#2563EB] transition-colors"
                           title="View"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleBlock(user.id, user.status === 'blocked')}
-                          className={`p-1.5 rounded-lg hover:bg-[#1F1F1F] transition-colors ${
+                          className={`p-1.5 rounded-lg hover:bg-[#EFF6FF] transition-colors ${
                             user.status === 'blocked'
-                              ? 'text-green-400 hover:text-green-300'
-                              : 'text-[#A3A3A3] hover:text-[#DC2626]'
+                              ? 'text-green-600 hover:text-green-300'
+                              : 'text-[#64748B] hover:text-[#2563EB]'
                           }`}
                           title={user.status === 'blocked' ? 'Unblock' : 'Block'}
                         >
@@ -211,8 +211,8 @@ export default function AdminUsers() {
 
         {/* Pagination */}
         {!loading && users.length > 0 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-[#1F1F1F]">
-            <p className="text-sm text-[#737373]">
+          <div className="flex items-center justify-between px-4 py-3 border-t border-[#EFF6FF]">
+            <p className="text-sm text-[#64748B]">
               Page {page} of {totalPages}
             </p>
             <div className="flex gap-2">
