@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Ticket, Inbox, CheckCircle2, Zap, Users, Trophy, ArrowRight, Gift, Clock } from 'lucide-react';
+import { Ticket, Inbox, CheckCircle2, Zap, Users, Trophy, ArrowRight, Gift, Clock, Award } from 'lucide-react';
 import { useAuthStore, useToastStore } from '@/lib/stores';
 import { useSettingsStore } from '@/lib/stores';
 import { api } from '@/lib/api-client';
@@ -23,6 +23,11 @@ interface ClaimResult {
   reward_amount: number;
 }
 
+interface RewardTier {
+  level: number;
+  reward_amount: number;
+}
+
 export default function RewardsPage() {
   const { user, refreshUser } = useAuthStore();
   const { addToast } = useToastStore();
@@ -35,6 +40,8 @@ export default function RewardsPage() {
   const [availableCodes, setAvailableCodes] = useState<AvailableCode[]>([]);
   const [claimResult, setClaimResult] = useState<ClaimResult | null>(null);
   const [myClaims, setMyClaims] = useState<any[]>([]);
+  const [rewardTiers, setRewardTiers] = useState<RewardTier[]>([]);
+  const [referralCount, setReferralCount] = useState(0);
 
   useEffect(() => {
     loadData();
@@ -43,13 +50,15 @@ export default function RewardsPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [codesRes, claimsRes] = await Promise.all([
+      const [codesRes, claimsRes, tiersRes, refsRes] = await Promise.all([
         fetch('/api/daily-codes', {
           headers: { 'Authorization': `Bearer ${sessionStorage.getItem('ev_token')}` },
         }),
         fetch('/api/user/daily-code-claims', {
           headers: { 'Authorization': `Bearer ${sessionStorage.getItem('ev_token')}` },
         }),
+        api.getReferralRewardTiers().catch(() => ({ tiers: [] })),
+        api.getReferrals().catch(() => ({ referrals: [] })),
       ]);
       
       const codesData = await codesRes.json();
@@ -59,6 +68,9 @@ export default function RewardsPage() {
         const claimsData = await claimsRes.json();
         setMyClaims(Array.isArray(claimsData.claims) ? claimsData.claims : []);
       }
+
+      setRewardTiers(Array.isArray(tiersRes.tiers) ? tiersRes.tiers : []);
+      setReferralCount(Array.isArray(refsRes.referrals) ? refsRes.referrals.length : 0);
     } catch {
       addToast('Failed to load reward data', 'error');
     } finally {
@@ -155,6 +167,96 @@ export default function RewardsPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-4 space-y-4">
+        {/* Bonuses / Reward Banner Section */}
+        <motion.div
+          className="relative overflow-hidden rounded-2xl border border-ev-card-border"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <img
+            src="/rewards-banner.jpeg"
+            alt={`${brandName} Rewards & Bonuses`}
+            className="w-full h-auto object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-4">
+            <div className="flex items-center gap-2 mb-1">
+              <Award className="w-5 h-5 text-[#F59E0B]" />
+              <h2 className="text-base font-bold text-white">Bonuses</h2>
+            </div>
+            <p className="text-xs text-white/70">Earn bonus rewards by completing referral milestones</p>
+          </div>
+        </motion.div>
+
+        {/* Referral Reward Tiers (Bonuses) */}
+        {rewardTiers.length > 0 && (
+          <motion.div
+            className="ev-card p-5 relative overflow-hidden"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+          >
+            <div className="absolute inset-0 ev-gradient-red opacity-5" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-4">
+                <Trophy className="w-5 h-5 text-[#F59E0B]" />
+                <h2 className="text-base font-semibold text-ev-text">Referral Bonuses</h2>
+              </div>
+              <p className="text-xs text-ev-muted mb-4">
+                Earn different rewards based on how many referrals you have activated. Each level gives you a different reward!
+              </p>
+              <div className="space-y-2">
+                {rewardTiers.map((tier, index) => {
+                  const isActive = referralCount >= tier.level;
+                  return (
+                    <motion.div
+                      key={tier.level}
+                      className={`flex items-center justify-between px-4 py-3 rounded-lg border transition-all ${
+                        isActive
+                          ? 'bg-[#10B981]/5 border-[#10B981]/20'
+                          : 'bg-ev-bg border-ev-card-border'
+                      }`}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.03 * index }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
+                            isActive
+                              ? 'bg-[#10B981]/10 text-[#10B981]'
+                              : 'bg-ev-card-border text-ev-muted'
+                          }`}
+                        >
+                          {tier.level}
+                        </div>
+                        <div>
+                          <p className={`text-sm font-medium ${isActive ? 'text-[#10B981]' : 'text-ev-text'}`}>
+                            {tier.level}{tier.level === 1 ? 'st' : tier.level === 2 ? 'nd' : tier.level === 3 ? 'rd' : 'th'} Referral
+                          </p>
+                          {isActive && (
+                            <p className="text-[10px] text-[#10B981]">Earned!</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className={`text-sm font-bold ${isActive ? 'text-[#10B981]' : 'text-ev-blue'}`}>
+                          Rs {tier.reward_amount}
+                        </span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+              <div className="mt-3 pt-3 border-t border-ev-card-border">
+                <p className="text-[10px] text-ev-muted">
+                  Your referrals: <span className="text-ev-blue font-bold">{referralCount}</span> | Total potential: <span className="text-ev-blue font-bold">Rs {rewardTiers.reduce((sum, t) => sum + t.reward_amount, 0)}</span>
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* Claim Success Result */}
         {claimResult && (
           <motion.div
@@ -185,6 +287,7 @@ export default function RewardsPage() {
           className="ev-card p-5 relative overflow-hidden"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
         >
           <div className="absolute inset-0 ev-gradient-red opacity-[0.02]" />
           <div className="relative z-10">

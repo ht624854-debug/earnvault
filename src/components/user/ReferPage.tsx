@@ -38,6 +38,14 @@ export default function ReferPage() {
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
+  // Build referral link directly from user data (most reliable)
+  useEffect(() => {
+    if (user?.referral_code) {
+      const baseUrl = window.location.origin;
+      setReferralLink(`${baseUrl}/register?ref=${user.referral_code}`);
+    }
+  }, [user?.referral_code]);
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -49,13 +57,13 @@ export default function ReferPage() {
         setReferrals(Array.isArray(refRes.referrals) ? refRes.referrals : []);
         setRewardTiers(Array.isArray(tiersRes.tiers) ? tiersRes.tiers : []);
 
-        // Build referral link with fallback
-        let link = linkRes.referral_link || '';
-        if (!link && user?.referral_code) {
+        // Use API link if available, otherwise keep the one built from user data
+        if (linkRes.referral_link) {
+          setReferralLink(linkRes.referral_link);
+        } else if (user?.referral_code) {
           const baseUrl = window.location.origin;
-          link = `${baseUrl}/register?ref=${user.referral_code}`;
+          setReferralLink(`${baseUrl}/register?ref=${user.referral_code}`);
         }
-        setReferralLink(link);
       } catch {
         // Fallback: build link from user data
         if (user?.referral_code) {

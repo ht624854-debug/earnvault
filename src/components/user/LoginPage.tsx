@@ -45,7 +45,7 @@ function ScrollingTransactions() {
         ...old.slice(1),
         { ...FAKE_TRANSACTIONS[nextIdx], id: counter },
       ]);
-    }, 3000);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -54,15 +54,19 @@ function ScrollingTransactions() {
       <div className="flex items-center gap-2 mb-3">
         <TrendingUp className="w-4 h-4 text-[#10B981]" />
         <p className="text-xs font-semibold text-[#10B981]">Live Transactions</p>
+        <span className="flex h-2 w-2 relative">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
+        </span>
       </div>
       <div className="space-y-2 overflow-hidden" style={{ height: '152px' }}>
         {visibleItems.map((item, i) => (
           <motion.div
             key={item.id}
             className="flex items-center gap-3 bg-ev-card/80 backdrop-blur-sm border border-ev-card-border rounded-xl px-3 py-2.5"
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 30, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${item.type === 'earn' ? 'bg-[#10B981]/10' : 'bg-ev-blue/10'}`}>
               {item.type === 'earn' ? (

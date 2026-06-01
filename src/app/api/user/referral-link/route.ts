@@ -18,7 +18,14 @@ export async function GET(request: NextRequest) {
     }
 
     // Build full referral link with website URL
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+    // Priority: NEXT_PUBLIC_BASE_URL > request headers > host
+    let baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    if (!baseUrl) {
+      const forwardedHost = request.headers.get('x-forwarded-host');
+      const forwardedProto = request.headers.get('x-forwarded-proto') || 'https';
+      const host = forwardedHost || request.headers.get('host') || request.nextUrl.host;
+      baseUrl = `${forwardedProto}://${host}`;
+    }
     const referralLink = `${baseUrl}/register?ref=${user.referral_code}`;
 
     return NextResponse.json({
