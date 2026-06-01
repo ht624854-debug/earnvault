@@ -171,6 +171,7 @@ type Page =
   | 'admin-audit-logs'
   | 'admin-support'
   | 'admin-referrals'
+  | 'admin-referral-tiers'
   | 'admin-security';
 
 interface RouterState {

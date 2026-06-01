@@ -78,16 +78,49 @@ export async function POST(
     // Check referral reward on activation
     const referralRewardEnabled = await getSetting('referral_reward_on_activation');
     if (referralRewardEnabled === 'true' && activationRequest.user.referred_by_id) {
-      const referralRewardAmount = parseFloat(
-        (await getSetting('referral_reward_amount')) || '0'
-      );
+      const referrer = await db.user.findUnique({
+        where: { id: activationRequest.user.referred_by_id },
+      });
 
-      if (referralRewardAmount > 0) {
-        const referrer = await db.user.findUnique({
-          where: { id: activationRequest.user.referred_by_id },
+      if (referrer) {
+        // Count how many referrals the referrer has that are now activated (to determine the level)
+        const activatedReferrals = await db.referral.findMany({
+          where: {
+            referrer_id: referrer.id,
+            status: 'Active',
+          },
+          include: {
+            referred_user: {
+              select: { package_status: true },
+            },
+          },
+          orderBy: { created_at: 'asc' },
         });
 
-        if (referrer) {
+        // Determine the level of this referral (1st, 2nd, 3rd, etc.)
+        const activatedCount = activatedReferrals.filter(
+          (r) => r.referred_user?.package_status?.toLowerCase() === 'active'
+        ).length;
+
+        // The current referral being approved counts as the latest activated one
+        const referralLevel = activatedCount;
+
+        // Look up the reward for that level from ReferralRewardTier table
+        let referralRewardAmount = 0;
+        const tier = await db.referralRewardTier.findUnique({
+          where: { level: referralLevel },
+        });
+
+        if (tier) {
+          referralRewardAmount = tier.reward_amount;
+        } else {
+          // Fall back to the referral_reward setting if no tier exists for that level
+          referralRewardAmount = parseFloat(
+            (await getSetting('referral_reward_amount')) || '0'
+          );
+        }
+
+        if (referralRewardAmount > 0) {
           const referrerBalanceBefore = referrer.main_balance;
           const referrerBalanceAfter = referrerBalanceBefore + referralRewardAmount;
 
@@ -106,7 +139,7 @@ export async function POST(
               balance_after: referrerBalanceAfter,
               reference_type: 'User',
               reference_id: activationRequest.user_id,
-              description: `Referral reward for referring ${activationRequest.user.username}`,
+              description: `Referral reward (Level ${referralLevel}) for referring ${activationRequest.user.username}`,
             },
           });
 

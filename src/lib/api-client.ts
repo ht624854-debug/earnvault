@@ -405,6 +405,34 @@ class ApiService {
     return this.request<any>(`/admin/referrals${params ? '?' + params : ''}`);
   }
 
+  // Referral Reward Tiers (public)
+  async getReferralRewardTiers() {
+    return this.request<any>('/referral-reward-tiers');
+  }
+
+  // Referral Reward Tiers (admin)
+  async getAdminReferralTiers() {
+    return this.request<any>('/admin/referral-reward-tiers');
+  }
+
+  async createReferralTier(data: { level: number; reward_amount: number }) {
+    return this.request<any>('/admin/referral-reward-tiers', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateReferralTier(level: number, data: { reward_amount: number }) {
+    return this.request<any>(`/admin/referral-reward-tiers/${level}`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteReferralTier(level: number) {
+    return this.request(`/admin/referral-reward-tiers/${level}`, { method: 'DELETE' });
+  }
+
   logout() {
     this.setToken(null);
   }

@@ -114,6 +114,23 @@ async function seed() {
     }
   }
 
+  // Create default referral reward tiers
+  const defaultTiers = [
+    { level: 1, reward_amount: 200 },
+    { level: 2, reward_amount: 150 },
+    { level: 3, reward_amount: 100 },
+    { level: 4, reward_amount: 50 },
+    { level: 5, reward_amount: 50 },
+    { level: 6, reward_amount: 50 },
+  ];
+
+  for (const tier of defaultTiers) {
+    const existing = await db.referralRewardTier.findUnique({ where: { level: tier.level } });
+    if (!existing) {
+      await db.referralRewardTier.create({ data: tier });
+    }
+  }
+
   console.log('Seed completed successfully!');
 }
 

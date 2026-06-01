@@ -21,6 +21,7 @@ import {
   X,
   ChevronRight,
   Shield,
+  Award,
 } from 'lucide-react';
 
 interface SidebarItem {
@@ -37,6 +38,7 @@ const sidebarItems: SidebarItem[] = [
   { label: 'Tasks', page: 'admin-tasks', icon: <ListChecks className="w-4 h-4" /> },
   { label: 'Task Submissions', page: 'admin-task-submissions', icon: <FileCheck className="w-4 h-4" /> },
   { label: 'Referrals', page: 'admin-referrals', icon: <Link2 className="w-4 h-4" /> },
+  { label: 'Referral Tiers', page: 'admin-referral-tiers', icon: <Award className="w-4 h-4" /> },
   { label: 'Reward Campaigns', page: 'admin-reward-campaigns', icon: <Gift className="w-4 h-4" /> },
   { label: 'Payment Methods', page: 'admin-payment-methods', icon: <CreditCard className="w-4 h-4" /> },
   { label: 'Settings', page: 'admin-settings', icon: <Settings className="w-4 h-4" /> },

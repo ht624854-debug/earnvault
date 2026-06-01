@@ -35,6 +35,7 @@ import AdminTransactions from '@/components/admin/AdminTransactions';
 import AdminAuditLogs from '@/components/admin/AdminAuditLogs';
 import AdminSupport from '@/components/admin/AdminSupport';
 import AdminReferrals from '@/components/admin/AdminReferrals';
+import AdminReferralTiers from '@/components/admin/AdminReferralTiers';
 import AdminSecurity from '@/components/admin/AdminSecurity';
 
 // Shared
@@ -63,6 +64,7 @@ function PageRouter() {
       'admin-audit-logs': <AdminAuditLogs />,
       'admin-support': <AdminSupport />,
       'admin-referrals': <AdminReferrals />,
+      'admin-referral-tiers': <AdminReferralTiers />,
       'admin-security': <AdminSecurity />,
     };
 

@@ -225,3 +225,11 @@ model AuditLog {
 
   admin       User     @relation(fields: [admin_id], references: [id])
 }
+
+model ReferralRewardTier {
+  id            String   @id @default(cuid())
+  level         Int      @unique // 1 = first referral, 2 = second, etc.
+  reward_amount Float    // reward for this level
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}

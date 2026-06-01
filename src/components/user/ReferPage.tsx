@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Copy, CheckCircle2, Inbox, Share2, UserPlus } from 'lucide-react';
+import { Users, Copy, CheckCircle2, Inbox, Share2, UserPlus, Award, TrendingUp } from 'lucide-react';
 import { useAuthStore, useToastStore } from '@/lib/stores';
 import { api } from '@/lib/api-client';
 
@@ -21,21 +21,32 @@ interface Referral {
   created_at: string;
 }
 
+interface RewardTier {
+  level: number;
+  reward_amount: number;
+}
+
 export default function ReferPage() {
   const { user } = useAuthStore();
   const { addToast } = useToastStore();
 
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [referralLink, setReferralLink] = useState('');
+  const [rewardTiers, setRewardTiers] = useState<RewardTier[]>([]);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [refRes, linkRes] = await Promise.all([api.getReferrals(), api.getReferralLink()]);
+        const [refRes, linkRes, tiersRes] = await Promise.all([
+          api.getReferrals(),
+          api.getReferralLink(),
+          api.getReferralRewardTiers(),
+        ]);
         setReferrals(Array.isArray(refRes.referrals) ? refRes.referrals : []);
         setReferralLink(linkRes.referral_link || '');
+        setRewardTiers(Array.isArray(tiersRes.tiers) ? tiersRes.tiers : []);
       } catch {
         addToast('Failed to load referral data', 'error');
       } finally {
@@ -72,6 +83,14 @@ export default function ReferPage() {
     }
   };
 
+  const getLevelLabel = (level: number) => {
+    const suffixes: Record<number, string> = {
+      1: 'st', 2: 'nd', 3: 'rd',
+    };
+    const suffix = suffixes[level] || 'th';
+    return `${level}${suffix}`;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
@@ -106,6 +125,78 @@ export default function ReferPage() {
             <p className="text-xs text-[#737373]">Active Referrals</p>
           </div>
         </motion.div>
+
+        {/* Referral Reward Tiers */}
+        {rewardTiers.length > 0 && (
+          <motion.div
+            className="ev-card p-5 relative overflow-hidden"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+          >
+            <div className="absolute inset-0 ev-gradient-red opacity-5" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-4">
+                <Award className="w-5 h-5 text-[#DC2626]" />
+                <h2 className="text-base font-semibold text-[#F5F5F5]">Referral Rewards</h2>
+              </div>
+              <p className="text-xs text-[#737373] mb-4">
+                Earn different rewards based on how many referrals you have activated. Each level gives you a different reward!
+              </p>
+              <div className="space-y-2">
+                {rewardTiers.map((tier, index) => {
+                  const isActive = referrals.filter(
+                    (r) => r.referred_user?.package_status?.toLowerCase() === 'active'
+                  ).length >= tier.level;
+                  return (
+                    <motion.div
+                      key={tier.level}
+                      className={`flex items-center justify-between px-4 py-3 rounded-lg border transition-all ${
+                        isActive
+                          ? 'bg-[#10B981]/5 border-[#10B981]/20'
+                          : 'bg-[#1A1A1A] border-[#262626]'
+                      }`}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.03 * index }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
+                            isActive
+                              ? 'bg-[#10B981]/10 text-[#10B981]'
+                              : 'bg-[#262626] text-[#737373]'
+                          }`}
+                        >
+                          {tier.level}
+                        </div>
+                        <div>
+                          <p className={`text-sm font-medium ${isActive ? 'text-[#10B981]' : 'text-[#F5F5F5]'}`}>
+                            {getLevelLabel(tier.level)} Referral
+                          </p>
+                          {isActive && (
+                            <p className="text-[10px] text-[#10B981]">Earned!</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <TrendingUp className={`w-3.5 h-3.5 ${isActive ? 'text-[#10B981]' : 'text-[#737373]'}`} />
+                        <span className={`text-sm font-bold ${isActive ? 'text-[#10B981]' : 'text-[#DC2626]'}`}>
+                          Rs {tier.reward_amount}
+                        </span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+              <div className="mt-3 pt-3 border-t border-[#262626]">
+                <p className="text-[10px] text-[#737373]">
+                  Total potential: <span className="text-[#DC2626] font-bold">Rs {rewardTiers.reduce((sum, t) => sum + t.reward_amount, 0)}</span> across {rewardTiers.length} levels
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Referral Link */}
         <motion.div className="ev-card p-5 relative overflow-hidden" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
