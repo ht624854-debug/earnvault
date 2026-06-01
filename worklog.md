@@ -329,3 +329,33 @@ Stage Summary:
 - Rewards banner image added with gradient overlay and "Bonuses" label
 - Profile page enhanced with 3 balance cards, referral link card, username display, total earned
 - Changes committed locally (no GitHub credentials available in sandbox)
+
+---
+Task ID: 12
+Agent: Main
+Task: Replace image banner with Bonus Campaign function, move Live Transactions to Dashboard, remove from Login/Register
+
+Work Log:
+- Created BonusCampaign and UserBonusCampaign Prisma models with schema
+- Added bonus_campaigns relation to User model
+- Seeded 3 default bonus campaigns (DAY1, Oryndelux Bonus x2) matching the uploaded image
+- Created user API: GET /api/bonus-campaigns (with progress tracking), POST /api/bonus-campaigns/claim
+- Created admin API: GET/POST /api/admin/bonus-campaigns, PUT/DELETE /api/admin/bonus-campaigns/[id]
+- Updated activation approval to auto-enroll users in all active bonus campaigns
+- Added api-client methods: getBonusCampaigns, claimBonusCampaign, getAdminBonusCampaigns, etc.
+- Removed image banner (rewards-banner.jpeg) from RewardsPage
+- Removed Referral Bonuses/Referral Tiers section from RewardsPage
+- Added Bonus Campaigns section to RewardsPage with progress bars, time limits, claim buttons
+- Moved Live Transactions from LoginPage and RegisterPage to DashboardPage (after action cards)
+- Added green pulsing dot indicator on Live Transactions
+- Created AdminBonusCampaigns.tsx with full CRUD management
+- Added 'admin-bonus-campaigns' to router, page.tsx, and admin sidebar
+- Added Trophy icon import to AdminLayout
+- All lint checks pass, API verified working
+
+Stage Summary:
+- Bonus Campaign system: Full function (not image) matching the uploaded reference
+- 3 default campaigns seeded: DAY1 (13 refs, Rs 1, 24h), Oryndelux Bonus (25 refs, Rs 4000, 2400h), Oryndelux Bonus (10 refs, Rs 1000, 120h)
+- Users auto-enroll when activated, progress tracked with referral count and time limit
+- Live Transactions moved to Dashboard (after action grid), removed from Login/Register
+- Admin can manage bonus campaigns from sidebar
