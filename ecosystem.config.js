@@ -4,7 +4,7 @@ module.exports = {
       name: 'earnvault',
       script: 'node_modules/.bin/next',
       args: 'start -p 3000',
-      cwd: '/var/www/earnvault',
+      cwd: '/root/earnvault',
       env: {
         NODE_ENV: 'production',
         PORT: 3000,

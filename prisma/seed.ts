@@ -88,6 +88,9 @@ async function seed() {
     developer_credit: 'EarnVault',
     payment_methods_display: 'Easypaisa,JazzCash,SadaPay,NayaPay,Bank Transfer',
 
+    // Base URL
+    base_url: 'https://oryndelux.com',
+
     // Theme Colors
     theme_primary_color: '#2563EB',
     theme_bg_color: '#F0F7FF',
