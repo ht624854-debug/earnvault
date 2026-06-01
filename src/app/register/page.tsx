@@ -2,12 +2,14 @@ import { redirect } from 'next/navigation';
 
 // Redirect /register?ref=CODE to /?ref=CODE
 // This handles old referral links shared in /register format
-export default function RegisterRedirectPage({
+// In Next.js 16, searchParams is a Promise
+export default async function RegisterRedirectPage({
   searchParams,
 }: {
-  searchParams: { ref?: string; reference?: string };
+  searchParams: Promise<{ ref?: string; reference?: string }>;
 }) {
-  const refCode = searchParams.ref || searchParams.reference;
+  const params = await searchParams;
+  const refCode = params.ref || params.reference;
 
   if (refCode) {
     redirect(`/?ref=${refCode}`);
