@@ -514,6 +514,29 @@ class ApiService {
     return this.request(`/admin/bonus-campaigns/${id}`, { method: 'DELETE' });
   }
 
+  // Admin User Bonus Campaigns
+  async getAdminUserBonusCampaigns(userId: string) {
+    return this.request<any>(`/admin/users/${userId}/bonus-campaigns`);
+  }
+
+  async addAdminUserBonusCampaign(userId: string, data: { campaign_id: string; time_limit_hours?: number }) {
+    return this.request<any>(`/admin/users/${userId}/bonus-campaigns`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateAdminUserBonusCampaign(userId: string, campaignId: string, data: { status?: string; time_limit_hours?: number }) {
+    return this.request<any>(`/admin/users/${userId}/bonus-campaigns/${campaignId}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async removeAdminUserBonusCampaign(userId: string, campaignId: string) {
+    return this.request(`/admin/users/${userId}/bonus-campaigns/${campaignId}`, { method: 'DELETE' });
+  }
+
   logout() {
     this.setToken(null);
   }

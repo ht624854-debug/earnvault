@@ -16,6 +16,11 @@ import {
   Link2,
   FileCheck,
   CreditCard,
+  Trophy,
+  Plus,
+  Trash2,
+  Clock,
+  RefreshCw,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -75,6 +80,15 @@ export default function AdminUserDetail() {
   const [taskSubmissions, setTaskSubmissions] = useState<any[]>([]);
   const [withdrawals, setWithdrawals] = useState<any[]>([]);
 
+  // Bonus campaigns
+  const [userBonusCampaigns, setUserBonusCampaigns] = useState<any[]>([]);
+  const [availableCampaigns, setAvailableCampaigns] = useState<any[]>([]);
+  const [bonusReferralCount, setBonusReferralCount] = useState(0);
+  const [addCampaignId, setAddCampaignId] = useState('');
+  const [addCampaignHours, setAddCampaignHours] = useState('');
+  const [showAddCampaign, setShowAddCampaign] = useState(false);
+  const [extendHours, setExtendHours] = useState<Record<string, string>>({});
+
   useEffect(() => {
     if (userId) loadUser();
   }, [userId]);
@@ -103,6 +117,7 @@ export default function AdminUserDetail() {
       setReferrals(Array.isArray(u.referrals_from) ? u.referrals_from : []);
       setTaskSubmissions(Array.isArray(u.task_subs) ? u.task_subs : []);
       setWithdrawals(Array.isArray(u.withdraw_reqs) ? u.withdraw_reqs : []);
+      loadBonusCampaigns();
     } catch (err: any) {
       addToast(err.message || 'Failed to load user', 'error');
     } finally {
@@ -158,6 +173,74 @@ export default function AdminUserDetail() {
       loadUser();
     } catch (err: any) {
       addToast(err.message || 'Action failed', 'error');
+    }
+  };
+
+  const loadBonusCampaigns = async () => {
+    try {
+      const res = await api.getAdminUserBonusCampaigns(userId);
+      setUserBonusCampaigns(Array.isArray(res.userCampaigns) ? res.userCampaigns : []);
+      setAvailableCampaigns(Array.isArray(res.availableCampaigns) ? res.availableCampaigns : []);
+      setBonusReferralCount(res.referralCount || 0);
+    } catch {
+      // ignore
+    }
+  };
+
+  const handleAddCampaign = async () => {
+    if (!addCampaignId) {
+      addToast('Select a campaign', 'error');
+      return;
+    }
+    try {
+      await api.addAdminUserBonusCampaign(userId, {
+        campaign_id: addCampaignId,
+        ...(addCampaignHours ? { time_limit_hours: parseInt(addCampaignHours) } : {}),
+      });
+      addToast('Campaign added to user', 'success');
+      setShowAddCampaign(false);
+      setAddCampaignId('');
+      setAddCampaignHours('');
+      loadBonusCampaigns();
+    } catch (err: any) {
+      addToast(err.message || 'Failed to add campaign', 'error');
+    }
+  };
+
+  const handleUpdateCampaignStatus = async (campaignEntryId: string, newStatus: string) => {
+    try {
+      await api.updateAdminUserBonusCampaign(userId, campaignEntryId, { status: newStatus });
+      addToast(`Status changed to ${newStatus}`, 'success');
+      loadBonusCampaigns();
+    } catch (err: any) {
+      addToast(err.message || 'Failed to update status', 'error');
+    }
+  };
+
+  const handleExtendTime = async (campaignEntryId: string) => {
+    const hours = extendHours[campaignEntryId];
+    if (!hours || parseInt(hours) <= 0) {
+      addToast('Enter valid hours to extend', 'error');
+      return;
+    }
+    try {
+      await api.updateAdminUserBonusCampaign(userId, campaignEntryId, { time_limit_hours: parseInt(hours) });
+      addToast(`Time extended by ${hours} hours`, 'success');
+      setExtendHours((prev) => ({ ...prev, [campaignEntryId]: '' }));
+      loadBonusCampaigns();
+    } catch (err: any) {
+      addToast(err.message || 'Failed to extend time', 'error');
+    }
+  };
+
+  const handleRemoveCampaign = async (campaignEntryId: string) => {
+    if (!confirm('Remove this campaign from the user? Progress will be lost.')) return;
+    try {
+      await api.removeAdminUserBonusCampaign(userId, campaignEntryId);
+      addToast('Campaign removed from user', 'success');
+      loadBonusCampaigns();
+    } catch (err: any) {
+      addToast(err.message || 'Failed to remove campaign', 'error');
     }
   };
 
@@ -467,6 +550,161 @@ export default function AdminUserDetail() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Bonus Campaigns Section */}
+      <div className="ev-card p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-ev-text flex items-center gap-2">
+            <Trophy className="w-5 h-5 text-[#F59E0B]" />
+            Bonus Campaigns
+            <span className="text-xs text-ev-muted font-normal ml-1">({bonusReferralCount} total referrals)</span>
+          </h2>
+          <button
+            onClick={() => setShowAddCampaign(!showAddCampaign)}
+            className="ev-btn-primary text-sm flex items-center gap-1.5 px-3 py-1.5"
+          >
+            <Plus className="w-3.5 h-3.5" /> Add Campaign
+          </button>
+        </div>
+
+        {/* Add Campaign Form */}
+        {showAddCampaign && (
+          <div className="bg-ev-bg rounded-lg p-4 mb-4 space-y-3">
+            <h3 className="text-sm font-medium text-ev-text">Enroll in Campaign</h3>
+            {availableCampaigns.length === 0 ? (
+              <p className="text-xs text-ev-muted">No available campaigns to add (all active campaigns already enrolled or no active campaigns exist)</p>
+            ) : (
+              <div className="flex flex-wrap gap-3 items-end">
+                <div className="flex-1 min-w-[200px]">
+                  <label className="block text-xs text-ev-muted mb-1">Select Campaign</label>
+                  <select
+                    className="ev-input w-full px-3 py-2 text-sm"
+                    value={addCampaignId}
+                    onChange={(e) => setAddCampaignId(e.target.value)}
+                  >
+                    <option value="">-- Choose Campaign --</option>
+                    {availableCampaigns.map((c: any) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name} (Rs {c.reward_amount} / {c.required_referrals} refs / {c.time_limit_hours}h)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="w-32">
+                  <label className="block text-xs text-ev-muted mb-1">Override Hours</label>
+                  <input
+                    type="number"
+                    className="ev-input w-full px-3 py-2 text-sm"
+                    placeholder="Default"
+                    value={addCampaignHours}
+                    onChange={(e) => setAddCampaignHours(e.target.value)}
+                  />
+                </div>
+                <button onClick={handleAddCampaign} className="ev-btn-primary text-sm px-4 py-2">
+                  Enroll
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Campaign List */}
+        {userBonusCampaigns.length === 0 ? (
+          <p className="text-sm text-ev-muted text-center py-6">No bonus campaigns enrolled</p>
+        ) : (
+          <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-thin">
+            {userBonusCampaigns.map((uc: any) => {
+              const statusColor =
+                uc.status === 'Claimed' ? 'text-[#10B981] bg-[#10B981]/10 border-[#10B981]/20' :
+                uc.status === 'Completed' ? 'text-blue-600 bg-blue-500/10 border-blue-500/20' :
+                uc.status === 'Expired' ? 'text-red-600 bg-red-500/10 border-red-500/20' :
+                'text-[#F59E0B] bg-[#F59E0B]/10 border-[#F59E0B]/20';
+
+              const isExpired = new Date(uc.expires_at) < new Date();
+              const timeLeft = Math.max(0, new Date(uc.expires_at).getTime() - Date.now());
+              const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+              const minsLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+
+              return (
+                <div key={uc.id} className="bg-ev-bg rounded-lg p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${uc.status === 'Claimed' ? 'bg-[#10B981]/10' : uc.status === 'Expired' ? 'bg-red-500/10' : 'bg-[#F59E0B]/10'}`}>
+                        <Trophy className={`w-4 h-4 ${uc.status === 'Claimed' ? 'text-[#10B981]' : uc.status === 'Expired' ? 'text-red-500' : 'text-[#F59E0B]'}`} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-ev-text">{uc.campaign?.name || 'Campaign'}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-[10px] text-ev-muted">Rs {uc.campaign?.reward_amount?.toLocaleString()}</span>
+                          <span className="text-[10px] text-ev-muted">•</span>
+                          <span className="text-[10px] text-ev-muted">{uc.campaign?.required_referrals} refs needed</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Badge className={statusColor}>{uc.status}</Badge>
+                  </div>
+
+                  {/* Progress & Time */}
+                  <div className="flex items-center gap-4 mb-2 text-[10px] text-ev-muted">
+                    <span>Referrals: {bonusReferralCount}/{uc.campaign?.required_referrals || '?'}</span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {uc.status === 'Claimed' ? 'Claimed' : isExpired ? 'Expired' : `${hoursLeft}h ${minsLeft}m left`}
+                    </span>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="w-full bg-ev-card-border rounded-full h-1.5 mb-3">
+                    <div
+                      className={`h-1.5 rounded-full transition-all ${
+                        uc.status === 'Claimed' ? 'bg-[#10B981]' : uc.status === 'Expired' ? 'bg-red-500' : 'bg-[#F59E0B]'
+                      }`}
+                      style={{ width: `${Math.min(100, (bonusReferralCount / (uc.campaign?.required_referrals || 1)) * 100)}%` }}
+                    />
+                  </div>
+
+                  {/* Admin Actions */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <select
+                      className="ev-input px-2 py-1 text-xs w-36"
+                      value={uc.status}
+                      onChange={(e) => handleUpdateCampaignStatus(uc.id, e.target.value)}
+                    >
+                      <option value="In Progress">In Progress</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Expired">Expired</option>
+                      <option value="Claimed">Claimed</option>
+                    </select>
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="number"
+                        className="ev-input px-2 py-1 text-xs w-20"
+                        placeholder="+Hours"
+                        value={extendHours[uc.id] || ''}
+                        onChange={(e) => setExtendHours((prev) => ({ ...prev, [uc.id]: e.target.value }))}
+                      />
+                      <button
+                        onClick={() => handleExtendTime(uc.id)}
+                        className="ev-btn-secondary text-xs px-2 py-1 flex items-center gap-1"
+                        title="Extend time"
+                      >
+                        <RefreshCw className="w-3 h-3" /> Extend
+                      </button>
+                    </div>
+                    <button
+                      onClick={() => handleRemoveCampaign(uc.id)}
+                      className="text-red-500 hover:text-red-600 p-1 transition-colors"
+                      title="Remove campaign from user"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Balance Adjust Dialog */}
