@@ -89,8 +89,8 @@ export default function AdminSecurity() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#1E293B]">Security</h1>
-          <p className="text-[#64748B] text-sm mt-1">Manage admin credentials and security settings</p>
+          <h1 className="text-2xl font-bold text-ev-text">Security</h1>
+          <p className="text-ev-muted text-sm mt-1">Manage admin credentials and security settings</p>
         </div>
       </div>
 
@@ -101,8 +101,8 @@ export default function AdminSecurity() {
             <Shield className="w-7 h-7 text-white" />
           </div>
           <div>
-            <p className="text-lg font-bold text-[#1E293B]">{user?.first_name || 'Admin'}</p>
-            <p className="text-sm text-[#64748B]">Current Username: <span className="text-[#2563EB] font-semibold">@{user?.username}</span></p>
+            <p className="text-lg font-bold text-ev-text">{user?.first_name || 'Admin'}</p>
+            <p className="text-sm text-ev-muted">Current Username: <span className="text-ev-blue font-semibold">@{user?.username}</span></p>
             <p className="text-xs text-[#94A3B8]">Role: Administrator</p>
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function AdminSecurity() {
         <AlertTriangle className="w-5 h-5 text-[#F59E0B] flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-medium text-[#F59E0B]">Security Notice</p>
-          <p className="text-xs text-[#64748B] mt-1">
+          <p className="text-xs text-ev-muted mt-1">
             Changing your password will require you to login again. Make sure to remember your new credentials.
             Use a strong password with at least 8 characters including numbers and special characters.
           </p>
@@ -122,12 +122,12 @@ export default function AdminSecurity() {
 
       {/* Change Username */}
       <div className="ev-card p-6">
-        <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
-          <User className="w-5 h-5 text-[#2563EB]" />
+        <h2 className="text-lg font-semibold text-ev-text mb-4 flex items-center gap-2">
+          <User className="w-5 h-5 text-ev-blue" />
           Change Username
         </h2>
         <div>
-          <label className="block text-sm text-[#64748B] mb-1.5">New Username</label>
+          <label className="block text-sm text-ev-muted mb-1.5">New Username</label>
           <input
             type="text"
             className="ev-input w-full px-4 py-2.5"
@@ -141,13 +141,13 @@ export default function AdminSecurity() {
 
       {/* Change Password */}
       <div className="ev-card p-6">
-        <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
-          <Key className="w-5 h-5 text-[#2563EB]" />
+        <h2 className="text-lg font-semibold text-ev-text mb-4 flex items-center gap-2">
+          <Key className="w-5 h-5 text-ev-blue" />
           Change Password
         </h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm text-[#64748B] mb-1.5">New Password</label>
+            <label className="block text-sm text-ev-muted mb-1.5">New Password</label>
             <div className="relative">
               <input
                 type={showNewPassword ? 'text' : 'password'}
@@ -159,14 +159,14 @@ export default function AdminSecurity() {
               <button
                 type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-[#1E293B]"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ev-muted hover:text-ev-text"
               >
                 {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
           </div>
           <div>
-            <label className="block text-sm text-[#64748B] mb-1.5">Confirm New Password</label>
+            <label className="block text-sm text-ev-muted mb-1.5">Confirm New Password</label>
             <input
               type="password"
               className="ev-input w-full px-4 py-2.5"
@@ -175,7 +175,7 @@ export default function AdminSecurity() {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             {newPassword && confirmPassword && newPassword !== confirmPassword && (
-              <p className="text-xs text-[#2563EB] mt-1">Passwords do not match</p>
+              <p className="text-xs text-ev-blue mt-1">Passwords do not match</p>
             )}
             {newPassword && confirmPassword && newPassword === confirmPassword && (
               <p className="text-xs text-[#10B981] mt-1 flex items-center gap-1">
@@ -188,12 +188,12 @@ export default function AdminSecurity() {
 
       {/* Current Password Confirmation */}
       <div className="ev-card p-6">
-        <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
-          <Lock className="w-5 h-5 text-[#2563EB]" />
+        <h2 className="text-lg font-semibold text-ev-text mb-4 flex items-center gap-2">
+          <Lock className="w-5 h-5 text-ev-blue" />
           Confirm Identity
         </h2>
         <div>
-          <label className="block text-sm text-[#64748B] mb-1.5">Current Password (Required)</label>
+          <label className="block text-sm text-ev-muted mb-1.5">Current Password (Required)</label>
           <div className="relative">
             <input
               type={showCurrentPassword ? 'text' : 'password'}
@@ -205,7 +205,7 @@ export default function AdminSecurity() {
             <button
               type="button"
               onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-[#1E293B]"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-ev-muted hover:text-ev-text"
             >
               {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>

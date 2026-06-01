@@ -96,7 +96,7 @@ export default function DashboardPage() {
 
   const transactionIcon = (type: string) => {
     if (['withdrawal', 'admin_adjustment'].includes(type) && data) {
-      return <ArrowUpRight className="w-4 h-4 text-[#2563EB]" />;
+      return <ArrowUpRight className="w-4 h-4 text-ev-blue" />;
     }
     return <ArrowDownLeft className="w-4 h-4 text-[#10B981]" />;
   };
@@ -108,29 +108,29 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-[#2563EB]/30 border-t-[#2563EB] rounded-full animate-spin" />
+      <div className="min-h-screen bg-ev-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-3 border-ev-blue/30 border-t-ev-blue rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] pb-24">
+    <div className="min-h-screen bg-ev-bg pb-24">
       {/* Header */}
-      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF]">
+      <div className="bg-ev-bg border-b border-ev-card-border">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 ev-gradient-red rounded-full flex items-center justify-center text-white font-bold text-lg">
               {user?.username?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div>
-              <p className="text-[#1E293B] font-semibold">Hello, {user?.username || 'User'}</p>
-              <p className="text-xs text-[#64748B]">Welcome to your Dashboard</p>
+              <p className="text-ev-text font-semibold">Hello, {user?.username || 'User'}</p>
+              <p className="text-xs text-ev-muted">Welcome to your Dashboard</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#2563EB] transition-colors px-3 py-2"
+            className="flex items-center gap-1.5 text-sm text-ev-muted hover:text-ev-blue transition-colors px-3 py-2"
           >
             <LogOut className="w-4 h-4" />
             <span className="hidden sm:inline">Logout</span>
@@ -149,19 +149,19 @@ export default function DashboardPage() {
           <div className="relative z-10">
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <p className="text-xs text-[#64748B] mb-1">Main Balance</p>
-                <p className="text-xl font-bold text-[#1E293B]">
+                <p className="text-xs text-ev-muted mb-1">Main Balance</p>
+                <p className="text-xl font-bold text-ev-text">
                   Rs. {((data?.main_balance ?? user?.main_balance) || 0).toLocaleString()}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-[#64748B] mb-1">Deposit Balance</p>
-                <p className="text-xl font-bold text-[#1E293B]">
+                <p className="text-xs text-ev-muted mb-1">Deposit Balance</p>
+                <p className="text-xl font-bold text-ev-text">
                   Rs. {((data?.deposit_balance ?? user?.deposit_balance) || 0).toLocaleString()}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-[#64748B] mb-1">Status</p>
+                <p className="text-xs text-ev-muted mb-1">Status</p>
                 <div className="mt-1">{statusBadge(data?.package_status || user?.package_status || 'Inactive')}</div>
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function DashboardPage() {
             <motion.button
               key={i}
               onClick={() => navigate(card.page)}
-              className="ev-card p-3 sm:p-4 flex flex-col items-center gap-2 hover:border-[#2563EB]/30 transition-colors"
+              className="ev-card p-3 sm:p-4 flex flex-col items-center gap-2 hover:border-ev-blue/30 transition-colors"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.03 }}
@@ -185,7 +185,7 @@ export default function DashboardPage() {
               >
                 <card.icon className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: card.color }} />
               </div>
-              <span className="text-[10px] sm:text-xs text-[#64748B] font-medium">{card.label}</span>
+              <span className="text-[10px] sm:text-xs text-ev-muted font-medium">{card.label}</span>
             </motion.button>
           ))}
         </div>
@@ -193,22 +193,22 @@ export default function DashboardPage() {
         {/* Recent Transactions */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-semibold text-[#1E293B]">Recent Transactions</h2>
+            <h2 className="text-base font-semibold text-ev-text">Recent Transactions</h2>
           </div>
-          <div className="ev-card divide-y divide-[#EFF6FF]">
+          <div className="ev-card divide-y divide-ev-card-border">
             {Array.isArray(data?.recent_transactions) && data.recent_transactions.length > 0 ? (
               data.recent_transactions.map((tx) => (
                 <div key={tx.id} className="flex items-center gap-3 p-4">
-                  <div className="w-9 h-9 bg-[#F0F7FF] rounded-lg flex items-center justify-center">
+                  <div className="w-9 h-9 bg-ev-bg rounded-lg flex items-center justify-center">
                     {transactionIcon(tx.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-[#1E293B] truncate">{tx.description || tx.type}</p>
-                    <p className="text-xs text-[#64748B]">{new Date(tx.created_at).toLocaleDateString()}</p>
+                    <p className="text-sm text-ev-text truncate">{tx.description || tx.type}</p>
+                    <p className="text-xs text-ev-muted">{new Date(tx.created_at).toLocaleDateString()}</p>
                   </div>
                   <span
                     className={`text-sm font-semibold ${
-                      ['withdrawal'].includes(tx.type) ? 'text-[#2563EB]' : 'text-[#10B981]'
+                      ['withdrawal'].includes(tx.type) ? 'text-ev-blue' : 'text-[#10B981]'
                     }`}
                   >
                     {formatAmount(tx.amount, tx.type)}
@@ -216,7 +216,7 @@ export default function DashboardPage() {
                 </div>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center py-10 text-[#64748B]">
+              <div className="flex flex-col items-center justify-center py-10 text-ev-muted">
                 <Inbox className="w-10 h-10 mb-2" />
                 <p className="text-sm">No transactions yet</p>
               </div>

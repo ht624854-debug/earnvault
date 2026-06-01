@@ -7,14 +7,15 @@ import { useSettingsStore } from '@/lib/stores';
 export default function DownloadPage() {
   const { settings } = useSettingsStore();
   const downloadLink = settings.download_link;
+  const brandName = settings.brand_name || 'EarnVault';
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] pb-24">
+    <div className="min-h-screen bg-ev-bg pb-24">
       {/* Header */}
-      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
+      <div className="bg-ev-bg border-b border-ev-card-border sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-lg font-bold text-[#1E293B]">Download App</h1>
-          <p className="text-xs text-[#64748B] mt-0.5">Get the EarnVault app</p>
+          <h1 className="text-lg font-bold text-ev-text">Download App</h1>
+          <p className="text-xs text-ev-muted mt-0.5">Get the {brandName} app</p>
         </div>
       </div>
 
@@ -30,8 +31,8 @@ export default function DownloadPage() {
               <div className="w-16 h-16 ev-gradient-red rounded-2xl flex items-center justify-center mx-auto mb-6 ev-glow-red">
                 <Smartphone className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-xl font-bold text-[#1E293B] mb-2">EarnVault App</h2>
-              <p className="text-sm text-[#64748B] mb-6">
+              <h2 className="text-xl font-bold text-ev-text mb-2">{brandName} App</h2>
+              <p className="text-sm text-ev-muted mb-6">
                 Download our app for the best experience
               </p>
               <a
@@ -51,11 +52,11 @@ export default function DownloadPage() {
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="relative z-10">
-              <div className="w-16 h-16 bg-[#F0F7FF] rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Rocket className="w-8 h-8 text-[#64748B]" />
+              <div className="w-16 h-16 bg-ev-bg rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Rocket className="w-8 h-8 text-ev-muted" />
               </div>
-              <h2 className="text-xl font-bold text-[#1E293B] mb-2">Coming Soon</h2>
-              <p className="text-sm text-[#64748B] mb-6">
+              <h2 className="text-xl font-bold text-ev-text mb-2">Coming Soon</h2>
+              <p className="text-sm text-ev-muted mb-6">
                 Our mobile app is under development. Stay tuned!
               </p>
 
@@ -64,7 +65,7 @@ export default function DownloadPage() {
                 {[0, 1, 2].map((i) => (
                   <motion.div
                     key={i}
-                    className="w-2 h-2 bg-[#2563EB] rounded-full"
+                    className="w-2 h-2 bg-ev-blue rounded-full"
                     animate={{
                       scale: [1, 1.4, 1],
                       opacity: [0.3, 1, 0.3],

@@ -69,7 +69,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#2563EB]" />
+        <Loader2 className="w-8 h-8 animate-spin text-ev-blue" />
       </div>
     );
   }
@@ -78,8 +78,8 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#1E293B]">Dashboard</h1>
-          <p className="text-[#64748B] text-sm mt-1">Overview of your platform</p>
+          <h1 className="text-2xl font-bold text-ev-text">Dashboard</h1>
+          <p className="text-ev-muted text-sm mt-1">Overview of your platform</p>
         </div>
         <button onClick={loadDashboard} className="ev-btn-secondary text-sm flex items-center gap-2">
           <TrendingUp className="w-4 h-4" />
@@ -89,18 +89,18 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {statCards.map((card) => (
-          <div key={card.key} className="ev-card p-4 hover:border-[#2563EB]/30 transition-colors">
+          <div key={card.key} className="ev-card p-4 hover:border-ev-blue/30 transition-colors">
             <div className="flex items-center justify-between mb-3">
               <span className={`${card.color}`}>{card.icon}</span>
             </div>
-            <p className="text-2xl font-bold text-[#1E293B]">{stats?.[card.key]?.toLocaleString() ?? '0'}</p>
-            <p className="text-xs text-[#64748B] mt-1">{card.label}</p>
+            <p className="text-2xl font-bold text-ev-text">{stats?.[card.key]?.toLocaleString() ?? '0'}</p>
+            <p className="text-xs text-ev-muted mt-1">{card.label}</p>
           </div>
         ))}
       </div>
 
       <div className="ev-card p-6">
-        <h2 className="text-lg font-semibold text-[#1E293B] mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-ev-text mb-4">Quick Actions</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <button
             onClick={() => navigate('admin-users')}

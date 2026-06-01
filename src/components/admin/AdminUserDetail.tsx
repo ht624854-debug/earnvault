@@ -164,14 +164,14 @@ export default function AdminUserDetail() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#2563EB]" />
+        <Loader2 className="w-8 h-8 animate-spin text-ev-blue" />
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-[#64748B]">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-ev-muted">
         <User className="w-12 h-12 mb-3 opacity-50" />
         <p>User not found</p>
       </div>
@@ -184,23 +184,23 @@ export default function AdminUserDetail() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('admin-users')}
-          className="p-2 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] transition-colors"
+          className="p-2 rounded-lg hover:bg-ev-bg text-ev-muted transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-[#1E293B]">
+          <h1 className="text-2xl font-bold text-ev-text">
             {user.first_name} {user.last_name}
           </h1>
-          <p className="text-[#64748B] text-sm">@{user.username}</p>
+          <p className="text-ev-muted text-sm">@{user.username}</p>
         </div>
       </div>
 
       {/* User Info Card */}
       <div className="ev-card p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-[#1E293B] flex items-center gap-2">
-            <User className="w-5 h-5 text-[#2563EB]" />
+          <h2 className="text-lg font-semibold text-ev-text flex items-center gap-2">
+            <User className="w-5 h-5 text-ev-blue" />
             User Information
           </h2>
           <div className="flex gap-2">
@@ -229,16 +229,16 @@ export default function AdminUserDetail() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-          <div className="bg-[#F0F7FF] rounded-lg p-3">
-            <p className="text-xs text-[#64748B]">Main Balance</p>
-            <p className="text-lg font-bold text-[#1E293B]">Rs. {user.main_balance?.toLocaleString()}</p>
+          <div className="bg-ev-bg rounded-lg p-3">
+            <p className="text-xs text-ev-muted">Main Balance</p>
+            <p className="text-lg font-bold text-ev-text">Rs. {user.main_balance?.toLocaleString()}</p>
           </div>
-          <div className="bg-[#F0F7FF] rounded-lg p-3">
-            <p className="text-xs text-[#64748B]">Deposit Balance</p>
-            <p className="text-lg font-bold text-[#1E293B]">Rs. {user.deposit_balance?.toLocaleString()}</p>
+          <div className="bg-ev-bg rounded-lg p-3">
+            <p className="text-xs text-ev-muted">Deposit Balance</p>
+            <p className="text-lg font-bold text-ev-text">Rs. {user.deposit_balance?.toLocaleString()}</p>
           </div>
-          <div className="bg-[#F0F7FF] rounded-lg p-3">
-            <p className="text-xs text-[#64748B]">Status</p>
+          <div className="bg-ev-bg rounded-lg p-3">
+            <p className="text-xs text-ev-muted">Status</p>
             <Badge
               className={
                 user.status === 'active'
@@ -251,27 +251,27 @@ export default function AdminUserDetail() {
               {user.status}
             </Badge>
           </div>
-          <div className="bg-[#F0F7FF] rounded-lg p-3">
-            <p className="text-xs text-[#64748B]">Package</p>
+          <div className="bg-ev-bg rounded-lg p-3">
+            <p className="text-xs text-ev-muted">Package</p>
             <Badge variant="secondary">{user.package_status || 'None'}</Badge>
           </div>
         </div>
 
-        <p className="text-xs text-[#64748B]">
-          Referral Code: <span className="text-[#2563EB] font-mono">{user.referral_code}</span> | Joined:{' '}
+        <p className="text-xs text-ev-muted">
+          Referral Code: <span className="text-ev-blue font-mono">{user.referral_code}</span> | Joined:{' '}
           {new Date(user.created_at).toLocaleDateString()}
         </p>
       </div>
 
       {/* Edit User Form */}
       <div className="ev-card p-6">
-        <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
-          <Save className="w-5 h-5 text-[#2563EB]" />
+        <h2 className="text-lg font-semibold text-ev-text mb-4 flex items-center gap-2">
+          <Save className="w-5 h-5 text-ev-blue" />
           Edit User
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm text-[#64748B] mb-1">First Name</label>
+            <label className="block text-sm text-ev-muted mb-1">First Name</label>
             <input
               className="ev-input w-full px-4 py-2.5"
               value={editForm.first_name}
@@ -279,7 +279,7 @@ export default function AdminUserDetail() {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#64748B] mb-1">Last Name</label>
+            <label className="block text-sm text-ev-muted mb-1">Last Name</label>
             <input
               className="ev-input w-full px-4 py-2.5"
               value={editForm.last_name}
@@ -287,7 +287,7 @@ export default function AdminUserDetail() {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#64748B] mb-1">Email</label>
+            <label className="block text-sm text-ev-muted mb-1">Email</label>
             <input
               className="ev-input w-full px-4 py-2.5"
               value={editForm.email}
@@ -295,7 +295,7 @@ export default function AdminUserDetail() {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#64748B] mb-1">Username</label>
+            <label className="block text-sm text-ev-muted mb-1">Username</label>
             <input
               className="ev-input w-full px-4 py-2.5"
               value={editForm.username}
@@ -303,7 +303,7 @@ export default function AdminUserDetail() {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#64748B] mb-1">Mobile</label>
+            <label className="block text-sm text-ev-muted mb-1">Mobile</label>
             <input
               className="ev-input w-full px-4 py-2.5"
               value={editForm.mobile}
@@ -311,7 +311,7 @@ export default function AdminUserDetail() {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#64748B] mb-1">Package Status</label>
+            <label className="block text-sm text-ev-muted mb-1">Package Status</label>
             <select
               className="ev-input w-full px-4 py-2.5"
               value={editForm.package_status}
@@ -322,7 +322,7 @@ export default function AdminUserDetail() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-[#64748B] mb-1">Status</label>
+            <label className="block text-sm text-ev-muted mb-1">Status</label>
             <select
               className="ev-input w-full px-4 py-2.5"
               value={editForm.status}
@@ -348,19 +348,19 @@ export default function AdminUserDetail() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Transactions */}
         <div className="ev-card p-6">
-          <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
-            <CreditCard className="w-5 h-5 text-[#2563EB]" />
+          <h2 className="text-lg font-semibold text-ev-text mb-4 flex items-center gap-2">
+            <CreditCard className="w-5 h-5 text-ev-blue" />
             Transactions
           </h2>
           {transactions.length === 0 ? (
-            <p className="text-sm text-[#64748B] text-center py-6">No transactions found</p>
+            <p className="text-sm text-ev-muted text-center py-6">No transactions found</p>
           ) : (
             <div className="space-y-2 max-h-64 overflow-y-auto scrollbar-thin">
               {transactions.slice(0, 10).map((tx: any) => (
-                <div key={tx.id} className="flex items-center justify-between p-3 bg-[#F0F7FF] rounded-lg">
+                <div key={tx.id} className="flex items-center justify-between p-3 bg-ev-bg rounded-lg">
                   <div>
-                    <p className="text-sm text-[#1E293B]">{tx.type}</p>
-                    <p className="text-xs text-[#64748B]">{tx.description}</p>
+                    <p className="text-sm text-ev-text">{tx.type}</p>
+                    <p className="text-xs text-ev-muted">{tx.description}</p>
                   </div>
                   <span className={`text-sm font-medium ${tx.amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {tx.amount > 0 ? '+' : ''}Rs. {tx.amount}
@@ -373,19 +373,19 @@ export default function AdminUserDetail() {
 
         {/* Referrals */}
         <div className="ev-card p-6">
-          <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
-            <Link2 className="w-5 h-5 text-[#2563EB]" />
+          <h2 className="text-lg font-semibold text-ev-text mb-4 flex items-center gap-2">
+            <Link2 className="w-5 h-5 text-ev-blue" />
             Referrals
           </h2>
           {referrals.length === 0 ? (
-            <p className="text-sm text-[#64748B] text-center py-6">No referrals found</p>
+            <p className="text-sm text-ev-muted text-center py-6">No referrals found</p>
           ) : (
             <div className="space-y-2 max-h-64 overflow-y-auto scrollbar-thin">
               {referrals.slice(0, 10).map((ref: any) => (
-                <div key={ref.id} className="flex items-center justify-between p-3 bg-[#F0F7FF] rounded-lg">
+                <div key={ref.id} className="flex items-center justify-between p-3 bg-ev-bg rounded-lg">
                   <div>
-                    <p className="text-sm text-[#1E293B]">{ref.referred_user?.username || 'Unknown'}</p>
-                    <p className="text-xs text-[#64748B]">{new Date(ref.created_at).toLocaleDateString()}</p>
+                    <p className="text-sm text-ev-text">{ref.referred_user?.username || 'Unknown'}</p>
+                    <p className="text-xs text-ev-muted">{new Date(ref.created_at).toLocaleDateString()}</p>
                   </div>
                   <Badge
                     className={
@@ -404,19 +404,19 @@ export default function AdminUserDetail() {
 
         {/* Task Submissions */}
         <div className="ev-card p-6">
-          <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
-            <FileCheck className="w-5 h-5 text-[#2563EB]" />
+          <h2 className="text-lg font-semibold text-ev-text mb-4 flex items-center gap-2">
+            <FileCheck className="w-5 h-5 text-ev-blue" />
             Task Submissions
           </h2>
           {taskSubmissions.length === 0 ? (
-            <p className="text-sm text-[#64748B] text-center py-6">No submissions found</p>
+            <p className="text-sm text-ev-muted text-center py-6">No submissions found</p>
           ) : (
             <div className="space-y-2 max-h-64 overflow-y-auto scrollbar-thin">
               {taskSubmissions.slice(0, 10).map((sub: any) => (
-                <div key={sub.id} className="flex items-center justify-between p-3 bg-[#F0F7FF] rounded-lg">
+                <div key={sub.id} className="flex items-center justify-between p-3 bg-ev-bg rounded-lg">
                   <div>
-                    <p className="text-sm text-[#1E293B]">{sub.task?.title || 'Task'}</p>
-                    <p className="text-xs text-[#64748B]">Rs. {sub.reward_amount}</p>
+                    <p className="text-sm text-ev-text">{sub.task?.title || 'Task'}</p>
+                    <p className="text-xs text-ev-muted">Rs. {sub.reward_amount}</p>
                   </div>
                   <Badge
                     className={
@@ -437,19 +437,19 @@ export default function AdminUserDetail() {
 
         {/* Withdrawals */}
         <div className="ev-card p-6">
-          <h2 className="text-lg font-semibold text-[#1E293B] mb-4 flex items-center gap-2">
-            <Wallet className="w-5 h-5 text-[#2563EB]" />
+          <h2 className="text-lg font-semibold text-ev-text mb-4 flex items-center gap-2">
+            <Wallet className="w-5 h-5 text-ev-blue" />
             Withdrawals
           </h2>
           {withdrawals.length === 0 ? (
-            <p className="text-sm text-[#64748B] text-center py-6">No withdrawals found</p>
+            <p className="text-sm text-ev-muted text-center py-6">No withdrawals found</p>
           ) : (
             <div className="space-y-2 max-h-64 overflow-y-auto scrollbar-thin">
               {withdrawals.slice(0, 10).map((w: any) => (
-                <div key={w.id} className="flex items-center justify-between p-3 bg-[#F0F7FF] rounded-lg">
+                <div key={w.id} className="flex items-center justify-between p-3 bg-ev-bg rounded-lg">
                   <div>
-                    <p className="text-sm text-[#1E293B]">Rs. {w.amount}</p>
-                    <p className="text-xs text-[#64748B]">{new Date(w.created_at).toLocaleDateString()}</p>
+                    <p className="text-sm text-ev-text">Rs. {w.amount}</p>
+                    <p className="text-xs text-ev-muted">{new Date(w.created_at).toLocaleDateString()}</p>
                   </div>
                   <Badge
                     className={
@@ -471,13 +471,13 @@ export default function AdminUserDetail() {
 
       {/* Balance Adjust Dialog */}
       <Dialog open={balanceDialog} onOpenChange={setBalanceDialog}>
-        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
+        <DialogContent className="bg-ev-card border-ev-card-border">
           <DialogHeader>
-            <DialogTitle className="text-[#1E293B]">Adjust Balance</DialogTitle>
+            <DialogTitle className="text-ev-text">Adjust Balance</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm text-[#64748B] mb-1">Amount</label>
+              <label className="block text-sm text-ev-muted mb-1">Amount</label>
               <input
                 type="number"
                 className="ev-input w-full px-4 py-2.5"
@@ -487,7 +487,7 @@ export default function AdminUserDetail() {
               />
             </div>
             <div>
-              <label className="block text-sm text-[#64748B] mb-1">Type</label>
+              <label className="block text-sm text-ev-muted mb-1">Type</label>
               <select
                 className="ev-input w-full px-4 py-2.5"
                 value={balanceForm.type}
@@ -498,7 +498,7 @@ export default function AdminUserDetail() {
               </select>
             </div>
             <div>
-              <label className="block text-sm text-[#64748B] mb-1">Reason</label>
+              <label className="block text-sm text-ev-muted mb-1">Reason</label>
               <textarea
                 className="ev-input w-full px-4 py-2.5 min-h-[80px]"
                 placeholder="Enter reason for adjustment"

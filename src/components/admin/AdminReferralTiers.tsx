@@ -151,8 +151,8 @@ export default function AdminReferralTiers() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#1E293B]">Referral Reward Tiers</h1>
-          <p className="text-[#64748B] text-sm mt-1">Set reward amounts for each referral level</p>
+          <h1 className="text-2xl font-bold text-ev-text">Referral Reward Tiers</h1>
+          <p className="text-ev-muted text-sm mt-1">Set reward amounts for each referral level</p>
         </div>
         <button onClick={openCreateDialog} className="ev-btn-primary flex items-center gap-2">
           <Plus className="w-4 h-4" />
@@ -163,10 +163,10 @@ export default function AdminReferralTiers() {
       {/* Info Card */}
       <div className="ev-card p-4">
         <div className="flex items-start gap-3">
-          <Award className="w-5 h-5 text-[#2563EB] mt-0.5 shrink-0" />
+          <Award className="w-5 h-5 text-ev-blue mt-0.5 shrink-0" />
           <div>
-            <p className="text-sm font-medium text-[#1E293B]">How Referral Levels Work</p>
-            <p className="text-xs text-[#64748B] mt-1">
+            <p className="text-sm font-medium text-ev-text">How Referral Levels Work</p>
+            <p className="text-xs text-ev-muted mt-1">
               When a user&apos;s referral activates, the system determines the level based on how many
               activated referrals that user already has. The 1st activated referral gets Level 1 reward,
               the 2nd gets Level 2, and so on. If no tier is defined for a level, the default referral
@@ -180,10 +180,10 @@ export default function AdminReferralTiers() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
+            <Loader2 className="w-6 h-6 animate-spin text-ev-blue" />
           </div>
         ) : tiers.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
+          <div className="flex flex-col items-center justify-center py-20 text-ev-muted">
             <Award className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No referral reward tiers configured</p>
             <p className="text-xs mt-1">Add tiers to set different rewards for each referral level</p>
@@ -192,22 +192,22 @@ export default function AdminReferralTiers() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#EFF6FF]">
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Level</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Label</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Reward Amount</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
+                <tr className="border-b border-ev-card-border">
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Level</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Label</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Reward Amount</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {tiers.map((tier) => (
-                  <tr key={tier.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
-                    <td className="py-3 px-4 text-[#1E293B] font-bold">{tier.level}</td>
-                    <td className="py-3 px-4 text-[#64748B]">{getLevelLabel(tier.level)} Referral</td>
+                  <tr key={tier.id} className="border-b border-ev-card-border hover:bg-ev-bg transition-colors">
+                    <td className="py-3 px-4 text-ev-text font-bold">{tier.level}</td>
+                    <td className="py-3 px-4 text-ev-muted">{getLevelLabel(tier.level)} Referral</td>
                     <td className="py-3 px-4">
                       {editingLevel === tier.level ? (
                         <div className="flex items-center gap-2">
-                          <span className="text-[#64748B]">Rs</span>
+                          <span className="text-ev-muted">Rs</span>
                           <input
                             type="number"
                             className="ev-input w-24 px-2 py-1 text-sm"
@@ -219,13 +219,13 @@ export default function AdminReferralTiers() {
                           <button
                             onClick={() => handleInlineSave(tier.level)}
                             disabled={saving}
-                            className="p-1 rounded hover:bg-[#EFF6FF] text-[#10B981] transition-colors"
+                            className="p-1 rounded hover:bg-ev-bg text-[#10B981] transition-colors"
                           >
                             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                           </button>
                           <button
                             onClick={cancelInlineEdit}
-                            className="p-1 rounded hover:bg-[#EFF6FF] text-[#64748B] transition-colors"
+                            className="p-1 rounded hover:bg-ev-bg text-ev-muted transition-colors"
                           >
                             <X className="w-4 h-4" />
                           </button>
@@ -238,14 +238,14 @@ export default function AdminReferralTiers() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => startInlineEdit(tier)}
-                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-[#2563EB] transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-ev-bg text-ev-muted hover:text-ev-blue transition-colors"
                           title="Edit"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setDeleteLevel(tier.level)}
-                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-red-500 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-ev-bg text-ev-muted hover:text-red-500 transition-colors"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -262,15 +262,15 @@ export default function AdminReferralTiers() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
+        <DialogContent className="bg-ev-card border-ev-card-border">
           <DialogHeader>
-            <DialogTitle className="text-[#1E293B]">
+            <DialogTitle className="text-ev-text">
               {editLevel ? `Edit Level ${editLevel} Tier` : 'Add Referral Reward Tier'}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm text-[#64748B] mb-1">Level *</label>
+              <label className="block text-sm text-ev-muted mb-1">Level *</label>
               <input
                 type="number"
                 className="ev-input w-full px-4 py-2.5"
@@ -280,12 +280,12 @@ export default function AdminReferralTiers() {
                 min="1"
                 disabled={editLevel !== null}
               />
-              <p className="text-xs text-[#64748B] mt-1">
+              <p className="text-xs text-ev-muted mt-1">
                 1 = 1st referral, 2 = 2nd referral, etc.
               </p>
             </div>
             <div>
-              <label className="block text-sm text-[#64748B] mb-1">Reward Amount (Rs) *</label>
+              <label className="block text-sm text-ev-muted mb-1">Reward Amount (Rs) *</label>
               <input
                 type="number"
                 className="ev-input w-full px-4 py-2.5"
@@ -311,11 +311,11 @@ export default function AdminReferralTiers() {
 
       {/* Delete Confirm Dialog */}
       <Dialog open={deleteLevel !== null} onOpenChange={() => setDeleteLevel(null)}>
-        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
+        <DialogContent className="bg-ev-card border-ev-card-border">
           <DialogHeader>
-            <DialogTitle className="text-[#1E293B]">Delete Referral Reward Tier</DialogTitle>
+            <DialogTitle className="text-ev-text">Delete Referral Reward Tier</DialogTitle>
           </DialogHeader>
-          <p className="text-[#64748B] text-sm">
+          <p className="text-ev-muted text-sm">
             Are you sure you want to delete the Level {deleteLevel} reward tier? Referrals at this level
             will fall back to the default referral reward from settings.
           </p>

@@ -115,8 +115,8 @@ export default function AdminTaskSubmissions() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#1E293B]">Task Submissions</h1>
-        <p className="text-[#64748B] text-sm mt-1">Review user task submissions</p>
+        <h1 className="text-2xl font-bold text-ev-text">Task Submissions</h1>
+        <p className="text-ev-muted text-sm mt-1">Review user task submissions</p>
       </div>
 
       {/* Filters */}
@@ -128,8 +128,8 @@ export default function AdminTaskSubmissions() {
               onClick={() => setFilter(f.value)}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 filter === f.value
-                  ? 'bg-[#2563EB]/10 text-[#2563EB] border border-[#2563EB]/30'
-                  : 'bg-[#F0F7FF] text-[#64748B] border border-[#DBEAFE] hover:bg-[#EFF6FF]'
+                  ? 'bg-ev-blue/10 text-ev-blue border border-ev-blue/30'
+                  : 'bg-ev-bg text-ev-muted border border-ev-card-border hover:bg-ev-bg'
               }`}
             >
               {f.label}
@@ -142,10 +142,10 @@ export default function AdminTaskSubmissions() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
+            <Loader2 className="w-6 h-6 animate-spin text-ev-blue" />
           </div>
         ) : submissions.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
+          <div className="flex flex-col items-center justify-center py-20 text-ev-muted">
             <FileCheck className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No task submissions found</p>
           </div>
@@ -153,33 +153,33 @@ export default function AdminTaskSubmissions() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#EFF6FF]">
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">User</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Task</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Answer</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Proof</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Status</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Reward</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
+                <tr className="border-b border-ev-card-border">
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">User</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Task</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Answer</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Proof</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Status</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Reward</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {submissions.map((sub) => (
-                  <tr key={sub.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
-                    <td className="py-3 px-4 text-[#1E293B]">
+                  <tr key={sub.id} className="border-b border-ev-card-border hover:bg-ev-bg transition-colors">
+                    <td className="py-3 px-4 text-ev-text">
                       {sub.user?.first_name} {sub.user?.last_name}
-                      <span className="text-[#64748B] text-xs block">@{sub.user?.username}</span>
+                      <span className="text-ev-muted text-xs block">@{sub.user?.username}</span>
                     </td>
                     <td className="py-3 px-4">
-                      <p className="text-[#1E293B]">{sub.task?.title}</p>
-                      <p className="text-[#64748B] text-xs capitalize">{sub.task?.type?.replace('_', ' ')}</p>
+                      <p className="text-ev-text">{sub.task?.title}</p>
+                      <p className="text-ev-muted text-xs capitalize">{sub.task?.type?.replace('_', ' ')}</p>
                     </td>
-                    <td className="py-3 px-4 text-[#64748B] max-w-[200px] truncate">{sub.answer || '—'}</td>
+                    <td className="py-3 px-4 text-ev-muted max-w-[200px] truncate">{sub.answer || '—'}</td>
                     <td className="py-3 px-4">
                       {sub.proof_image ? (
                         <button
                           onClick={() => setProofImage(sub.proof_image)}
-                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#2563EB] transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-ev-bg text-ev-blue transition-colors"
                           title="View proof"
                         >
                           <ImageIcon className="w-4 h-4" />
@@ -189,7 +189,7 @@ export default function AdminTaskSubmissions() {
                       )}
                     </td>
                     <td className="py-3 px-4">{getStatusBadge(sub.status)}</td>
-                    <td className="py-3 px-4 text-[#1E293B] font-medium">Rs. {sub.reward_amount}</td>
+                    <td className="py-3 px-4 text-ev-text font-medium">Rs. {sub.reward_amount}</td>
                     <td className="py-3 px-4">
                       {sub.status?.toLowerCase() === 'pending' && (
                         <div className="flex items-center gap-2">
@@ -225,12 +225,12 @@ export default function AdminTaskSubmissions() {
 
       {/* Reject Dialog */}
       <Dialog open={!!rejectDialog} onOpenChange={() => setRejectDialog(null)}>
-        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
+        <DialogContent className="bg-ev-card border-ev-card-border">
           <DialogHeader>
-            <DialogTitle className="text-[#1E293B]">Reject Submission</DialogTitle>
+            <DialogTitle className="text-ev-text">Reject Submission</DialogTitle>
           </DialogHeader>
           <div>
-            <label className="block text-sm text-[#64748B] mb-1">Rejection Reason</label>
+            <label className="block text-sm text-ev-muted mb-1">Rejection Reason</label>
             <textarea
               className="ev-input w-full px-4 py-2.5 min-h-[80px]"
               placeholder="Enter reason for rejection"
@@ -251,9 +251,9 @@ export default function AdminTaskSubmissions() {
 
       {/* Proof Image Dialog */}
       <Dialog open={!!proofImage} onOpenChange={() => setProofImage(null)}>
-        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF] max-w-2xl">
+        <DialogContent className="bg-ev-card border-ev-card-border max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="text-[#1E293B]">Submission Proof</DialogTitle>
+            <DialogTitle className="text-ev-text">Submission Proof</DialogTitle>
           </DialogHeader>
           {proofImage && (
             <img

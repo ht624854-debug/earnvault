@@ -133,11 +133,11 @@ export default function ProfilePage() {
     : 'U';
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] pb-24">
+    <div className="min-h-screen bg-ev-bg pb-24">
       {/* Header */}
-      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
+      <div className="bg-ev-bg border-b border-ev-card-border sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-lg font-bold text-[#1E293B]">Profile</h1>
+          <h1 className="text-lg font-bold text-ev-text">Profile</h1>
         </div>
       </div>
 
@@ -151,7 +151,7 @@ export default function ProfilePage() {
                 <img
                   src={user.avatar}
                   alt="Avatar"
-                  className="w-16 h-16 rounded-full object-cover border-2 border-[#2563EB]"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-ev-blue"
                 />
               ) : (
                 <div className="w-16 h-16 ev-gradient-red rounded-full flex items-center justify-center text-white text-xl font-bold">
@@ -160,10 +160,10 @@ export default function ProfilePage() {
               )}
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-bold text-[#1E293B]">
+              <h2 className="text-lg font-bold text-ev-text">
                 {user?.first_name} {user?.last_name}
               </h2>
-              <p className="text-sm text-[#64748B]">@{user?.username}</p>
+              <p className="text-sm text-ev-muted">@{user?.username}</p>
               <span
                 className={`inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full mt-1 ${
                   user?.package_status === 'Active'
@@ -178,53 +178,53 @@ export default function ProfilePage() {
         </motion.div>
 
         {/* Info Cards */}
-        <motion.div className="ev-card divide-y divide-[#EFF6FF]" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+        <motion.div className="ev-card divide-y divide-ev-card-border" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div className="flex items-center gap-3 p-4">
-            <Mail className="w-4 h-4 text-[#64748B]" />
+            <Mail className="w-4 h-4 text-ev-muted" />
             <div className="flex-1">
-              <p className="text-xs text-[#64748B]">Email</p>
-              <p className="text-sm text-[#1E293B]">{user?.email}</p>
+              <p className="text-xs text-ev-muted">Email</p>
+              <p className="text-sm text-ev-text">{user?.email}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
-            <Phone className="w-4 h-4 text-[#64748B]" />
+            <Phone className="w-4 h-4 text-ev-muted" />
             <div className="flex-1">
-              <p className="text-xs text-[#64748B]">Mobile</p>
-              <p className="text-sm text-[#1E293B]">{user?.mobile}</p>
+              <p className="text-xs text-ev-muted">Mobile</p>
+              <p className="text-sm text-ev-text">{user?.mobile}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
-            <Wallet className="w-4 h-4 text-[#64748B]" />
+            <Wallet className="w-4 h-4 text-ev-muted" />
             <div className="flex-1">
-              <p className="text-xs text-[#64748B]">Main Balance</p>
-              <p className="text-sm text-[#1E293B] font-semibold">Rs. {(user?.main_balance || 0).toLocaleString()}</p>
+              <p className="text-xs text-ev-muted">Main Balance</p>
+              <p className="text-sm text-ev-text font-semibold">Rs. {(user?.main_balance || 0).toLocaleString()}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
-            <Wallet className="w-4 h-4 text-[#64748B]" />
+            <Wallet className="w-4 h-4 text-ev-muted" />
             <div className="flex-1">
-              <p className="text-xs text-[#64748B]">Deposit Balance</p>
-              <p className="text-sm text-[#1E293B] font-semibold">Rs. {(user?.deposit_balance || 0).toLocaleString()}</p>
+              <p className="text-xs text-ev-muted">Deposit Balance</p>
+              <p className="text-sm text-ev-text font-semibold">Rs. {(user?.deposit_balance || 0).toLocaleString()}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4">
-            <Copy className="w-4 h-4 text-[#64748B]" />
+            <Copy className="w-4 h-4 text-ev-muted" />
             <div className="flex-1">
-              <p className="text-xs text-[#64748B]">Referral Code</p>
-              <p className="text-sm text-[#2563EB] font-semibold">{user?.referral_code}</p>
+              <p className="text-xs text-ev-muted">Referral Code</p>
+              <p className="text-sm text-ev-blue font-semibold">{user?.referral_code}</p>
             </div>
             <button
               onClick={handleCopyCode}
-              className="text-xs text-[#64748B] hover:text-[#1E293B] flex items-center gap-1"
+              className="text-xs text-ev-muted hover:text-ev-text flex items-center gap-1"
             >
               <Copy className="w-3 h-3" /> Copy
             </button>
           </div>
           <div className="flex items-center gap-3 p-4">
-            <Users className="w-4 h-4 text-[#64748B]" />
+            <Users className="w-4 h-4 text-ev-muted" />
             <div className="flex-1">
-              <p className="text-xs text-[#64748B]">Total Referrals</p>
-              <p className="text-sm text-[#1E293B] font-semibold">--</p>
+              <p className="text-xs text-ev-muted">Total Referrals</p>
+              <p className="text-sm text-ev-text font-semibold">--</p>
             </div>
           </div>
         </motion.div>
@@ -263,15 +263,15 @@ export default function ProfilePage() {
             onClick={() => setShowEditModal(false)}
           >
             <motion.div
-              className="w-full max-w-md bg-[#FFFFFF] border border-[#EFF6FF] rounded-t-2xl sm:rounded-2xl p-5"
+              className="w-full max-w-md bg-ev-card border border-ev-card-border rounded-t-2xl sm:rounded-2xl p-5"
               initial={{ y: 100 }}
               animate={{ y: 0 }}
               exit={{ y: 100 }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-bold text-[#1E293B]">Edit Profile</h3>
-                <button onClick={() => setShowEditModal(false)} className="text-[#64748B] hover:text-[#1E293B]">
+                <h3 className="text-base font-bold text-ev-text">Edit Profile</h3>
+                <button onClick={() => setShowEditModal(false)} className="text-ev-muted hover:text-ev-text">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -283,15 +283,15 @@ export default function ProfilePage() {
                     <img
                       src={avatarPreview || user?.avatar}
                       alt="Avatar"
-                      className="w-20 h-20 rounded-full object-cover border-2 border-[#2563EB]"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-ev-blue"
                     />
                   ) : (
                     <div className="w-20 h-20 ev-gradient-red rounded-full flex items-center justify-center text-white text-2xl font-bold">
                       {initials}
                     </div>
                   )}
-                  <label className="absolute bottom-0 right-0 w-7 h-7 bg-[#F0F7FF] border border-[#DBEAFE] rounded-full flex items-center justify-center cursor-pointer hover:border-[#2563EB] transition-colors">
-                    <Camera className="w-3.5 h-3.5 text-[#64748B]" />
+                  <label className="absolute bottom-0 right-0 w-7 h-7 bg-ev-bg border border-ev-card-border rounded-full flex items-center justify-center cursor-pointer hover:border-ev-blue transition-colors">
+                    <Camera className="w-3.5 h-3.5 text-ev-muted" />
                     <input type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
                   </label>
                 </div>
@@ -300,7 +300,7 @@ export default function ProfilePage() {
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-[#64748B] mb-1">First Name</label>
+                    <label className="block text-sm font-medium text-ev-muted mb-1">First Name</label>
                     <input
                       value={editForm.first_name}
                       onChange={(e) => setEditForm({ ...editForm, first_name: e.target.value })}
@@ -308,7 +308,7 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[#64748B] mb-1">Last Name</label>
+                    <label className="block text-sm font-medium text-ev-muted mb-1">Last Name</label>
                     <input
                       value={editForm.last_name}
                       onChange={(e) => setEditForm({ ...editForm, last_name: e.target.value })}
@@ -317,7 +317,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#64748B] mb-1">Mobile</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1">Mobile</label>
                   <input
                     value={editForm.mobile}
                     onChange={(e) => setEditForm({ ...editForm, mobile: e.target.value })}
@@ -353,22 +353,22 @@ export default function ProfilePage() {
             onClick={() => setShowPasswordModal(false)}
           >
             <motion.div
-              className="w-full max-w-md bg-[#FFFFFF] border border-[#EFF6FF] rounded-t-2xl sm:rounded-2xl p-5"
+              className="w-full max-w-md bg-ev-card border border-ev-card-border rounded-t-2xl sm:rounded-2xl p-5"
               initial={{ y: 100 }}
               animate={{ y: 0 }}
               exit={{ y: 100 }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-bold text-[#1E293B]">Change Password</h3>
-                <button onClick={() => setShowPasswordModal(false)} className="text-[#64748B] hover:text-[#1E293B]">
+                <h3 className="text-base font-bold text-ev-text">Change Password</h3>
+                <button onClick={() => setShowPasswordModal(false)} className="text-ev-muted hover:text-ev-text">
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-[#64748B] mb-1">Current Password</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1">Current Password</label>
                   <input
                     type="password"
                     value={passwordForm.current_password}
@@ -377,7 +377,7 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#64748B] mb-1">New Password</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1">New Password</label>
                   <input
                     type="password"
                     value={passwordForm.new_password}
@@ -386,7 +386,7 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#64748B] mb-1">Confirm New Password</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1">Confirm New Password</label>
                   <input
                     type="password"
                     value={passwordForm.confirm_password}

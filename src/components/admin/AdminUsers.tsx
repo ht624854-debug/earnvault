@@ -105,15 +105,15 @@ export default function AdminUsers() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#1E293B]">Users</h1>
-        <p className="text-[#64748B] text-sm mt-1">Manage platform users</p>
+        <h1 className="text-2xl font-bold text-ev-text">Users</h1>
+        <p className="text-ev-muted text-sm mt-1">Manage platform users</p>
       </div>
 
       {/* Search & Filters */}
       <div className="ev-card p-4">
         <form onSubmit={handleSearch} className="flex gap-3 mb-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ev-muted" />
             <input
               type="text"
               className="ev-input w-full pl-10 pr-4 py-2.5"
@@ -134,8 +134,8 @@ export default function AdminUsers() {
               onClick={() => { setFilter(f.value); setPage(1); }}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 filter === f.value
-                  ? 'bg-[#2563EB]/10 text-[#2563EB] border border-[#2563EB]/30'
-                  : 'bg-[#F0F7FF] text-[#64748B] border border-[#DBEAFE] hover:bg-[#EFF6FF]'
+                  ? 'bg-ev-blue/10 text-ev-blue border border-ev-blue/30'
+                  : 'bg-ev-bg text-ev-muted border border-ev-card-border hover:bg-ev-bg'
               }`}
             >
               {f.label}
@@ -148,10 +148,10 @@ export default function AdminUsers() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
+            <Loader2 className="w-6 h-6 animate-spin text-ev-blue" />
           </div>
         ) : users.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
+          <div className="flex flex-col items-center justify-center py-20 text-ev-muted">
             <Users className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No users found</p>
           </div>
@@ -159,24 +159,24 @@ export default function AdminUsers() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#EFF6FF]">
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Name</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Username</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Email</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Balance</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Status</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
+                <tr className="border-b border-ev-card-border">
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Name</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Username</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Email</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Balance</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Status</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
-                    <td className="py-3 px-4 text-[#1E293B]">
+                  <tr key={user.id} className="border-b border-ev-card-border hover:bg-ev-bg transition-colors">
+                    <td className="py-3 px-4 text-ev-text">
                       {user.first_name} {user.last_name}
                     </td>
-                    <td className="py-3 px-4 text-[#64748B]">{user.username}</td>
-                    <td className="py-3 px-4 text-[#64748B]">{user.email}</td>
-                    <td className="py-3 px-4 text-[#1E293B] font-medium">
+                    <td className="py-3 px-4 text-ev-muted">{user.username}</td>
+                    <td className="py-3 px-4 text-ev-muted">{user.email}</td>
+                    <td className="py-3 px-4 text-ev-text font-medium">
                       Rs. {user.main_balance?.toLocaleString() ?? '0'}
                     </td>
                     <td className="py-3 px-4">{getStatusBadge(user.status)}</td>
@@ -184,17 +184,17 @@ export default function AdminUsers() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => navigate('admin-user-detail', { id: user.id })}
-                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-[#2563EB] transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-ev-bg text-ev-muted hover:text-ev-blue transition-colors"
                           title="View"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleBlock(user.id, user.status === 'blocked')}
-                          className={`p-1.5 rounded-lg hover:bg-[#EFF6FF] transition-colors ${
+                          className={`p-1.5 rounded-lg hover:bg-ev-bg transition-colors ${
                             user.status === 'blocked'
                               ? 'text-green-600 hover:text-green-300'
-                              : 'text-[#64748B] hover:text-[#2563EB]'
+                              : 'text-ev-muted hover:text-ev-blue'
                           }`}
                           title={user.status === 'blocked' ? 'Unblock' : 'Block'}
                         >
@@ -211,8 +211,8 @@ export default function AdminUsers() {
 
         {/* Pagination */}
         {!loading && users.length > 0 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-[#EFF6FF]">
-            <p className="text-sm text-[#64748B]">
+          <div className="flex items-center justify-between px-4 py-3 border-t border-ev-card-border">
+            <p className="text-sm text-ev-muted">
               Page {page} of {totalPages}
             </p>
             <div className="flex gap-2">

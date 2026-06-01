@@ -190,3 +190,40 @@ Stage Summary:
 - Changes apply immediately on save without page refresh
 - Reset button restores default blue/white theme
 - Brand name also changeable from same Settings page (already existed)
+
+---
+Task ID: 8
+Agent: Main
+Task: Remove Z.ai dev tools indicator, replace Z.ai favicon with EarnVault logo, make all colors dynamic for admin theme system
+
+Work Log:
+- Added `devIndicators: false` to next.config.ts to remove Z.ai dev tools overlay from the website
+- Replaced Z.ai logo.svg (was a "Z" letter icon) with EarnVault "EV" blue gradient SVG favicon
+- Generated earnvault-logo.png (1024x1024) for use as app icon
+- Made brand_name dynamic across ALL components that had hardcoded "EarnVault":
+  - AdminLayout.tsx: Sidebar header and mobile header now use settings.brand_name
+  - AdminLoginPage.tsx: "Sign in to manage {brandName}" now dynamic
+  - DownloadPage.tsx: "Get the {brandName} app" and "{brandName} App" now dynamic
+  - ReferPage.tsx: Share dialog title/text now use dynamic brandName
+- Added document.title dynamic update in stores.ts applyThemeFromSettings() - title changes when brand_name changes
+- Added favicon dynamic update in stores.ts - favicon changes when logo_url setting is updated
+- BULK replaced 805 hardcoded hex color references across ALL 33 component files:
+  - [#2563EB] / [#3B82F6] → ev-blue (primary color, linked to --primary CSS var)
+  - [#F0F7FF] → ev-bg (background color, linked to --background CSS var)
+  - [#FFFFFF] → ev-card (card color, linked to --card CSS var)
+  - [#1E293B] → ev-text (text color, linked to --foreground CSS var)
+  - [#64748B] → ev-muted (muted text, linked to --muted-foreground CSS var)
+  - [#DBEAFE] / [#E2E8F0] → ev-card-border (border color, linked to --border CSS var)
+  - [#EFF6FF] → ev-bg (bg) or ev-card-border (border) context-aware
+  - Preserved semantic colors (#10B981 green, #F59E0B amber, #DC2626 red)
+- This means ALL colors in the entire app now respond to admin theme changes
+- Lint passes cleanly, dev server running without errors
+
+Stage Summary:
+- Z.ai dev tools indicator removed from UI
+- Z.ai "Z" favicon replaced with EarnVault "EV" blue gradient favicon
+- Brand name is now dynamic everywhere (admin panel, login, download, refer, etc.)
+- Document title and favicon update dynamically when admin changes settings
+- ALL 805 hardcoded hex colors replaced with CSS variable-based classes
+- Admin theme customization now works for REAL - changing any color in admin settings will update the ENTIRE site
+- Current default theme preserved: blue (#2563EB) + white + dark text

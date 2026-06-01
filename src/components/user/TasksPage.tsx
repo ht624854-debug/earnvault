@@ -116,7 +116,7 @@ export default function TasksPage() {
         );
       case 'Rejected':
         return (
-          <span className="inline-flex items-center gap-1 text-[#2563EB] text-xs font-medium">
+          <span className="inline-flex items-center gap-1 text-ev-blue text-xs font-medium">
             <XCircle className="w-3.5 h-3.5" /> Rejected
           </span>
         );
@@ -179,19 +179,19 @@ export default function TasksPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-[#2563EB]/30 border-t-[#2563EB] rounded-full animate-spin" />
+      <div className="min-h-screen bg-ev-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-3 border-ev-blue/30 border-t-ev-blue rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] pb-24">
+    <div className="min-h-screen bg-ev-bg pb-24">
       {/* Header */}
-      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
+      <div className="bg-ev-bg border-b border-ev-card-border sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-lg font-bold text-[#1E293B]">Tasks</h1>
-          <p className="text-xs text-[#64748B] mt-0.5">Complete tasks and earn rewards</p>
+          <h1 className="text-lg font-bold text-ev-text">Tasks</h1>
+          <p className="text-xs text-ev-muted mt-0.5">Complete tasks and earn rewards</p>
         </div>
       </div>
 
@@ -205,7 +205,7 @@ export default function TasksPage() {
           >
             <Lock className="w-5 h-5 text-[#F59E0B] flex-shrink-0" />
             <div className="flex-1">
-              <p className="text-sm text-[#1E293B]">Activate your account to start earning</p>
+              <p className="text-sm text-ev-text">Activate your account to start earning</p>
             </div>
             <button
               onClick={() => navigate('activation')}
@@ -217,11 +217,11 @@ export default function TasksPage() {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-[#FFFFFF] border border-[#EFF6FF] rounded-lg p-1">
+        <div className="flex gap-1 bg-ev-card border border-ev-card-border rounded-lg p-1">
           <button
             onClick={() => setTab('available')}
             className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
-              tab === 'available' ? 'ev-gradient-red text-white' : 'text-[#64748B] hover:text-[#1E293B]'
+              tab === 'available' ? 'ev-gradient-red text-white' : 'text-ev-muted hover:text-ev-text'
             }`}
           >
             Available Tasks
@@ -229,7 +229,7 @@ export default function TasksPage() {
           <button
             onClick={() => setTab('submissions')}
             className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
-              tab === 'submissions' ? 'ev-gradient-red text-white' : 'text-[#64748B] hover:text-[#1E293B]'
+              tab === 'submissions' ? 'ev-gradient-red text-white' : 'text-ev-muted hover:text-ev-text'
             }`}
           >
             My Submissions
@@ -253,17 +253,17 @@ export default function TasksPage() {
                     transition={{ delay: i * 0.05 }}
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-[#2563EB]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-5 h-5 text-[#2563EB]" />
+                      <div className="w-10 h-10 bg-ev-blue/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-5 h-5 text-ev-blue" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-sm font-semibold text-[#1E293B] truncate">{task.title}</h3>
-                          <span className="text-[10px] bg-[#F0F7FF] text-[#64748B] px-2 py-0.5 rounded-full">
+                          <h3 className="text-sm font-semibold text-ev-text truncate">{task.title}</h3>
+                          <span className="text-[10px] bg-ev-bg text-ev-muted px-2 py-0.5 rounded-full">
                             {taskTypeLabel(task.type)}
                           </span>
                         </div>
-                        <p className="text-xs text-[#64748B] line-clamp-2 mb-3">{task.description}</p>
+                        <p className="text-xs text-ev-muted line-clamp-2 mb-3">{task.description}</p>
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-bold text-[#10B981]">Rs. {task.reward_amount}</span>
                           {existingSub ? (
@@ -291,7 +291,7 @@ export default function TasksPage() {
                 );
               })
             ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-[#64748B]">
+              <div className="flex flex-col items-center justify-center py-16 text-ev-muted">
                 <Inbox className="w-12 h-12 mb-3" />
                 <p className="text-sm">No tasks available right now</p>
                 <p className="text-xs mt-1">Check back later for new tasks</p>
@@ -313,8 +313,8 @@ export default function TasksPage() {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[#1E293B] font-medium">{sub.task?.title || 'Task'}</p>
-                      <p className="text-xs text-[#64748B] mt-0.5">
+                      <p className="text-sm text-ev-text font-medium">{sub.task?.title || 'Task'}</p>
+                      <p className="text-xs text-ev-muted mt-0.5">
                         {new Date(sub.created_at).toLocaleDateString()}
                       </p>
                     </div>
@@ -326,7 +326,7 @@ export default function TasksPage() {
                 </motion.div>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-[#64748B]">
+              <div className="flex flex-col items-center justify-center py-16 text-ev-muted">
                 <Inbox className="w-12 h-12 mb-3" />
                 <p className="text-sm">No submissions yet</p>
                 <p className="text-xs mt-1">Start a task to see your submissions here</p>
@@ -347,24 +347,24 @@ export default function TasksPage() {
             onClick={() => setActiveTask(null)}
           >
             <motion.div
-              className="w-full max-w-md bg-[#FFFFFF] border border-[#EFF6FF] rounded-t-2xl sm:rounded-2xl p-5"
+              className="w-full max-w-md bg-ev-card border border-ev-card-border rounded-t-2xl sm:rounded-2xl p-5"
               initial={{ y: 100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-bold text-[#1E293B]">{activeTask.title}</h3>
-                <button onClick={() => setActiveTask(null)} className="text-[#64748B] hover:text-[#1E293B]">
+                <h3 className="text-base font-bold text-ev-text">{activeTask.title}</h3>
+                <button onClick={() => setActiveTask(null)} className="text-ev-muted hover:text-ev-text">
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <p className="text-sm text-[#64748B] mb-4">{activeTask.description}</p>
+              <p className="text-sm text-ev-muted mb-4">{activeTask.description}</p>
 
               {(activeTask.type === 'question' || activeTask.type === 'math') && activeTask.question && (
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-[#64748B] mb-1.5">Question</label>
-                  <div className="ev-card p-3 text-sm text-[#1E293B]">{activeTask.question}</div>
+                  <label className="block text-sm font-medium text-ev-muted mb-1.5">Question</label>
+                  <div className="ev-card p-3 text-sm text-ev-text">{activeTask.question}</div>
                 </div>
               )}
 
@@ -383,7 +383,7 @@ export default function TasksPage() {
 
               {(activeTask.type === 'question' || activeTask.type === 'math' || activeTask.type === 'link_visit' || activeTask.type === 'custom') && (
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-[#64748B] mb-1.5">Your Answer</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1.5">Your Answer</label>
                   <input
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
@@ -395,13 +395,13 @@ export default function TasksPage() {
 
               {(activeTask.proof_required || activeTask.type === 'proof_upload') && (
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-[#64748B] mb-1.5">Upload Proof</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1.5">Upload Proof</label>
                   {proofPreview && (
                     <div className="relative mb-2">
                       <img
                         src={proofPreview}
                         alt="Proof preview"
-                        className="w-full h-32 object-cover rounded-lg border border-[#EFF6FF]"
+                        className="w-full h-32 object-cover rounded-lg border border-ev-card-border"
                       />
                       <button
                         onClick={() => {
@@ -422,7 +422,7 @@ export default function TasksPage() {
               )}
 
               <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-[#64748B]">Reward:</span>
+                <span className="text-sm text-ev-muted">Reward:</span>
                 <span className="text-sm font-bold text-[#10B981]">Rs. {activeTask.reward_amount}</span>
               </div>
 

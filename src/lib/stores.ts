@@ -30,6 +30,17 @@ function applyThemeFromSettings(s: Record<string, string>) {
     root.style.setProperty('--sidebar-border', s.theme_border_color);
     root.style.setProperty('--input', s.theme_border_color);
   }
+  // Update document title with brand name
+  if (s.brand_name) {
+    document.title = `${s.brand_name} - Earn Real Rewards Daily`;
+  }
+  // Update favicon if logo_url is set
+  if (s.logo_url) {
+    const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+    if (link) {
+      link.href = s.logo_url;
+    }
+  }
 }
 
 interface User {

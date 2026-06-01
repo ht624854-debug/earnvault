@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuthStore, useRouterStore } from '@/lib/stores';
+import { useAuthStore, useRouterStore, useSettingsStore } from '@/lib/stores';
 import {
   LayoutDashboard,
   Users,
@@ -52,6 +52,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { page, navigate } = useRouterStore();
   const { user, logout } = useAuthStore();
+  const { settings } = useSettingsStore();
+  const brandName = settings.brand_name || 'EarnVault';
 
   const handleNavigate = (targetPage: string) => {
     navigate(targetPage as any);
@@ -65,14 +67,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      <div className="p-4 border-b border-[#EFF6FF]">
+      <div className="p-4 border-b border-ev-card-border">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg ev-gradient-red flex items-center justify-center ev-glow-red-sm">
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-[#1E293B]">EarnVault</h2>
-            <p className="text-[10px] text-[#64748B] uppercase tracking-wider">Admin Panel</p>
+            <h2 className="text-sm font-bold text-ev-text">{brandName}</h2>
+            <p className="text-[10px] text-ev-muted uppercase tracking-wider">Admin Panel</p>
           </div>
         </div>
       </div>
@@ -86,8 +88,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               onClick={() => handleNavigate(item.page)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 mb-0.5 ${
                 isActive
-                  ? 'bg-[#2563EB]/10 text-[#2563EB] ev-glow-red-sm'
-                  : 'text-[#64748B] hover:bg-[#EFF6FF] hover:text-[#1E293B]'
+                  ? 'bg-ev-blue/10 text-ev-blue ev-glow-red-sm'
+                  : 'text-ev-muted hover:bg-ev-bg hover:text-ev-text'
               }`}
             >
               {item.icon}
@@ -98,21 +100,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         })}
       </nav>
 
-      <div className="p-4 border-t border-[#EFF6FF]">
+      <div className="p-4 border-t border-ev-card-border">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 rounded-full bg-[#EFF6FF] flex items-center justify-center text-[#2563EB] font-bold text-sm">
+          <div className="w-8 h-8 rounded-full bg-ev-bg flex items-center justify-center text-ev-blue font-bold text-sm">
             {user?.first_name?.[0] || 'A'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-[#1E293B] truncate">
+            <p className="text-sm font-medium text-ev-text truncate">
               {user?.first_name || 'Admin'}
             </p>
-            <p className="text-xs text-[#64748B] truncate">{user?.email || 'admin'}</p>
+            <p className="text-xs text-ev-muted truncate">{user?.email || 'admin'}</p>
           </div>
         </div>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[#3B82F6] hover:bg-[#3B82F6]/10 transition-colors"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-ev-blue hover:bg-ev-blue/10 transition-colors"
         >
           <LogOut className="w-4 h-4" />
           Logout
@@ -122,24 +124,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   );
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-ev-bg flex flex-col lg:flex-row">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:w-60 lg:flex-col lg:fixed lg:inset-y-0 bg-[#F0F7FF] border-r border-[#EFF6FF] z-30">
+      <aside className="hidden lg:flex lg:w-60 lg:flex-col lg:fixed lg:inset-y-0 bg-ev-bg border-r border-ev-card-border z-30">
         {sidebarContent}
       </aside>
 
       {/* Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-[#F0F7FF] border-b border-[#EFF6FF]">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-ev-bg border-b border-ev-card-border">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg ev-gradient-red flex items-center justify-center">
               <Shield className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm font-bold text-[#1E293B]">EarnVault Admin</span>
+            <span className="text-sm font-bold text-ev-text">{brandName} Admin</span>
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg text-[#64748B] hover:bg-[#EFF6FF] transition-colors"
+            className="p-2 rounded-lg text-ev-muted hover:bg-ev-bg transition-colors"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -150,7 +152,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-30 bg-black/60" onClick={() => setMobileMenuOpen(false)}>
           <aside
-            className="absolute left-0 top-0 bottom-0 w-72 bg-[#F0F7FF] border-r border-[#EFF6FF]"
+            className="absolute left-0 top-0 bottom-0 w-72 bg-ev-bg border-r border-ev-card-border"
             onClick={(e) => e.stopPropagation()}
           >
             {sidebarContent}

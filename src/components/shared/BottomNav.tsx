@@ -40,7 +40,7 @@ export default function BottomNav() {
   if (noNavPages.includes(page)) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#F0F7FF]/95 backdrop-blur-xl border-t border-[#EFF6FF] safe-area-bottom">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-ev-bg/95 backdrop-blur-xl border-t border-ev-card-border safe-area-bottom">
       <div className="max-w-4xl mx-auto flex items-center justify-around py-1.5 px-2">
         {navItems.map((item) => {
           const isActive = page === item.page;
@@ -53,18 +53,18 @@ export default function BottomNav() {
               {isActive && (
                 <motion.div
                   layoutId="bottomnav-indicator"
-                  className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#2563EB] rounded-full"
+                  className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-ev-blue rounded-full"
                   transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                 />
               )}
               <item.icon
                 className={`w-5 h-5 transition-colors ${
-                  isActive ? 'text-[#2563EB]' : 'text-[#94A3B8]'
+                  isActive ? 'text-ev-blue' : 'text-[#94A3B8]'
                 }`}
               />
               <span
                 className={`text-[10px] font-medium transition-colors ${
-                  isActive ? 'text-[#2563EB]' : 'text-[#94A3B8]'
+                  isActive ? 'text-ev-blue' : 'text-[#94A3B8]'
                 }`}
               >
                 {item.label}

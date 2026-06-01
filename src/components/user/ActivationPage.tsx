@@ -159,7 +159,7 @@ export default function ActivationPage() {
         );
       case 'Rejected':
         return (
-          <span className="inline-flex items-center gap-1 bg-[#2563EB]/10 text-[#2563EB] border border-[#2563EB]/30 rounded-full px-2.5 py-0.5 text-xs font-medium">
+          <span className="inline-flex items-center gap-1 bg-ev-blue/10 text-ev-blue border border-ev-blue/30 rounded-full px-2.5 py-0.5 text-xs font-medium">
             <XCircle className="w-3 h-3" /> Rejected
           </span>
         );
@@ -181,8 +181,8 @@ export default function ActivationPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-[#2563EB]/30 border-t-[#2563EB] rounded-full animate-spin" />
+      <div className="min-h-screen bg-ev-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-3 border-ev-blue/30 border-t-ev-blue rounded-full animate-spin" />
       </div>
     );
   }
@@ -190,12 +190,12 @@ export default function ActivationPage() {
   const isActive = user?.package_status === 'Active';
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] pb-24">
+    <div className="min-h-screen bg-ev-bg pb-24">
       {/* Header */}
-      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
+      <div className="bg-ev-bg border-b border-ev-card-border sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-lg font-bold text-[#1E293B]">Account Activation</h1>
-          <p className="text-xs text-[#64748B] mt-0.5">Activate your account to unlock earning features</p>
+          <h1 className="text-lg font-bold text-ev-text">Account Activation</h1>
+          <p className="text-xs text-ev-muted mt-0.5">Activate your account to unlock earning features</p>
         </div>
       </div>
 
@@ -223,10 +223,10 @@ export default function ActivationPage() {
                   <span className="text-sm font-bold text-[#F59E0B]">{offerTitle || 'Special Offer!'}</span>
                 </div>
                 {offerDescription && (
-                  <p className="text-xs text-[#64748B] mb-2">{offerDescription}</p>
+                  <p className="text-xs text-ev-muted mb-2">{offerDescription}</p>
                 )}
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-[#64748B] line-through">Rs. {activationFee}</span>
+                  <span className="text-xs text-ev-muted line-through">Rs. {activationFee}</span>
                   <span className="text-sm font-bold text-[#10B981]">Rs. {finalFee}</span>
                   <span className="bg-[#10B981]/10 text-[#10B981] text-xs font-medium px-2 py-0.5 rounded-full">
                     Save Rs. {offerDiscount}
@@ -246,14 +246,14 @@ export default function ActivationPage() {
                 <Zap className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="text-sm text-[#64748B]">Activation Fee</p>
+                <p className="text-sm text-ev-muted">Activation Fee</p>
                 {hasOffer ? (
                   <div className="flex items-center gap-2">
-                    <span className="text-lg text-[#64748B] line-through">Rs. {activationFee}</span>
+                    <span className="text-lg text-ev-muted line-through">Rs. {activationFee}</span>
                     <span className="text-2xl font-bold text-[#10B981]">Rs. {finalFee}</span>
                   </div>
                 ) : (
-                  <p className="text-2xl font-bold text-[#1E293B]">Rs. {activationFee}</p>
+                  <p className="text-2xl font-bold text-ev-text">Rs. {activationFee}</p>
                 )}
               </div>
             </div>
@@ -261,8 +261,8 @@ export default function ActivationPage() {
             <div className="space-y-2.5">
               {benefits.map((b, i) => (
                 <div key={i} className="flex items-center gap-2.5">
-                  <b.icon className="w-4 h-4 text-[#2563EB]" />
-                  <span className="text-sm text-[#64748B]">{b.text}</span>
+                  <b.icon className="w-4 h-4 text-ev-blue" />
+                  <span className="text-sm text-ev-muted">{b.text}</span>
                 </div>
               ))}
             </div>
@@ -272,10 +272,10 @@ export default function ActivationPage() {
         {/* Activation Form */}
         {!isActive && (
           <motion.div className="ev-card p-5" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-            <h2 className="text-base font-semibold text-[#1E293B] mb-4">Submit Activation Request</h2>
+            <h2 className="text-base font-semibold text-ev-text mb-4">Submit Activation Request</h2>
             <form onSubmit={handleSubmit} className="space-y-3.5">
               <div>
-                <label className="block text-sm font-medium text-[#64748B] mb-1.5">Payment Method</label>
+                <label className="block text-sm font-medium text-ev-muted mb-1.5">Payment Method</label>
                 <select
                   value={form.payment_method_id}
                   onChange={(e) => setForm({ ...form, payment_method_id: e.target.value })}
@@ -294,10 +294,10 @@ export default function ActivationPage() {
                 const selectedPm = paymentMethods.find((pm) => pm.id === form.payment_method_id);
                 if (selectedPm?.instructions) {
                   return (
-                    <div className="bg-[#F0F7FF] border border-[#DBEAFE] rounded-lg p-3 text-xs text-[#64748B]">
+                    <div className="bg-ev-bg border border-ev-card-border rounded-lg p-3 text-xs text-ev-muted">
                       {selectedPm.instructions}
                       {selectedPm.account_number && (
-                        <p className="mt-1 text-[#1E293B]">Account: {selectedPm.account_number}</p>
+                        <p className="mt-1 text-ev-text">Account: {selectedPm.account_number}</p>
                       )}
                     </div>
                   );
@@ -307,7 +307,7 @@ export default function ActivationPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-[#64748B] mb-1.5">Sender Name</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1.5">Sender Name</label>
                   <input
                     value={form.sender_name}
                     onChange={(e) => setForm({ ...form, sender_name: e.target.value })}
@@ -316,7 +316,7 @@ export default function ActivationPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#64748B] mb-1.5">Sender Number</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1.5">Sender Number</label>
                   <input
                     value={form.sender_number}
                     onChange={(e) => setForm({ ...form, sender_number: e.target.value })}
@@ -328,7 +328,7 @@ export default function ActivationPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-[#64748B] mb-1.5">Transaction ID</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1.5">Transaction ID</label>
                   <input
                     value={form.transaction_id}
                     onChange={(e) => setForm({ ...form, transaction_id: e.target.value })}
@@ -337,7 +337,7 @@ export default function ActivationPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#64748B] mb-1.5">Amount</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1.5">Amount</label>
                   <input
                     type="number"
                     value={form.amount}
@@ -349,10 +349,10 @@ export default function ActivationPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[#64748B] mb-1.5">Proof Image (Optional)</label>
+                <label className="block text-sm font-medium text-ev-muted mb-1.5">Proof Image (Optional)</label>
                 {proofPreview && (
                   <div className="relative mb-2">
-                    <img src={proofPreview} alt="Proof" className="w-full h-32 object-cover rounded-lg border border-[#EFF6FF]" />
+                    <img src={proofPreview} alt="Proof" className="w-full h-32 object-cover rounded-lg border border-ev-card-border" />
                     <button
                       onClick={() => { setProofImage(null); setProofPreview(''); }}
                       className="absolute top-1 right-1 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center text-white"
@@ -386,27 +386,27 @@ export default function ActivationPage() {
 
         {/* Existing Requests */}
         <div>
-          <h2 className="text-base font-semibold text-[#1E293B] mb-3">Your Requests</h2>
+          <h2 className="text-base font-semibold text-ev-text mb-3">Your Requests</h2>
           {existingRequests.length > 0 ? (
             <div className="space-y-3">
               {existingRequests.map((req) => (
                 <div key={req.id} className="ev-card p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-[#1E293B]">
+                    <span className="text-sm font-medium text-ev-text">
                       {req.payment_method?.name || 'Payment'}
                     </span>
                     {statusBadge(req.status)}
                   </div>
-                  <div className="grid grid-cols-2 gap-y-1 text-xs text-[#64748B]">
+                  <div className="grid grid-cols-2 gap-y-1 text-xs text-ev-muted">
                     <span>Amount:</span>
-                    <span className="text-[#1E293B]">Rs. {req.amount}</span>
+                    <span className="text-ev-text">Rs. {req.amount}</span>
                     <span>TXN ID:</span>
-                    <span className="text-[#1E293B]">{req.transaction_id}</span>
+                    <span className="text-ev-text">{req.transaction_id}</span>
                     <span>Date:</span>
-                    <span className="text-[#1E293B]">{new Date(req.created_at).toLocaleDateString()}</span>
+                    <span className="text-ev-text">{new Date(req.created_at).toLocaleDateString()}</span>
                   </div>
                   {req.admin_note && (
-                    <p className="text-xs text-[#2563EB] mt-2 border-t border-[#EFF6FF] pt-2">
+                    <p className="text-xs text-ev-blue mt-2 border-t border-ev-card-border pt-2">
                       Note: {req.admin_note}
                     </p>
                   )}
@@ -414,7 +414,7 @@ export default function ActivationPage() {
               ))}
             </div>
           ) : (
-            <div className="ev-card p-8 flex flex-col items-center text-[#64748B]">
+            <div className="ev-card p-8 flex flex-col items-center text-ev-muted">
               <Inbox className="w-10 h-10 mb-2" />
               <p className="text-sm">No activation requests yet</p>
             </div>

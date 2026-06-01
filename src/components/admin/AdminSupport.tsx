@@ -111,13 +111,13 @@ export default function AdminSupport() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setSelectedTicket(null)}
-            className="p-2 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] transition-colors"
+            className="p-2 rounded-lg hover:bg-ev-bg text-ev-muted transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-[#1E293B]">{selectedTicket.subject}</h1>
-            <p className="text-[#64748B] text-sm">
+            <h1 className="text-xl font-bold text-ev-text">{selectedTicket.subject}</h1>
+            <p className="text-ev-muted text-sm">
               By {selectedTicket.user?.first_name} {selectedTicket.user?.last_name} (@{selectedTicket.user?.username}) — {new Date(selectedTicket.created_at).toLocaleString()}
             </p>
           </div>
@@ -127,14 +127,14 @@ export default function AdminSupport() {
         {/* Ticket message */}
         <div className="ev-card p-4">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#EFF6FF] flex items-center justify-center text-sm font-bold text-[#64748B] shrink-0">
+            <div className="w-8 h-8 rounded-full bg-ev-bg flex items-center justify-center text-sm font-bold text-ev-muted shrink-0">
               {selectedTicket.user?.first_name?.[0] || 'U'}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-[#1E293B]">
+              <p className="text-sm font-medium text-ev-text">
                 {selectedTicket.user?.first_name} {selectedTicket.user?.last_name}
               </p>
-              <p className="text-sm text-[#64748B] mt-1">{selectedTicket.message}</p>
+              <p className="text-sm text-ev-muted mt-1">{selectedTicket.message}</p>
             </div>
           </div>
         </div>
@@ -148,20 +148,20 @@ export default function AdminSupport() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
                       reply.sender_type === 'admin'
-                        ? 'bg-[#2563EB]/20 text-[#2563EB]'
-                        : 'bg-[#EFF6FF] text-[#64748B]'
+                        ? 'bg-ev-blue/20 text-ev-blue'
+                        : 'bg-ev-bg text-ev-muted'
                     }`}
                   >
                     {reply.sender_type === 'admin' ? 'A' : (selectedTicket.user?.first_name?.[0] || 'U')}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-[#1E293B]">
+                      <p className="text-sm font-medium text-ev-text">
                         {reply.sender_type === 'admin' ? 'Admin' : `${selectedTicket.user?.first_name} ${selectedTicket.user?.last_name}`}
                       </p>
-                      <span className="text-xs text-[#64748B]">{new Date(reply.created_at).toLocaleString()}</span>
+                      <span className="text-xs text-ev-muted">{new Date(reply.created_at).toLocaleString()}</span>
                     </div>
-                    <p className="text-sm text-[#64748B] mt-1">{reply.message}</p>
+                    <p className="text-sm text-ev-muted mt-1">{reply.message}</p>
                   </div>
                 </div>
               </div>
@@ -171,7 +171,7 @@ export default function AdminSupport() {
 
         {/* Reply form */}
         <div className="ev-card p-4">
-          <label className="block text-sm text-[#64748B] mb-2">Reply</label>
+          <label className="block text-sm text-ev-muted mb-2">Reply</label>
           <textarea
             className="ev-input w-full px-4 py-2.5 min-h-[100px]"
             placeholder="Type your reply..."
@@ -197,8 +197,8 @@ export default function AdminSupport() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#1E293B]">Support Tickets</h1>
-        <p className="text-[#64748B] text-sm mt-1">Manage user support requests</p>
+        <h1 className="text-2xl font-bold text-ev-text">Support Tickets</h1>
+        <p className="text-ev-muted text-sm mt-1">Manage user support requests</p>
       </div>
 
       {/* Filters */}
@@ -210,8 +210,8 @@ export default function AdminSupport() {
               onClick={() => setFilter(f.value)}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 filter === f.value
-                  ? 'bg-[#2563EB]/10 text-[#2563EB] border border-[#2563EB]/30'
-                  : 'bg-[#F0F7FF] text-[#64748B] border border-[#DBEAFE] hover:bg-[#EFF6FF]'
+                  ? 'bg-ev-blue/10 text-ev-blue border border-ev-blue/30'
+                  : 'bg-ev-bg text-ev-muted border border-ev-card-border hover:bg-ev-bg'
               }`}
             >
               {f.label}
@@ -224,10 +224,10 @@ export default function AdminSupport() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
+            <Loader2 className="w-6 h-6 animate-spin text-ev-blue" />
           </div>
         ) : tickets.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
+          <div className="flex flex-col items-center justify-center py-20 text-ev-muted">
             <Headphones className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No support tickets found</p>
           </div>
@@ -235,24 +235,24 @@ export default function AdminSupport() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#EFF6FF]">
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">User</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Subject</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Status</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Date</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
+                <tr className="border-b border-ev-card-border">
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">User</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Subject</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Status</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Date</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {tickets.map((ticket) => (
-                  <tr key={ticket.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
-                    <td className="py-3 px-4 text-[#1E293B]">
+                  <tr key={ticket.id} className="border-b border-ev-card-border hover:bg-ev-bg transition-colors">
+                    <td className="py-3 px-4 text-ev-text">
                       {ticket.user?.first_name} {ticket.user?.last_name}
-                      <span className="text-[#64748B] text-xs block">@{ticket.user?.username}</span>
+                      <span className="text-ev-muted text-xs block">@{ticket.user?.username}</span>
                     </td>
-                    <td className="py-3 px-4 text-[#1E293B] max-w-[250px] truncate">{ticket.subject}</td>
+                    <td className="py-3 px-4 text-ev-text max-w-[250px] truncate">{ticket.subject}</td>
                     <td className="py-3 px-4">{getStatusBadge(ticket.status)}</td>
-                    <td className="py-3 px-4 text-[#64748B] text-xs">
+                    <td className="py-3 px-4 text-ev-muted text-xs">
                       {new Date(ticket.created_at).toLocaleDateString()}
                     </td>
                     <td className="py-3 px-4">

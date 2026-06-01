@@ -251,7 +251,7 @@ export default function AdminSettings() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#2563EB]" />
+        <Loader2 className="w-8 h-8 animate-spin text-ev-blue" />
       </div>
     );
   }
@@ -260,8 +260,8 @@ export default function AdminSettings() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#1E293B]">Settings</h1>
-          <p className="text-[#64748B] text-sm mt-1">Manage platform settings</p>
+          <h1 className="text-2xl font-bold text-ev-text">Settings</h1>
+          <p className="text-ev-muted text-sm mt-1">Manage platform settings</p>
         </div>
         <button onClick={handleSave} disabled={saving} className="ev-btn-primary flex items-center gap-2">
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
@@ -273,14 +273,14 @@ export default function AdminSettings() {
         {sections.map((section) => (
           <div key={section.key} className="ev-card p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-[#1E293B] flex items-center gap-2">
-                <span className="text-[#2563EB]">{section.icon}</span>
+              <h2 className="text-lg font-semibold text-ev-text flex items-center gap-2">
+                <span className="text-ev-blue">{section.icon}</span>
                 {section.label}
               </h2>
               {section.key === 'theme' && (
                 <button
                   onClick={resetThemeColors}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#64748B] bg-[#EFF6FF] border border-[#DBEAFE] rounded-lg hover:bg-[#DBEAFE] transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-ev-muted bg-ev-bg border border-ev-card-border rounded-lg hover:bg-ev-card-border transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   Reset to Default
@@ -290,7 +290,7 @@ export default function AdminSettings() {
             <div className={`grid gap-4 ${section.key === 'theme' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
               {section.fields.map((field) => (
                 <div key={field.key}>
-                  <label className="block text-sm font-medium text-[#64748B] mb-1.5">{field.label}</label>
+                  <label className="block text-sm font-medium text-ev-muted mb-1.5">{field.label}</label>
                   {field.description && (
                     <p className="text-xs text-[#94A3B8] mb-2">{field.description}</p>
                   )}
@@ -301,7 +301,7 @@ export default function AdminSettings() {
                           type="color"
                           value={settings[field.key] || '#2563EB'}
                           onChange={(e) => handleChange(field.key, e.target.value)}
-                          className="w-12 h-10 rounded-lg border border-[#DBEAFE] cursor-pointer appearance-none bg-transparent p-0.5"
+                          className="w-12 h-10 rounded-lg border border-ev-card-border cursor-pointer appearance-none bg-transparent p-0.5"
                           style={{ WebkitAppearance: 'none' }}
                         />
                       </div>
@@ -317,7 +317,7 @@ export default function AdminSettings() {
                       />
                       {settings[field.key] && (
                         <div
-                          className="w-10 h-10 rounded-lg border border-[#DBEAFE] shrink-0"
+                          className="w-10 h-10 rounded-lg border border-ev-card-border shrink-0"
                           style={{ backgroundColor: settings[field.key] }}
                         />
                       )}
@@ -333,7 +333,7 @@ export default function AdminSettings() {
                     <label className="flex items-center gap-3 py-2.5">
                       <div
                         className={`relative w-10 h-6 rounded-full transition-colors cursor-pointer ${
-                          settings[field.key] === 'true' ? 'bg-[#2563EB]' : 'bg-[#DBEAFE]'
+                          settings[field.key] === 'true' ? 'bg-ev-blue' : 'bg-ev-card-border'
                         }`}
                         onClick={() => handleChange(field.key, settings[field.key] === 'true' ? 'false' : 'true')}
                       >
@@ -343,7 +343,7 @@ export default function AdminSettings() {
                           }`}
                         />
                       </div>
-                      <span className="text-sm text-[#64748B]">
+                      <span className="text-sm text-ev-muted">
                         {settings[field.key] === 'true' ? 'Enabled' : 'Disabled'}
                       </span>
                     </label>
@@ -362,8 +362,8 @@ export default function AdminSettings() {
 
             {/* Theme Preview */}
             {section.key === 'theme' && (
-              <div className="mt-6 pt-4 border-t border-[#DBEAFE]">
-                <p className="text-xs font-medium text-[#64748B] mb-3">Preview</p>
+              <div className="mt-6 pt-4 border-t border-ev-card-border">
+                <p className="text-xs font-medium text-ev-muted mb-3">Preview</p>
                 <div
                   className="rounded-xl p-4 border"
                   style={{
@@ -410,7 +410,7 @@ export default function AdminSettings() {
       </div>
 
       {/* Sticky save button on mobile */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-[#F0F7FF] border-t border-[#EFF6FF] z-20">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-ev-bg border-t border-ev-card-border z-20">
         <button onClick={handleSave} disabled={saving} className="ev-btn-primary w-full flex items-center justify-center gap-2">
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
           Save Settings

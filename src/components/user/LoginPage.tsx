@@ -41,7 +41,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] flex flex-col items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-ev-bg flex flex-col items-center justify-center px-4 py-8">
       <motion.div
         className="w-full max-w-md"
         initial={{ opacity: 0, y: 20 }}
@@ -53,21 +53,21 @@ export default function LoginPage() {
           <div className="w-14 h-14 ev-gradient-red rounded-2xl flex items-center justify-center mx-auto mb-4 ev-glow-red">
             <DollarSign className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-[#1E293B]">Welcome Back</h1>
-          <p className="text-[#64748B] text-sm mt-1">Sign in to your {brandName} account</p>
+          <h1 className="text-2xl font-bold text-ev-text">Welcome Back</h1>
+          <p className="text-ev-muted text-sm mt-1">Sign in to your {brandName} account</p>
         </div>
 
         {/* Form */}
         <div className="ev-card p-6">
           {error && (
-            <div className="bg-[#2563EB]/10 border border-[#2563EB]/30 rounded-lg p-3 mb-4 text-sm text-[#3B82F6]">
+            <div className="bg-ev-blue/10 border border-ev-blue/30 rounded-lg p-3 mb-4 text-sm text-ev-blue">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#64748B] mb-1.5">
+              <label className="block text-sm font-medium text-ev-muted mb-1.5">
                 Username or Email
               </label>
               <input
@@ -81,7 +81,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#64748B] mb-1.5">Password</label>
+              <label className="block text-sm font-medium text-ev-muted mb-1.5">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -94,7 +94,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-[#1E293B] transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-ev-muted hover:text-ev-text transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -118,11 +118,11 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-5 text-center">
-            <p className="text-sm text-[#64748B]">
+            <p className="text-sm text-ev-muted">
               Don&apos;t have an account?{' '}
               <button
                 onClick={() => navigate('register')}
-                className="text-[#2563EB] hover:underline font-medium"
+                className="text-ev-blue hover:underline font-medium"
               >
                 Register
               </button>
@@ -132,7 +132,7 @@ export default function LoginPage() {
 
         <button
           onClick={() => navigate('landing')}
-          className="block mx-auto mt-6 text-sm text-[#64748B] hover:text-[#1E293B] transition-colors"
+          className="block mx-auto mt-6 text-sm text-ev-muted hover:text-ev-text transition-colors"
         >
           &larr; Back to Home
         </button>

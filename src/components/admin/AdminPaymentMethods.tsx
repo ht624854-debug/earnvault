@@ -133,8 +133,8 @@ export default function AdminPaymentMethods() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#1E293B]">Payment Methods</h1>
-          <p className="text-[#64748B] text-sm mt-1">Manage deposit payment methods</p>
+          <h1 className="text-2xl font-bold text-ev-text">Payment Methods</h1>
+          <p className="text-ev-muted text-sm mt-1">Manage deposit payment methods</p>
         </div>
         <button onClick={openCreateDialog} className="ev-btn-primary flex items-center gap-2">
           <Plus className="w-4 h-4" />
@@ -146,10 +146,10 @@ export default function AdminPaymentMethods() {
       <div className="ev-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB]" />
+            <Loader2 className="w-6 h-6 animate-spin text-ev-blue" />
           </div>
         ) : methods.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-[#64748B]">
+          <div className="flex flex-col items-center justify-center py-20 text-ev-muted">
             <CreditCard className="w-12 h-12 mb-3 opacity-50" />
             <p className="text-sm">No payment methods found</p>
           </div>
@@ -157,23 +157,23 @@ export default function AdminPaymentMethods() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#EFF6FF]">
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Icon</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Name</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Account Title</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Account Number</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Status</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Sort</th>
-                  <th className="text-left py-3 px-4 text-[#64748B] font-medium">Actions</th>
+                <tr className="border-b border-ev-card-border">
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Icon</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Name</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Account Title</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Account Number</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Status</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Sort</th>
+                  <th className="text-left py-3 px-4 text-ev-muted font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {methods.map((method) => (
-                  <tr key={method.id} className="border-b border-[#EFF6FF] hover:bg-[#F0F7FF] transition-colors">
+                  <tr key={method.id} className="border-b border-ev-card-border hover:bg-ev-bg transition-colors">
                     <td className="py-3 px-4 text-lg">{method.icon || '💳'}</td>
-                    <td className="py-3 px-4 text-[#1E293B] font-medium">{method.name}</td>
-                    <td className="py-3 px-4 text-[#64748B]">{method.account_title}</td>
-                    <td className="py-3 px-4 text-[#64748B] font-mono text-xs">{method.account_number}</td>
+                    <td className="py-3 px-4 text-ev-text font-medium">{method.name}</td>
+                    <td className="py-3 px-4 text-ev-muted">{method.account_title}</td>
+                    <td className="py-3 px-4 text-ev-muted font-mono text-xs">{method.account_number}</td>
                     <td className="py-3 px-4">
                       <Badge
                         className={
@@ -185,19 +185,19 @@ export default function AdminPaymentMethods() {
                         {method.is_active ? 'Active' : 'Inactive'}
                       </Badge>
                     </td>
-                    <td className="py-3 px-4 text-[#64748B]">{method.sort_order}</td>
+                    <td className="py-3 px-4 text-ev-muted">{method.sort_order}</td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => openEditDialog(method)}
-                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-[#2563EB] transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-ev-bg text-ev-muted hover:text-ev-blue transition-colors"
                           title="Edit"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setDeleteId(method.id)}
-                          className="p-1.5 rounded-lg hover:bg-[#EFF6FF] text-[#64748B] hover:text-red-500 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-ev-bg text-ev-muted hover:text-red-500 transition-colors"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -214,14 +214,14 @@ export default function AdminPaymentMethods() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
+        <DialogContent className="bg-ev-card border-ev-card-border">
           <DialogHeader>
-            <DialogTitle className="text-[#1E293B]">{editId ? 'Edit Payment Method' : 'Add Payment Method'}</DialogTitle>
+            <DialogTitle className="text-ev-text">{editId ? 'Edit Payment Method' : 'Add Payment Method'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-[#64748B] mb-1">Name *</label>
+                <label className="block text-sm text-ev-muted mb-1">Name *</label>
                 <input
                   className="ev-input w-full px-4 py-2.5"
                   value={form.name}
@@ -230,7 +230,7 @@ export default function AdminPaymentMethods() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-[#64748B] mb-1">Icon (Emoji)</label>
+                <label className="block text-sm text-ev-muted mb-1">Icon (Emoji)</label>
                 <input
                   className="ev-input w-full px-4 py-2.5"
                   value={form.icon}
@@ -240,7 +240,7 @@ export default function AdminPaymentMethods() {
               </div>
             </div>
             <div>
-              <label className="block text-sm text-[#64748B] mb-1">Account Title *</label>
+              <label className="block text-sm text-ev-muted mb-1">Account Title *</label>
               <input
                 className="ev-input w-full px-4 py-2.5"
                 value={form.account_title}
@@ -249,7 +249,7 @@ export default function AdminPaymentMethods() {
               />
             </div>
             <div>
-              <label className="block text-sm text-[#64748B] mb-1">Account Number *</label>
+              <label className="block text-sm text-ev-muted mb-1">Account Number *</label>
               <input
                 className="ev-input w-full px-4 py-2.5"
                 value={form.account_number}
@@ -258,7 +258,7 @@ export default function AdminPaymentMethods() {
               />
             </div>
             <div>
-              <label className="block text-sm text-[#64748B] mb-1">Instructions</label>
+              <label className="block text-sm text-ev-muted mb-1">Instructions</label>
               <textarea
                 className="ev-input w-full px-4 py-2.5 min-h-[60px]"
                 value={form.instructions}
@@ -268,7 +268,7 @@ export default function AdminPaymentMethods() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-[#64748B] mb-1">Sort Order</label>
+                <label className="block text-sm text-ev-muted mb-1">Sort Order</label>
                 <input
                   type="number"
                   className="ev-input w-full px-4 py-2.5"
@@ -277,12 +277,12 @@ export default function AdminPaymentMethods() {
                 />
               </div>
               <div className="flex items-end pb-1">
-                <label className="flex items-center gap-2 text-sm text-[#64748B]">
+                <label className="flex items-center gap-2 text-sm text-ev-muted">
                   <input
                     type="checkbox"
                     checked={form.is_active}
                     onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
-                    className="w-4 h-4 rounded accent-[#2563EB]"
+                    className="w-4 h-4 rounded accent-ev-blue"
                   />
                   Active
                 </label>
@@ -303,11 +303,11 @@ export default function AdminPaymentMethods() {
 
       {/* Delete Confirm Dialog */}
       <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
-        <DialogContent className="bg-[#FFFFFF] border-[#EFF6FF]">
+        <DialogContent className="bg-ev-card border-ev-card-border">
           <DialogHeader>
-            <DialogTitle className="text-[#1E293B]">Delete Payment Method</DialogTitle>
+            <DialogTitle className="text-ev-text">Delete Payment Method</DialogTitle>
           </DialogHeader>
-          <p className="text-[#64748B] text-sm">Are you sure you want to delete this payment method?</p>
+          <p className="text-ev-muted text-sm">Are you sure you want to delete this payment method?</p>
           <DialogFooter>
             <button onClick={() => setDeleteId(null)} className="ev-btn-secondary">
               Cancel

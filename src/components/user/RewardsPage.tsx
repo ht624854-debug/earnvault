@@ -72,19 +72,19 @@ export default function RewardsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-[#2563EB]/30 border-t-[#2563EB] rounded-full animate-spin" />
+      <div className="min-h-screen bg-ev-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-3 border-ev-blue/30 border-t-ev-blue rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] pb-24">
+    <div className="min-h-screen bg-ev-bg pb-24">
       {/* Header */}
-      <div className="bg-[#F0F7FF] border-b border-[#EFF6FF] sticky top-0 z-40">
+      <div className="bg-ev-bg border-b border-ev-card-border sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-lg font-bold text-[#1E293B]">Rewards</h1>
-          <p className="text-xs text-[#64748B] mt-0.5">Earn bonus rewards through campaigns</p>
+          <h1 className="text-lg font-bold text-ev-text">Rewards</h1>
+          <p className="text-xs text-ev-muted mt-0.5">Earn bonus rewards through campaigns</p>
         </div>
       </div>
 
@@ -108,11 +108,11 @@ export default function RewardsPage() {
                 <div className="relative z-10">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-[#2563EB]/10 rounded-xl flex items-center justify-center">
-                        <Trophy className="w-5 h-5 text-[#2563EB]" />
+                      <div className="w-10 h-10 bg-ev-blue/10 rounded-xl flex items-center justify-center">
+                        <Trophy className="w-5 h-5 text-ev-blue" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-[#1E293B]">{campaign.title}</h3>
+                        <h3 className="text-sm font-semibold text-ev-text">{campaign.title}</h3>
                         <span
                           className="inline-flex items-center gap-1 text-xs font-medium mt-0.5"
                           style={{ color: statusInfo.color }}
@@ -123,19 +123,19 @@ export default function RewardsPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-[#10B981]">Rs. {campaign.reward_amount}</p>
-                      <p className="text-[10px] text-[#64748B]">Reward</p>
+                      <p className="text-[10px] text-ev-muted">Reward</p>
                     </div>
                   </div>
 
                   {/* Progress */}
                   <div className="mb-3">
-                    <div className="flex items-center justify-between text-xs text-[#64748B] mb-1">
+                    <div className="flex items-center justify-between text-xs text-ev-muted mb-1">
                       <span className="flex items-center gap-1">
                         <Users className="w-3 h-3" /> {campaign.user_progress || 0}/{campaign.target_referrals} referrals
                       </span>
                       <span>{Math.round(progress)}%</span>
                     </div>
-                    <div className="w-full bg-[#F0F7FF] rounded-full h-2">
+                    <div className="w-full bg-ev-bg rounded-full h-2">
                       <motion.div
                         className="ev-gradient-red h-2 rounded-full"
                         initial={{ width: 0 }}
@@ -147,7 +147,7 @@ export default function RewardsPage() {
 
                   {/* Time */}
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-[#64748B] flex items-center gap-1">
+                    <span className="text-xs text-ev-muted flex items-center gap-1">
                       <Clock className="w-3 h-3" /> {campaign.time_limit_hours} hours time limit
                     </span>
 
@@ -178,7 +178,7 @@ export default function RewardsPage() {
             );
           })
         ) : (
-          <div className="flex flex-col items-center justify-center py-16 text-[#64748B]">
+          <div className="flex flex-col items-center justify-center py-16 text-ev-muted">
             <Inbox className="w-12 h-12 mb-3" />
             <p className="text-sm">No active reward campaigns</p>
             <p className="text-xs mt-1">Check back later for new campaigns</p>
