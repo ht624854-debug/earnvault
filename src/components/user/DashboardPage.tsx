@@ -15,6 +15,7 @@ import {
   ArrowUpRight,
   ArrowDownLeft,
   Inbox,
+  TrendingUp,
 } from 'lucide-react';
 import { useAuthStore, useRouterStore, useToastStore, useSettingsStore } from '@/lib/stores';
 import { api } from '@/lib/api-client';
@@ -36,6 +37,87 @@ interface DashboardData {
   total_referrals: number;
   pending_withdrawals: number;
   recent_transactions: Transaction[];
+}
+
+const FAKE_TRANSACTIONS = [
+  { name: 'Sara M.', action: 'earned', amount: 350, method: 'Task Reward', type: 'earn' },
+  { name: 'Usman A.', action: 'withdrew', amount: 8000, method: 'JazzCash', type: 'withdraw' },
+  { name: 'Fatima R.', action: 'earned', amount: 200, method: 'Referral Bonus', type: 'earn' },
+  { name: 'Ahmed K.', action: 'withdrew', amount: 5200, method: 'Easypaisa', type: 'withdraw' },
+  { name: 'Ayesha B.', action: 'earned', amount: 150, method: 'Daily Code', type: 'earn' },
+  { name: 'Bilal S.', action: 'withdrew', amount: 6500, method: 'Easypaisa', type: 'withdraw' },
+  { name: 'Zainab K.', action: 'earned', amount: 500, method: 'Task Reward', type: 'earn' },
+  { name: 'Ali H.', action: 'withdrew', amount: 3100, method: 'Bank Transfer', type: 'withdraw' },
+  { name: 'Maryam T.', action: 'earned', amount: 300, method: 'Referral Bonus', type: 'earn' },
+  { name: 'Omar F.', action: 'withdrew', amount: 9500, method: 'SadaPay', type: 'withdraw' },
+  { name: 'Iqra J.', action: 'earned', amount: 100, method: 'Daily Code', type: 'earn' },
+  { name: 'Hassan N.', action: 'withdrew', amount: 4200, method: 'JazzCash', type: 'withdraw' },
+];
+
+function LiveTransactionsFeed() {
+  const [visibleItems, setVisibleItems] = useState(() =>
+    Array.from({ length: 4 }, (_, i) => ({
+      ...FAKE_TRANSACTIONS[i % FAKE_TRANSACTIONS.length],
+      id: i,
+    }))
+  );
+
+  useEffect(() => {
+    let counter = 4;
+    const interval = setInterval(() => {
+      counter++;
+      const nextIdx = (counter - 1) % FAKE_TRANSACTIONS.length;
+      setVisibleItems((old) => [
+        ...old.slice(1),
+        { ...FAKE_TRANSACTIONS[nextIdx], id: counter },
+      ]);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <TrendingUp className="w-4 h-4 text-[#10B981]" />
+        <p className="text-sm font-semibold text-[#10B981]">Live Transactions</p>
+        <span className="flex h-2 w-2 relative">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
+        </span>
+      </div>
+      <div className="space-y-2 overflow-hidden" style={{ height: '160px' }}>
+        {visibleItems.map((item) => (
+          <motion.div
+            key={item.id}
+            className="flex items-center gap-3 bg-ev-card/80 backdrop-blur-sm border border-ev-card-border rounded-xl px-3 py-2.5"
+            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${item.type === 'earn' ? 'bg-[#10B981]/10' : 'bg-ev-blue/10'}`}>
+              {item.type === 'earn' ? (
+                <ArrowDownLeft className="w-4 h-4 text-[#10B981]" />
+              ) : (
+                <ArrowUpRight className="w-4 h-4 text-ev-blue" />
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-ev-text truncate">
+                <span className="font-semibold">{item.name}</span>{' '}
+                <span className="text-ev-muted">{item.action}</span>
+              </p>
+              <p className="text-[10px] text-ev-muted">{item.method}</p>
+            </div>
+            <div className="text-right shrink-0">
+              <p className={`text-xs font-bold ${item.type === 'earn' ? 'text-[#10B981]' : 'text-ev-blue'}`}>
+                {item.type === 'earn' ? '+' : '-'}Rs {item.amount.toLocaleString()}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function DashboardPage() {
@@ -189,6 +271,15 @@ export default function DashboardPage() {
             </motion.button>
           ))}
         </div>
+
+        {/* Live Transactions - AFTER action cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <LiveTransactionsFeed />
+        </motion.div>
 
         {/* Recent Transactions */}
         <div>

@@ -159,6 +159,31 @@ export async function POST(
       }
     }
 
+    // Auto-enroll user in all active bonus campaigns
+    const activeCampaigns = await db.bonusCampaign.findMany({
+      where: { is_active: true },
+    });
+    for (const campaign of activeCampaigns) {
+      const existingEnrollment = await db.userBonusCampaign.findUnique({
+        where: {
+          user_id_campaign_id: { user_id: activationRequest.user_id, campaign_id: campaign.id },
+        },
+      });
+      if (!existingEnrollment) {
+        const now = new Date();
+        const expiresAt = new Date(now.getTime() + campaign.time_limit_hours * 60 * 60 * 1000);
+        await db.userBonusCampaign.create({
+          data: {
+            user_id: activationRequest.user_id,
+            campaign_id: campaign.id,
+            status: 'In Progress',
+            started_at: now,
+            expires_at: expiresAt,
+          },
+        });
+      }
+    }
+
     await createAuditLog(
       adminId,
       'APPROVE_ACTIVATION',

@@ -479,6 +479,41 @@ class ApiService {
     return this.request(`/admin/referral-commission-levels/${level}`, { method: 'DELETE' });
   }
 
+  // Bonus Campaigns (user)
+  async getBonusCampaigns() {
+    return this.request<any>('/bonus-campaigns');
+  }
+
+  async claimBonusCampaign(campaign_id: string) {
+    return this.request<any>('/bonus-campaigns/claim', {
+      method: 'POST',
+      body: JSON.stringify({ campaign_id }),
+    });
+  }
+
+  // Bonus Campaigns (admin)
+  async getAdminBonusCampaigns() {
+    return this.request<any>('/admin/bonus-campaigns');
+  }
+
+  async createAdminBonusCampaign(data: any) {
+    return this.request<any>('/admin/bonus-campaigns', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateAdminBonusCampaign(id: string, data: any) {
+    return this.request<any>(`/admin/bonus-campaigns/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteAdminBonusCampaign(id: string) {
+    return this.request(`/admin/bonus-campaigns/${id}`, { method: 'DELETE' });
+  }
+
   logout() {
     this.setToken(null);
   }

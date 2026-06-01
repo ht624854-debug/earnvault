@@ -37,6 +37,7 @@ model User {
   transactions     Transaction[]
   support_tickets  SupportTicket[]
   audit_logs       AuditLog[]
+  bonus_campaigns  UserBonusCampaign[]
 }
 
 model Setting {
@@ -240,4 +241,33 @@ model ReferralCommissionLevel {
   commission_amount Float // commission amount for this level
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+}
+
+model BonusCampaign {
+  id                 String   @id @default(cuid())
+  name               String   // e.g. "DAY1", "Oryndelux Bonus"
+  required_referrals Int      // how many referrals needed to unlock
+  reward_amount      Float    // reward amount
+  time_limit_hours   Int      // time limit in hours
+  is_active          Boolean  @default(true)
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  user_campaigns     UserBonusCampaign[]
+}
+
+model UserBonusCampaign {
+  id              String   @id @default(cuid())
+  user_id         String
+  campaign_id     String
+  status          String   @default("In Progress") // In Progress, Completed, Expired, Claimed
+  started_at      DateTime @default(now())
+  expires_at      DateTime // when the time limit runs out
+  completed_at    DateTime?
+  claimed_at      DateTime?
+
+  user            User           @relation(fields: [user_id], references: [id])
+  campaign        BonusCampaign  @relation(fields: [campaign_id], references: [id])
+
+  @@unique([user_id, campaign_id])
 }

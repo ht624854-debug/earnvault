@@ -217,6 +217,7 @@ type Page =
   | 'admin-support'
   | 'admin-referrals'
   | 'admin-referral-tiers'
+  | 'admin-bonus-campaigns'
   | 'admin-security';
 
 interface RouterState {

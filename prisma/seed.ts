@@ -138,6 +138,22 @@ async function seed() {
     }
   }
 
+  // Create default bonus campaigns
+  const defaultCampaigns = [
+    { name: 'DAY1', required_referrals: 13, reward_amount: 1, time_limit_hours: 24, is_active: true },
+    { name: 'Oryndelux Bonus', required_referrals: 25, reward_amount: 4000, time_limit_hours: 2400, is_active: true },
+    { name: 'Oryndelux Bonus', required_referrals: 10, reward_amount: 1000, time_limit_hours: 120, is_active: true },
+  ];
+
+  for (const campaign of defaultCampaigns) {
+    const existing = await db.bonusCampaign.findFirst({
+      where: { name: campaign.name, required_referrals: campaign.required_referrals },
+    });
+    if (!existing) {
+      await db.bonusCampaign.create({ data: campaign });
+    }
+  }
+
   console.log('Seed completed successfully!');
 }
 
