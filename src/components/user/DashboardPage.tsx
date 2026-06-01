@@ -176,7 +176,7 @@ export default function DashboardPage() {
     { icon: Zap, label: 'Activation', page: 'activation' as const, color: '#F59E0B' },
     { icon: Wallet, label: 'Withdraw', page: 'withdraw' as const, color: '#10B981' },
     { icon: Gift, label: 'Reward', page: 'rewards' as const, color: '#8B5CF6' },
-    { icon: Award, label: 'Bonuses', page: 'rewards' as const, color: '#EC4899' },
+    { icon: Award, label: 'Bonuses', page: 'bonuses' as const, color: '#EC4899' },
     { icon: Users, label: 'Network', page: 'refer' as const, color: '#06B6D4' },
     { icon: HeadphonesIcon, label: 'Support', page: 'support' as const, color: '#6366F1' },
     { icon: Download, label: 'Download', page: 'download' as const, color: '#F97316' },

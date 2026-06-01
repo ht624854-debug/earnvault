@@ -14,6 +14,7 @@ import ActivationPage from '@/components/user/ActivationPage';
 import WithdrawPage from '@/components/user/WithdrawPage';
 import ReferPage from '@/components/user/ReferPage';
 import RewardsPage from '@/components/user/RewardsPage';
+import BonusesPage from '@/components/user/BonusesPage';
 import ProfilePage from '@/components/user/ProfilePage';
 import SupportPage from '@/components/user/SupportPage';
 import DownloadPage from '@/components/user/DownloadPage';
@@ -102,6 +103,7 @@ function PageRouter() {
     'withdraw': <WithdrawPage />,
     'refer': <ReferPage />,
     'rewards': <RewardsPage />,
+    'bonuses': <BonusesPage />,
     'profile': <ProfilePage />,
     'support': <SupportPage />,
     'download': <DownloadPage />,

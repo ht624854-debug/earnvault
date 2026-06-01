@@ -38,38 +38,43 @@ export default function ReferPage() {
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
-  // Build referral link directly from user data (most reliable)
+  // Build referral link using the site's base URL from settings/env
   useEffect(() => {
+    const buildLink = async () => {
+      try {
+        // First try the API which uses NEXT_PUBLIC_BASE_URL
+        const linkRes = await api.getReferralLink().catch(() => ({ referral_link: '' }));
+        if (linkRes.referral_link) {
+          setReferralLink(linkRes.referral_link);
+          return;
+        }
+      } catch {
+        // fallback
+      }
+
+      // Fallback: build from user data using the configured base URL
+      if (user?.referral_code) {
+        const baseUrl = settings.base_url || window.location.origin;
+        setReferralLink(`${baseUrl}/register?ref=${user.referral_code}`);
+      }
+    };
+
     if (user?.referral_code) {
-      const baseUrl = window.location.origin;
-      setReferralLink(`${baseUrl}/register?ref=${user.referral_code}`);
+      buildLink();
     }
-  }, [user?.referral_code]);
+  }, [user?.referral_code, settings.base_url]);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [refRes, linkRes, tiersRes] = await Promise.all([
+        const [refRes, tiersRes] = await Promise.all([
           api.getReferrals().catch(() => ({ referrals: [] })),
-          api.getReferralLink().catch(() => ({ referral_link: '' })),
           api.getReferralRewardTiers().catch(() => ({ tiers: [] })),
         ]);
         setReferrals(Array.isArray(refRes.referrals) ? refRes.referrals : []);
         setRewardTiers(Array.isArray(tiersRes.tiers) ? tiersRes.tiers : []);
-
-        // Use API link if available, otherwise keep the one built from user data
-        if (linkRes.referral_link) {
-          setReferralLink(linkRes.referral_link);
-        } else if (user?.referral_code) {
-          const baseUrl = window.location.origin;
-          setReferralLink(`${baseUrl}/register?ref=${user.referral_code}`);
-        }
       } catch {
-        // Fallback: build link from user data
-        if (user?.referral_code) {
-          const baseUrl = window.location.origin;
-          setReferralLink(`${baseUrl}/register?ref=${user.referral_code}`);
-        }
+        // ignore
       } finally {
         setLoading(false);
       }
@@ -78,17 +83,34 @@ export default function ReferPage() {
   }, [addToast, user]);
 
   const handleCopy = async () => {
+    if (!referralLink) {
+      addToast('Referral link not available', 'error');
+      return;
+    }
     try {
       await navigator.clipboard.writeText(referralLink);
       setCopied(true);
       addToast('Link copied to clipboard!', 'success');
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      addToast('Failed to copy link', 'error');
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = referralLink;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopied(true);
+      addToast('Link copied to clipboard!', 'success');
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
   const handleShare = async () => {
+    if (!referralLink) {
+      addToast('Referral link not available', 'error');
+      return;
+    }
     if (navigator.share) {
       try {
         await navigator.share({
@@ -224,28 +246,36 @@ export default function ReferPage() {
           <div className="absolute inset-0 ev-gradient-red opacity-5" />
           <div className="relative z-10">
             <h2 className="text-base font-semibold text-ev-text mb-3">Your Referral Link</h2>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 bg-ev-bg border border-ev-card-border rounded-lg px-3 py-2.5 text-sm text-ev-muted truncate">
-                {referralLink}
+            {referralLink ? (
+              <>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 bg-ev-bg border border-ev-card-border rounded-lg px-3 py-2.5 text-sm text-ev-muted truncate">
+                    {referralLink}
+                  </div>
+                  <button
+                    onClick={handleCopy}
+                    className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all shrink-0 ${
+                      copied
+                        ? 'bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/30'
+                        : 'ev-btn-primary'
+                    }`}
+                  >
+                    {copied ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
+                  </button>
+                </div>
+                <button
+                  onClick={handleShare}
+                  className="ev-btn-secondary w-full flex items-center justify-center gap-2 mt-3 py-2.5 text-sm"
+                >
+                  <Share2 className="w-4 h-4" /> Share Link
+                </button>
+              </>
+            ) : (
+              <div className="bg-ev-bg border border-ev-card-border rounded-lg px-3 py-4 text-center">
+                <p className="text-sm text-ev-muted">Loading your referral link...</p>
               </div>
-              <button
-                onClick={handleCopy}
-                className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                  copied
-                    ? 'bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/30'
-                    : 'ev-btn-primary'
-                }`}
-              >
-                {copied ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
-              </button>
-            </div>
-            <button
-              onClick={handleShare}
-              className="ev-btn-secondary w-full flex items-center justify-center gap-2 mt-3 py-2.5 text-sm"
-            >
-              <Share2 className="w-4 h-4" /> Share Link
-            </button>
+            )}
           </div>
         </motion.div>
 

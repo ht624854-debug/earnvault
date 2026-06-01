@@ -197,6 +197,7 @@ type Page =
   | 'withdraw'
   | 'refer'
   | 'rewards'
+  | 'bonuses'
   | 'profile'
   | 'support'
   | 'download'
