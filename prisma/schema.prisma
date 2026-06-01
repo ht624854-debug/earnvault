@@ -33,7 +33,7 @@ model User {
   task_subs        TaskSubmission[]
   referrals_from   Referral[]         @relation("Referrer")
   referrals_to     Referral[]         @relation("Referred")
-  reward_claims    DailyRewardClaim[]
+  code_claims    DailyCodeClaim[]
   transactions     Transaction[]
   support_tickets  SupportTicket[]
   audit_logs       AuditLog[]
@@ -146,31 +146,31 @@ model Referral {
   referred_user   User     @relation("Referred", fields: [referred_user_id], references: [id])
 }
 
-model DailyRewardCampaign {
-  id               String   @id @default(cuid())
-  title            String
-  target_referrals Int
-  time_limit_hours Int
-  reward_amount    Float
-  is_active        Boolean  @default(true)
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
+model DailyCode {
+  id             String   @id @default(cuid())
+  code           String   @unique
+  max_claims     Int
+  reward_tiers   String   @default("[]")
+  is_active      Boolean  @default(true)
+  current_claims Int      @default(0)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
 
-  claims           DailyRewardClaim[]
+  claims         DailyCodeClaim[]
 }
 
-model DailyRewardClaim {
-  id          String   @id @default(cuid())
-  user_id     String
-  campaign_id String
-  progress    Int      @default(0)
-  status      String   @default("InProgress") // InProgress, Eligible, Claimed
-  reward_amount Float  @default(0)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+model DailyCodeClaim {
+  id            String    @id @default(cuid())
+  user_id       String
+  code_id       String
+  position      Int
+  reward_amount Float
+  created_at    DateTime  @default(now())
 
-  user        User              @relation(fields: [user_id], references: [id])
-  campaign    DailyRewardCampaign @relation(fields: [campaign_id], references: [id])
+  user          User      @relation(fields: [user_id], references: [id])
+  code          DailyCode @relation(fields: [code_id], references: [id])
+
+  @@unique([user_id, code_id])
 }
 
 model Transaction {

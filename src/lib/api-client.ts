@@ -175,14 +175,26 @@ class ApiService {
     return this.request<any>('/withdraw/my-requests');
   }
 
-  // Rewards
+  // Rewards / Daily Codes
   async getRewardCampaigns() {
-    return this.request<any>('/rewards/campaigns');
+    return this.request<any>('/daily-codes');
+  }
+
+  async claimDailyCode(code: string) {
+    return this.request<any>('/daily-codes/claim', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+    });
+  }
+
+  async getMyDailyCodeClaims() {
+    return this.request<any>('/user/daily-code-claims');
   }
 
   async claimReward(campaignId: string) {
-    return this.request<any>(`/rewards/${campaignId}/claim`, {
+    return this.request<any>('/daily-codes/claim', {
       method: 'POST',
+      body: JSON.stringify({ code: campaignId }),
     });
   }
 
@@ -353,26 +365,44 @@ class ApiService {
     return this.request(`/admin/payment-methods/${id}`, { method: 'DELETE' });
   }
 
-  async getAdminRewardCampaigns() {
-    return this.request<any>('/admin/reward-campaigns');
+  // Admin Daily Codes
+  async getAdminDailyCodes() {
+    return this.request<any>('/admin/daily-codes');
   }
 
-  async createAdminRewardCampaign(data: any) {
-    return this.request<any>('/admin/reward-campaigns', {
+  async createAdminDailyCode(data: any) {
+    return this.request<any>('/admin/daily-codes', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
-  async updateAdminRewardCampaign(id: string, data: any) {
-    return this.request<any>(`/admin/reward-campaigns/${id}`, {
+  async updateAdminDailyCode(id: string, data: any) {
+    return this.request<any>(`/admin/daily-codes/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
+  async deleteAdminDailyCode(id: string) {
+    return this.request(`/admin/daily-codes/${id}`, { method: 'DELETE' });
+  }
+
+  // Admin Reward Campaigns (legacy - kept for compatibility)
+  async getAdminRewardCampaigns() {
+    return this.getAdminDailyCodes();
+  }
+
+  async createAdminRewardCampaign(data: any) {
+    return this.createAdminDailyCode(data);
+  }
+
+  async updateAdminRewardCampaign(id: string, data: any) {
+    return this.updateAdminDailyCode(id, data);
+  }
+
   async deleteAdminRewardCampaign(id: string) {
-    return this.request(`/admin/reward-campaigns/${id}`, { method: 'DELETE' });
+    return this.deleteAdminDailyCode(id);
   }
 
   async getAdminSupportTickets(params = '') {
