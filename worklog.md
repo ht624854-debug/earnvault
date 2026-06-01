@@ -296,3 +296,36 @@ Stage Summary:
 - Deployment workflow: Download → GitHub Push → VPS Deploy
 - VPS deployment uses: Nginx reverse proxy + PM2 + Next.js standalone build
 - Auto-deploy via GitHub Actions when pushing to main branch
+
+---
+Task ID: 11
+Agent: Main
+Task: Add Live Transactions, fix referral link, add rewards banner image, improve profile page
+
+Work Log:
+- Added Live Transactions feed to LandingPage.tsx hero section with smooth fast scrolling (2s interval, eased animation)
+- Added green pulsing dot indicator next to "Live Transactions" label
+- Made Login/Register page transactions faster (3s→2s interval) and smoother (eased bezier transition)
+- Fixed referral link not showing on live site:
+  - Added dedicated useEffect in ReferPage.tsx that builds link directly from user.referral_code
+  - Fixed backend API to properly handle reverse proxy headers (x-forwarded-host, x-forwarded-proto)
+  - Added proper priority chain: NEXT_PUBLIC_BASE_URL > forwarded headers > request host
+- Added uploaded image (WhatsApp Image) as rewards banner to RewardsPage.tsx Bonuses section
+- Copied image to public/rewards-banner.jpeg with gradient overlay and "Bonuses" text
+- Added Referral Bonuses section with reward tiers to RewardsPage
+- Enhanced ProfilePage.tsx:
+  - Added 3-column balance layout (Main Balance, Deposit Balance, Total Earned)
+  - Added dedicated Referral Link card with Copy/Share buttons
+  - Added Username row to details section
+  - Added Total Earned stat with amber color
+  - Improved icon backgrounds with rounded-lg containers
+  - Bigger avatar with status badge
+- Kept Daily Code section as is ("No active reward codes right now")
+- Lint passes, site responds 200
+
+Stage Summary:
+- Live Transactions now visible on LandingPage hero + Login/Register pages with smooth scrolling
+- Referral link fix: Added robust client-side fallback + server-side reverse proxy header handling
+- Rewards banner image added with gradient overlay and "Bonuses" label
+- Profile page enhanced with 3 balance cards, referral link card, username display, total earned
+- Changes committed locally (no GitHub credentials available in sandbox)
