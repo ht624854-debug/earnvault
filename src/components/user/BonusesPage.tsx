@@ -43,6 +43,7 @@ export default function BonusesPage() {
   const [bonusCampaigns, setBonusCampaigns] = useState<BonusCampaign[]>([]);
   const [claimingBonus, setClaimingBonus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -50,10 +51,12 @@ export default function BonusesPage() {
 
   const loadData = async () => {
     setLoading(true);
+    setError(null);
     try {
-      const bonusRes = await api.getBonusCampaigns().catch(() => ({ campaigns: [] }));
+      const bonusRes = await api.getBonusCampaigns();
       setBonusCampaigns(Array.isArray(bonusRes.campaigns) ? bonusRes.campaigns : []);
-    } catch {
+    } catch (err: any) {
+      setError(err.message || 'Failed to load bonus campaigns');
       addToast('Failed to load bonus data', 'error');
     } finally {
       setLoading(false);
@@ -93,6 +96,14 @@ export default function BonusesPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-4 space-y-4">
+        {/* Error State */}
+        {error && (
+          <div className="ev-card p-5 border-red-500/30 bg-red-500/5">
+            <p className="text-sm text-red-500 font-medium">Error: {error}</p>
+            <button onClick={loadData} className="text-xs text-ev-blue mt-2 hover:underline">Try Again</button>
+          </div>
+        )}
+
         {/* Bonus Campaigns Section */}
         {bonusCampaigns.length > 0 ? (
           <div>
@@ -128,7 +139,7 @@ export default function BonusesPage() {
                           <h3 className="text-sm font-bold text-ev-text">{campaign.name}</h3>
                           <div className="flex items-center gap-2 mt-0.5">
                             <span className={`text-[10px] font-medium flex items-center gap-1 ${
-                              isClaimed ? 'text-[#10B981]' : isExpired ? 'text-red-500' : 'text-[#F59E0B]'
+                              isClaimed ? 'text-[#10B981]' : isExpired ? 'text-red-500' : isCompleted ? 'text-blue-600' : 'text-[#F59E0B]'
                             }`}>
                               {isClaimed ? (
                                 <><CheckCircle2 className="w-3 h-3" /> Claimed</>
@@ -165,7 +176,7 @@ export default function BonusesPage() {
                     <div className="w-full bg-ev-bg rounded-full h-2 mb-2">
                       <div
                         className={`h-2 rounded-full transition-all duration-500 ${
-                          isClaimed ? 'bg-[#10B981]' : isExpired ? 'bg-red-500' : 'ev-gradient-red'
+                          isClaimed ? 'bg-[#10B981]' : isExpired ? 'bg-red-500' : isCompleted ? 'bg-blue-500' : 'ev-gradient-red'
                         }`}
                         style={{ width: `${campaign.progress}%` }}
                       />
@@ -177,8 +188,10 @@ export default function BonusesPage() {
                         <Timer className="w-3 h-3" />
                         {isClaimed ? 'Reward claimed!' : isExpired ? 'Time limit expired' :
                           campaign.time_remaining_ms > 0
-                            ? `${formatTimeRemaining(campaign.time_remaining_ms)} time limit`
-                            : 'Time limit expired'
+                            ? `${formatTimeRemaining(campaign.time_remaining_ms)} left`
+                            : campaign.user_campaign_id
+                              ? 'Time limit expired'
+                              : `${campaign.time_limit_hours}h time limit`
                         }
                       </span>
 

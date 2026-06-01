@@ -14,7 +14,33 @@ export async function GET(request: NextRequest) {
       orderBy: { created_at: 'asc' },
     });
 
-    // Get user's campaign progress
+    // Auto-enroll user in any active campaign they're not yet enrolled in
+    const existingUserCampaigns = await db.userBonusCampaign.findMany({
+      where: { user_id: userId },
+    });
+    const enrolledIds = new Set(existingUserCampaigns.map((uc) => uc.campaign_id));
+
+    const now = new Date();
+    const newEnrollments = [];
+
+    for (const campaign of campaigns) {
+      if (!enrolledIds.has(campaign.id)) {
+        const expiresAt = new Date(now.getTime() + campaign.time_limit_hours * 60 * 60 * 1000);
+        newEnrollments.push({
+          user_id: userId,
+          campaign_id: campaign.id,
+          status: 'In Progress',
+          started_at: now,
+          expires_at: expiresAt,
+        });
+      }
+    }
+
+    if (newEnrollments.length > 0) {
+      await db.userBonusCampaign.createMany({ data: newEnrollments });
+    }
+
+    // Get user's campaign progress (including newly created ones)
     const userCampaigns = await db.userBonusCampaign.findMany({
       where: { user_id: userId },
       include: { campaign: true },
@@ -28,13 +54,10 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    const now = new Date();
-
     // Build response for each campaign
     const result = campaigns.map((campaign) => {
       const userCamp = userCampaigns.find((uc) => uc.campaign_id === campaign.id);
 
-      // If user hasn't been enrolled yet, auto-enroll them
       let status = 'Not Started';
       let startedAt: Date | null = null;
       let expiresAt: Date | null = null;
